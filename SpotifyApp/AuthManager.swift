@@ -6,12 +6,17 @@
 //
 
 import Foundation
+import AuthenticationServices
 
 final class AuthManager {
     static let shared = AuthManager()
     
     private enum Constants {
         static let cliendID = "ec2b205443ea4747ae0a4fefb0c9302f"
+        static let clientSecret = "f0993004c0134df9805fd89a9895674a"
+        static let redirectURI = "spotifyclient://auth"
+        static let scheme = "spotifyclient"
+        static let baseAuthURL = "https://accounts.spotify.com/authorize"
     }
     
     private enum Keys: String {
@@ -47,4 +52,33 @@ final class AuthManager {
         UserDefaults.standard.setValue(token, forKey: Keys.accessToken.rawValue)
         UserDefaults.standard.setValue(Date(), forKey: Keys.expirationDate.rawValue)
     }
+    
+    private var signInURL: URL {
+        var components = URLComponents(string: Constants.baseAuthURL)!
+        
+        components.queryItems = [
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "client_id", value: Constants.cliendID),
+            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
+            URLQueryItem(name: "scope", value: "user-read-private"),
+        ]
+        return components.url!
+    }
+    
+    func openAuthSession(
+        presentationContextProvider: ASWebAuthenticationPresentationContextProviding,
+        completion: @escaping ((Bool) -> Void)) {
+            
+            let session = ASWebAuthenticationSession(url: signInURL, callbackURLScheme: Constants.scheme) { responseURL, error in
+                if error == nil, let responseURL = responseURL {
+                    let components = URLComponents(string: responseURL.absoluteString)!
+                    let code = components.queryItems?.filter({$0.name == "code" }).first!.value
+                    print(code)
+                } else {
+                    completion(false)
+                }
+            }
+            session.presentationContextProvider = presentationContextProvider
+            session.start()
+        }
 }

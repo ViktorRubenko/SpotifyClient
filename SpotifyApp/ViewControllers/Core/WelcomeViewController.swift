@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AuthenticationServices
 
 class WelcomeViewController: UIViewController {
     
@@ -18,7 +19,9 @@ class WelcomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        title = "Spotify"
+        
         setupViews()
     }
 
@@ -27,6 +30,21 @@ class WelcomeViewController: UIViewController {
         
         view.addSubview(signInButton)
         signInButton.center = view.center
+        signInButton.addTarget(self, action: #selector(tapSignIn), for: .touchUpInside)
     }
-    
+}
+
+//MARK: - Acitons
+extension WelcomeViewController {
+    @objc func tapSignIn() {
+        AuthManager.shared.openAuthSession(presentationContextProvider: self) { success in
+            print(success)
+        }
+    }
+}
+
+extension WelcomeViewController: ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        ASPresentationAnchor()
+    }
 }
