@@ -16,6 +16,8 @@
 		E3A7BC8127D95E3F0046154C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC8027D95E3F0046154C /* HomeViewController.swift */; };
 		E3A7BC8327D95E480046154C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC8227D95E480046154C /* SearchViewController.swift */; };
 		E3A7BC8527D95E500046154C /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC8427D95E500046154C /* LibraryViewController.swift */; };
+		E3A7BC8727D9609F0046154C /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC8627D9609F0046154C /* AuthManager.swift */; };
+		E3A7BC8B27D962D30046154C /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC8A27D962D30046154C /* WelcomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		E3A7BC8027D95E3F0046154C /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E3A7BC8227D95E480046154C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		E3A7BC8427D95E500046154C /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
+		E3A7BC8627D9609F0046154C /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		E3A7BC8A27D962D30046154C /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,7 @@
 			children = (
 				E3A7BC7B27D95D810046154C /* Resources */,
 				E3A7BC6B27D95D600046154C /* ViewController.swift */,
+				E3A7BC8627D9609F0046154C /* AuthManager.swift */,
 				E3A7BC7C27D95DE40046154C /* ViewControllers */,
 				E3A7BC7227D95D620046154C /* LaunchScreen.storyboard */,
 				E3A7BC7527D95D620046154C /* Info.plist */,
@@ -96,6 +101,7 @@
 				E3A7BC8027D95E3F0046154C /* HomeViewController.swift */,
 				E3A7BC8427D95E500046154C /* LibraryViewController.swift */,
 				E3A7BC8227D95E480046154C /* SearchViewController.swift */,
+				E3A7BC8A27D962D30046154C /* WelcomeViewController.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -170,7 +176,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3A7BC8B27D962D30046154C /* WelcomeViewController.swift in Sources */,
 				E3A7BC8327D95E480046154C /* SearchViewController.swift in Sources */,
+				E3A7BC8727D9609F0046154C /* AuthManager.swift in Sources */,
 				E3A7BC8127D95E3F0046154C /* HomeViewController.swift in Sources */,
 				E3A7BC6C27D95D600046154C /* ViewController.swift in Sources */,
 				E3A7BC7F27D95E200046154C /* TabBarController.swift in Sources */,
