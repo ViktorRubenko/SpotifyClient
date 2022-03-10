@@ -19,6 +19,19 @@ final class AuthManager {
         static let scheme = "spotifyclient"
         static let codeURL = "https://accounts.spotify.com/authorize"
         static let tokenURl = "https://accounts.spotify.com/api/token"
+        static let scopes = [
+            "user-library-modify",
+            "user-library-read",
+            "user-read-playback-position",
+            "user-top-read",
+            "user-read-recently-played",
+            "playlist-modify-private",
+            "playlist-read-private",
+            "playlist-modify-public",
+            "user-read-private",
+            "user-follow-read",
+            "user-read-email"
+        ].joined(separator: "%20")
     }
     
     private enum Keys: String {
@@ -65,7 +78,7 @@ final class AuthManager {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "client_id", value: Constants.cliendID),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "scope", value: "user-read-private"),
+            URLQueryItem(name: "scope", value: Constants.scopes),
         ]
         return components.url!
     }
@@ -84,6 +97,7 @@ final class AuthManager {
                 completion(false)
             }
         }
+        session.prefersEphemeralWebBrowserSession = true
         session.presentationContextProvider = presentationContextProvider
         session.start()
     }

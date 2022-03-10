@@ -24,21 +24,32 @@ class WelcomeViewController: UIViewController {
         
         setupViews()
     }
+}
 
-    func setupViews() {
+// MARK: - Methods
+extension WelcomeViewController {
+    private func setupViews() {
         view.backgroundColor = .systemBackground
         
         view.addSubview(signInButton)
         signInButton.center = view.center
         signInButton.addTarget(self, action: #selector(tapSignIn), for: .touchUpInside)
     }
+    
+    private func handleSignIn(success: Bool) {
+        guard success else { return }
+        
+        let mainVC = TabBarController()
+        mainVC.modalPresentationStyle = .fullScreen
+        present(mainVC, animated: true)
+    }
 }
 
 //MARK: - Acitons
 extension WelcomeViewController {
     @objc func tapSignIn() {
-        AuthManager.shared.openAuthSession(presentationContextProvider: self) { success in
-            print(success)
+        AuthManager.shared.openAuthSession(presentationContextProvider: self) { [weak self] success in
+            self?.handleSignIn(success: success)
         }
     }
 }
