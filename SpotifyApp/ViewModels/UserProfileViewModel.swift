@@ -12,7 +12,8 @@ import Alamofire
 final class UserProfileViewModel {
     var userImageURL = Observable<String?>(nil)
     var userName = Observable<String?>(nil)
-    var userEmail = Observable<String?>(nil)
+    var contents = Observable<[String]>([])
+    var error = Observable<AFError?>(nil)
     
     init() {}
     
@@ -21,9 +22,16 @@ final class UserProfileViewModel {
             switch result {
             case .success(let userProfile):
                 self?.userName.value = userProfile.displayName
-                self?.userEmail.value = userProfile.email
                 self?.userImageURL.value = userProfile.images.first!.url
+                
+                var contents = [String]()
+                contents.append("Email Address: \(userProfile.email)")
+                contents.append("Plan: \(userProfile.product)")
+                contents.append("User ID: \(userProfile.id)")
+                
+                self?.contents.value = contents
             case .failure(let error):
+                self?.error.value = error
                 print(error.localizedDescription)
             }
         }

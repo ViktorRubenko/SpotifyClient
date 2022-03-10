@@ -11,11 +11,11 @@ import SnapKit
 class UserProfileViewController: UIViewController {
     
     private var viewModel: UserProfileViewModel!
-    private var profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
-        return imageView
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(UserProfileHeader.self, forHeaderFooterViewReuseIdentifier: "Header")
+        return tableView
     }()
     
     override func viewDidLoad() {
@@ -32,12 +32,6 @@ class UserProfileViewController: UIViewController {
         viewModel.fetch()
         
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // Make imageView looks like a circle
-        profileImageView.layer.cornerRadius = profileImageView.frame.size.width/2
-    }
 }
     
 //MARK: - Methods
@@ -45,24 +39,67 @@ extension UserProfileViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
         
-        view.addSubview(profileImageView)
-        profileImageView.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.33)
-            make.height.equalTo(profileImageView.snp.height)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(30)
+        tableView.delegate = self
+        tableView.dataSource = self
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     
     private func setupBinders() {
-        viewModel.userImageURL.bind { [weak self] imageURL in
-            if let urlString = imageURL {
-                self?.profileImageView.imageFromURL(urlString: urlString)
-            }
+        viewModel.contents.bind { [weak self] _ in
+            self?.tableView.reloadData()
         }
+        
+        viewModel.error.bind { [weak self] error in
+            self?.showErrorAlert()
+        }
+    }
+    
+    func showErrorAlert() {
+        let alert = UIAlertController(
+            title: NSLocalizedString("Woops...", comment: "ErrorAlertTitle UserProfile"),
+            message: NSLocalizedString("Something gone wrong. Please, try later.", comment: "ErrorAlert UserProfile message"),
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        present(alert, animated: true)
     }
     
     private func setupNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
+    }
+}
+
+// MARK: - TableView Delegate/DataSource
+extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel.contents.value.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let content = viewModel.contents.value[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        var contentConfig = cell.defaultContentConfiguration()
+        contentConfig.text = content
+        cell.contentConfiguration = contentConfig
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header") as! UserProfileHeader
+        view.profileImageView.imageFromURL(urlString: viewModel.userImageURL.value)
+        view.userNameLabel.text = viewModel.userName.value
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        200
     }
 }

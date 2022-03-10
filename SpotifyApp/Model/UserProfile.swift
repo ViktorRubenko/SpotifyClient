@@ -12,27 +12,15 @@ struct UserProfile: Codable {
     let displayName: String?
     let email: String
     let id: String
-    let images: [UserProfileImage]
+    let images: [SpotifyImage]
     let product: String
     let externalURLS: [String: String]
     let explicitContent: [String: Bool]
-    let followers:
     
     enum CodingKeys: String, CodingKey {
         case country, email, id, images, product
         case displayName = "display_name"
-        case extarnalURLS = "external_urls"
+        case externalURLS = "external_urls"
         case explicitContent = "explicit_content"
     }
-}
-
-struct UserProfileImage: Codable {
-    let url: String
-    let height: Int?
-    let width: Int?
-}
-
-struct Followers: Codable {
-    let href: String
-    let total: Int
 }

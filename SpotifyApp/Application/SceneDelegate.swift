@@ -24,6 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = navController
         }
         window.makeKeyAndVisible()
+        window.overrideUserInterfaceStyle = .dark
         self.window = window
         
         AuthManager.shared.refreshIfNeeded { success in

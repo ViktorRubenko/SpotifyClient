@@ -9,7 +9,10 @@ import UIKit
 import Alamofire
 
 extension UIImageView {
-    func imageFromURL(urlString: String) {
+    func imageFromURL(urlString: String?) {
+        guard let urlString = urlString else {
+            return
+        }
         AF.request(urlString, method: .get).response { [weak self] response in
             switch response.result {
             case .success(let data):
