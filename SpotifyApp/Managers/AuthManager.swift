@@ -40,6 +40,9 @@ final class AuthManager {
     
     private init() {}
     
+    private var isRefreshingToken = false
+    private var waitingToken = [(String)->Void]()
+    
     var isSignIn: Bool {
         return accessToken != nil
     }
@@ -143,6 +146,8 @@ final class AuthManager {
             return
         }
         
+        isRefreshingToken = true
+        
         let parameters = [
             "grant_type": "refresh_token",
             "refresh_token": refreshToken
@@ -159,10 +164,16 @@ final class AuthManager {
             parameters: parameters,
             encoder: .urlEncodedForm,
             headers: headers).responseDecodable(of: AuthResponse.self) { [weak self] response in
+                self?.isRefreshingToken = false
                 switch response.result {
                 case .success(let authResponse):
                     self?.cacheToken(authResponse)
                     completion(true)
+                    // give new token for awaiting requests
+                    self?.waitingToken.forEach { block in
+                        block(authResponse.accessToken)
+                    }
+                    self?.waitingToken.removeAll()
                 case .failure(let error):
                     print(error.localizedDescription)
                     completion(false)
@@ -172,8 +183,24 @@ final class AuthManager {
     }
     
     func refreshIfNeeded(completion: @escaping (Bool) -> Void) {
-        if shouldRefreshToken {
+        if shouldRefreshToken && !isRefreshingToken  {
             refreshAccessToken(completion: completion)
+        }
+    }
+    
+    func withValidToken(completion: @escaping (String) -> Void) {
+        guard !isRefreshingToken else {
+            waitingToken.append(completion)
+            return
+        }
+        if shouldRefreshToken {
+            refreshIfNeeded { [weak self] success in
+                if success, let token = self?.accessToken {
+                    completion(token)
+                }
+            }
+        } else if let token = accessToken {
+            completion(token)
         }
     }
 }
