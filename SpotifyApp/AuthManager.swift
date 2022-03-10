@@ -53,7 +53,9 @@ final class AuthManager {
     private func cacheToken(_ response: AuthResponse) {
         UserDefaults.standard.setValue(response.accessToken, forKey: Keys.accessToken.rawValue)
         UserDefaults.standard.setValue(Date().addingTimeInterval(TimeInterval(response.expiresIn)), forKey: Keys.expirationDate.rawValue)
-        UserDefaults.standard.setValue(response.refreshToken, forKey: Keys.refreshToken.rawValue)
+        if let refreshToken = response.refreshToken {
+            UserDefaults.standard.setValue(refreshToken, forKey: Keys.refreshToken.rawValue)
+        }
     }
     
     private var signInURL: URL {
@@ -118,7 +120,46 @@ final class AuthManager {
             }
     }
     
-    private func refreshAccessToken() {
+    private func refreshAccessToken(completion: @escaping (Bool) -> Void) {
+        guard shouldRefreshToken else {
+            completion(true)
+            return
+        }
+        guard let refreshToken = self.refreshToken else {
+            return
+        }
         
+        let parameters = [
+            "grant_type": "refresh_token",
+            "refresh_token": refreshToken
+        ]
+        
+        let basicBody64 = "\(Constants.cliendID):\(Constants.clientSecret)".data(using: .utf8)!.base64EncodedString()
+        let headers: HTTPHeaders = [
+            "Authorization": "Basic \(basicBody64)",
+            "Content-Type": "application/x-www-form-urlencoded"
+        ]
+        AF.request(
+            Constants.tokenURl,
+            method: .post,
+            parameters: parameters,
+            encoder: .urlEncodedForm,
+            headers: headers).responseDecodable(of: AuthResponse.self) { [weak self] response in
+                switch response.result {
+                case .success(let authResponse):
+                    self?.cacheToken(authResponse)
+                    completion(true)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    completion(false)
+                }
+            }
+        
+    }
+    
+    func refreshIfNeeded(completion: @escaping (Bool) -> Void) {
+        if shouldRefreshToken {
+            refreshAccessToken(completion: completion)
+        }
     }
 }
