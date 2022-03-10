@@ -7,6 +7,7 @@
 
 import Foundation
 import AuthenticationServices
+import Alamofire
 
 final class AuthManager {
     static let shared = AuthManager()
@@ -16,7 +17,8 @@ final class AuthManager {
         static let clientSecret = "f0993004c0134df9805fd89a9895674a"
         static let redirectURI = "spotifyclient://auth"
         static let scheme = "spotifyclient"
-        static let baseAuthURL = "https://accounts.spotify.com/authorize"
+        static let codeURL = "https://accounts.spotify.com/authorize"
+        static let tokenURl = "https://accounts.spotify.com/api/token"
     }
     
     private enum Keys: String {
@@ -26,7 +28,7 @@ final class AuthManager {
     private init() {}
     
     var isSignIn: Bool {
-        accessToken != nil
+        return accessToken != nil
     }
     
     private var accessToken: String? {
@@ -45,16 +47,17 @@ final class AuthManager {
         guard let tokenExpirationDate = tokenExpirationDate else {
             return false
         }
-        return Date() >= tokenExpirationDate
+        return Date().addingTimeInterval(300) >= tokenExpirationDate
     }
     
-    private func cacheToken(_ token: String) {
-        UserDefaults.standard.setValue(token, forKey: Keys.accessToken.rawValue)
-        UserDefaults.standard.setValue(Date(), forKey: Keys.expirationDate.rawValue)
+    private func cacheToken(_ response: AuthResponse) {
+        UserDefaults.standard.setValue(response.accessToken, forKey: Keys.accessToken.rawValue)
+        UserDefaults.standard.setValue(Date().addingTimeInterval(TimeInterval(response.expiresIn)), forKey: Keys.expirationDate.rawValue)
+        UserDefaults.standard.setValue(response.refreshToken, forKey: Keys.refreshToken.rawValue)
     }
     
     private var signInURL: URL {
-        var components = URLComponents(string: Constants.baseAuthURL)!
+        var components = URLComponents(string: Constants.codeURL)!
         
         components.queryItems = [
             URLQueryItem(name: "response_type", value: "code"),
@@ -67,18 +70,55 @@ final class AuthManager {
     
     func openAuthSession(
         presentationContextProvider: ASWebAuthenticationPresentationContextProviding,
-        completion: @escaping ((Bool) -> Void)) {
-            
-            let session = ASWebAuthenticationSession(url: signInURL, callbackURLScheme: Constants.scheme) { responseURL, error in
-                if error == nil, let responseURL = responseURL {
-                    let components = URLComponents(string: responseURL.absoluteString)!
-                    let code = components.queryItems?.filter({$0.name == "code" }).first!.value
-                    print(code)
-                } else {
+        completion: @escaping ((Bool) -> Void)
+    ) {
+        
+        let session = ASWebAuthenticationSession(url: signInURL, callbackURLScheme: Constants.scheme) { [weak self] responseURL, error in
+            if error == nil, let responseURL = responseURL {
+                let components = URLComponents(string: responseURL.absoluteString)!
+                let code = String(components.queryItems!.filter({$0.name == "code" }).first!.value!)
+                self?.requestAccessToken(code: code, completion: completion)
+            } else {
+                completion(false)
+            }
+        }
+        session.presentationContextProvider = presentationContextProvider
+        session.start()
+    }
+    
+    private func requestAccessToken(
+        code: String,
+        completion: @escaping (Bool) -> Void
+    ) {
+        let parameters = [
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": Constants.redirectURI
+        ]
+        
+        let basicBody64 = "\(Constants.cliendID):\(Constants.clientSecret)".data(using: .utf8)!.base64EncodedString()
+        let headers: HTTPHeaders = [
+            "Authorization": "Basic \(basicBody64)",
+            "Content-Type": "application/x-www-form-urlencoded"
+        ]
+        AF.request(
+            Constants.tokenURl,
+            method: .post,
+            parameters: parameters,
+            encoder: .urlEncodedForm,
+            headers: headers).responseDecodable(of: AuthResponse.self) { [weak self] response in
+                switch response.result {
+                case .success(let authResponse):
+                    self?.cacheToken(authResponse)
+                    completion(true)
+                case .failure(let error):
+                    print(error.localizedDescription)
                     completion(false)
                 }
             }
-            session.presentationContextProvider = presentationContextProvider
-            session.start()
-        }
+    }
+    
+    private func refreshAccessToken() {
+        
+    }
 }
