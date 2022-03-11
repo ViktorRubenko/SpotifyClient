@@ -137,9 +137,9 @@ final class AuthManager {
             }
     }
     
-    private func refreshAccessToken(completion: @escaping (Bool) -> Void) {
+    private func refreshAccessToken(completion: ((Bool) -> Void)?) {
         guard shouldRefreshToken else {
-            completion(true)
+            completion?(true)
             return
         }
         guard let refreshToken = self.refreshToken else {
@@ -168,7 +168,7 @@ final class AuthManager {
                 switch response.result {
                 case .success(let authResponse):
                     self?.cacheToken(authResponse)
-                    completion(true)
+                    completion?(true)
                     // give new token for awaiting requests
                     self?.waitingToken.forEach { block in
                         block(authResponse.accessToken)
@@ -176,13 +176,13 @@ final class AuthManager {
                     self?.waitingToken.removeAll()
                 case .failure(let error):
                     print(error.localizedDescription)
-                    completion(false)
+                    completion?(false)
                 }
             }
         
     }
     
-    func refreshIfNeeded(completion: @escaping (Bool) -> Void) {
+    func refreshIfNeeded(completion: ((Bool) -> Void)?) {
         if shouldRefreshToken && !isRefreshingToken  {
             refreshAccessToken(completion: completion)
         }
