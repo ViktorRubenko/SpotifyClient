@@ -19,12 +19,22 @@ class APICaller {
     
     private init() {}
     
+    private func createRequest(url: String, method: HTTPMethod ,parameters: [String: String] = [:], completion: @escaping (DataRequest) -> Void) {
+        AuthManager.shared.withValidToken { accessToken in
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)",
+                "Content-Type": "application/json"
+            ]
+            let request = AF.request(url, method: method, parameters: parameters, encoder: .urlEncodedForm, headers: headers)
+            completion(request)
+        }
+    }
     
-    func getCurrentUserProfile(completion: @escaping (Result<UserProfile, AFError>) -> Void) {
+    func getCurrentUserProfile(completion: @escaping (Result<UserProfileResponse, AFError>) -> Void) {
         createRequest(
             url: baseURL + "/me",
             method: .get) { dataRequest in
-                dataRequest.responseDecodable(of: UserProfile.self) { response in
+                dataRequest.responseDecodable(of: UserProfileResponse.self) { response in
                     completion(response.result)
                 }
             }
@@ -123,14 +133,11 @@ class APICaller {
         }
     }
     
-    private func createRequest(url: String, method: HTTPMethod ,parameters: [String: String] = [:], completion: @escaping (DataRequest) -> Void) {
-        AuthManager.shared.withValidToken { accessToken in
-            let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(accessToken)",
-                "Content-Type": "application/json"
-            ]
-            let request = AF.request(url, method: method, parameters: parameters, encoder: .urlEncodedForm, headers: headers)
-            completion(request)
+    func getAlbum(id: String, completion: @escaping (Result<AlbumDetailResponse, AFError>) -> Void) {
+        createRequest(url: baseURL + "/albums/\(id)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: AlbumDetailResponse.self) { response in
+                completion(response.result)
+            }
         }
     }
 }

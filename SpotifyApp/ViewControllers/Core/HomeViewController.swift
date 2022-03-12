@@ -8,7 +8,7 @@
 import UIKit
 
 fileprivate enum BrowseSectionType {
-    case newReleases, featuredPlaylists, recommendations
+    case newReleases, featuredPlaylists, recommendations, unknown
 }
 
 class HomeViewController: UIViewController {
@@ -21,11 +21,12 @@ class HomeViewController: UIViewController {
         return indicator
     }()
     
+    private let sections: [BrowseSectionType] = [.newReleases, .featuredPlaylists, .recommendations, .unknown]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewModel = HomeViewModel()
-        
         setupViews()
         setupNavigationBar()
         setupBinders()
@@ -39,8 +40,9 @@ extension HomeViewController {
     
     
     private func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
+        let section = section < sections.count ? sections[section] : .unknown
         switch section {
-        case 1:
+        case .featuredPlaylists:
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalHeight(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
@@ -53,7 +55,7 @@ extension HomeViewController {
             section.orthogonalScrollingBehavior = .continuous
             
             return section
-        case 2:
+        case .recommendations:
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 2, bottom: 4, trailing: 2)
@@ -63,19 +65,6 @@ extension HomeViewController {
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
             
             let section = NSCollectionLayoutSection(group: group)
-            
-            return section
-        case 3:
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalHeight(1.0))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
-            
-            
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(360))
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 3)
-            
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .groupPaging
             
             return section
         default:
@@ -158,21 +147,22 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let section = indexPath.section < sections.count ? sections[indexPath.section] : .unknown
         let data = viewModel.sections.value[indexPath.section].items[indexPath.row]
-        switch indexPath.section {
-        case 0:
+        switch section {
+        case .newReleases:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: NewReleasesCollectionViewCell.identifier,
                 for: indexPath) as! NewReleasesCollectionViewCell
             cell.configure(data)
             return cell
-        case 1:
+        case .featuredPlaylists:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier,
                 for: indexPath) as! FeaturedPlaylistCollectionViewCell
             cell.configure(data)
             return cell
-        case 2:
+        case .recommendations:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: RecommendationTrackViewCell.identifier,
                 for: indexPath) as! RecommendationTrackViewCell
@@ -181,6 +171,23 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewReleasesCollectionViewCell.identifier, for: indexPath)
             return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let section = indexPath.section < sections.count ? sections[indexPath.section] : .unknown
+        let item = viewModel.sections.value[indexPath.section].items[indexPath.row]
+        switch section {
+        case .newReleases:
+            let vc = AlbumViewController(id: item.id)
+            vc.title = item.name
+            navigationController?.pushViewController(vc, animated: true)
+        case .featuredPlaylists:
+            let playlist = viewModel.sections.value[indexPath.section].items[indexPath.row]
+        case .recommendations:
+            let track = viewModel.sections.value[indexPath.section].items[indexPath.row]
+        default:
+            break
         }
     }
 }

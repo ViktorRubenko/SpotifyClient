@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - UsersTopTracksResponse
 struct UsersTopTracksResponse: Codable {
-    let items: [Track]
+    let items: [TrackResponse]
     let total, limit, offset: Int
     let previous: String?
     let href: String

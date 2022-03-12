@@ -15,7 +15,7 @@ struct NewReleasesResponse: Codable {
 // MARK: - Albums
 struct Albums: Codable {
     let href: String
-    let items: [Album]
+    let items: [AlbumResponse]
     let limit: Int
     let next: String?
     let offset: Int

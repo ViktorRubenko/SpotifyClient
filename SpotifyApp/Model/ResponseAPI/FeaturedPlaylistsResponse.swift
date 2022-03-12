@@ -66,4 +66,5 @@ struct Owner: Codable {
 struct Tracks: Codable {
     let href: String
     let total: Int
+    let items: [TrackResponse]?
 }

@@ -54,7 +54,7 @@ class NewReleasesCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(_ viewModel: CellModel) {
-        guard let viewModel = viewModel as? NewReleasesCellModel else {
+        guard let viewModel = viewModel as? AlbumModel else {
             print("Failed to read NewReleasesCellModel")
             return
         }

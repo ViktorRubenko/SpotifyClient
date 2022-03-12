@@ -75,7 +75,7 @@ class RecommendationTrackViewCell: UICollectionViewCell {
     }
     
     func configure(_ viewModel: CellModel) {
-        guard let viewModel = viewModel as? RecommendationTrackCellModel else {
+        guard let viewModel = viewModel as? TrackModel else {
             return
         }
         trackNameLabel.text = viewModel.name

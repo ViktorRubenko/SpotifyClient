@@ -47,7 +47,7 @@ class FeaturedPlaylistCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(_ viewModel: CellModel) {
-        guard let viewModel = viewModel as? FeaturesPlaylistCellModel else {
+        guard let viewModel = viewModel as? PlaylistModel else {
             return
         }
         playlistImageView.sd_setImage(with: viewModel.imageURL, completed: nil)

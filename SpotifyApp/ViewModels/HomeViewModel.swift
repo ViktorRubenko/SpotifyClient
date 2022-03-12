@@ -23,9 +23,9 @@ final class HomeViewModel {
     
     func fetchData() {
         
-        var featuredPlaylists = [FeaturesPlaylistCellModel]()
-        var newReleases = [NewReleasesCellModel]()
-        var recommendationTracks = [RecommendationTrackCellModel]()
+        var featuredPlaylists = [PlaylistModel]()
+        var newReleases = [AlbumModel]()
+        var recommendationTracks = [TrackModel]()
         
         let group = DispatchGroup()
         
@@ -34,10 +34,11 @@ final class HomeViewModel {
             switch result {
             case .success(let response):
                 newReleases = response.albums.items.compactMap { album in
-                    NewReleasesCellModel(
+                    AlbumModel(
                         name: album.name,
                         imageURL: findClosestSizeImage(images: album.images, height: 250, width: 250),
-                        artistsName: album.artists.compactMap({$0.name}).joined(separator: ", "))
+                        artistsName: album.artists.compactMap({$0.name}).joined(separator: ", "),
+                        id: album.id)
                 }
                 print("Get NewReleases")
             case .failure(let error):
@@ -51,9 +52,10 @@ final class HomeViewModel {
             switch result {
             case .success(let response):
                 featuredPlaylists = response.playlists.items.compactMap { playlist in
-                    FeaturesPlaylistCellModel(
+                    PlaylistModel(
                         name: playlist.name,
-                        imageURL: findClosestSizeImage(images: playlist.images, height: 300, width: 300))
+                        imageURL: findClosestSizeImage(images: playlist.images, height: 300, width: 300),
+                        id: playlist.id)
                 }
                 print("Get FeaturedPlaylists")
             case .failure(let error):
@@ -68,11 +70,12 @@ final class HomeViewModel {
             switch result {
             case .success(let response):
                 recommendationTracks = response.tracks.compactMap { track in
-                    RecommendationTrackCellModel(
+                    TrackModel(
                         name: track.name,
                         type: track.type.capitalized,
                         albumImageURL: findClosestSizeImage(images: track.album.images, height: 70, width: 70),
-                        artistsName: track.artists.compactMap({$0.name}).joined(separator: ", "))
+                        artistsName: track.artists.compactMap({$0.name}).joined(separator: ", "),
+                        id: track.id)
                 }
             case .failure(let error):
                 self?.error = error

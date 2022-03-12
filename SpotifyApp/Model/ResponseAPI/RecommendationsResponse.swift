@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - RecommendationsResponse
 struct RecommendationsResponse: Codable {
-    let tracks: [Track]
+    let tracks: [TrackResponse]
     let seeds: [Seed]
 }
 
