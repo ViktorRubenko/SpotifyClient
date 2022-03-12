@@ -30,7 +30,7 @@ class APICaller {
             }
     }
     
-    func getNewReleases(limit: Int = 50, completion: @escaping (Result<NewReleasesResponse, AFError>) -> Void) {
+    func getNewReleases(limit: Int = 30, completion: @escaping (Result<NewReleasesResponse, AFError>) -> Void) {
         createRequest(
             url: baseURL + "/browse/new-releases?limit=\(limit)",
             method: .get) { dataRequest in
@@ -40,9 +40,9 @@ class APICaller {
             }
     }
     
-    func getFeaturedPlalists(limit: Int = 50, completion: @escaping (Result<FeaturedPlaylistsResponse, AFError>) -> Void) {
+    func getFeaturedPlalists(limit: Int = 30, completion: @escaping (Result<FeaturedPlaylistsResponse, AFError>) -> Void) {
         createRequest(
-            url: baseURL + "/browse/featured-playlists?limit=\(1)",
+            url: baseURL + "/browse/featured-playlists?limit=\(limit)",
             method: .get) { dataRequest in
                 dataRequest.responseDecodable(of: FeaturedPlaylistsResponse.self) { response in
                     completion(response.result)
@@ -69,7 +69,7 @@ class APICaller {
         }
     }
     
-    func getRecommendations(completion: @escaping (Result<RecommendationsResponse, AFError>) -> Void) {
+    func getRecommendations(limit: Int = 5, completion: @escaping (Result<RecommendationsResponse, AFError>) -> Void) {
         var seed_artists = ""
         var seed_tracks = ""
         var seed_genres = ""
@@ -110,7 +110,7 @@ class APICaller {
         seedGroup.notify(queue: .global()) { [weak self] in
             let url = (
                 self!.baseURL + "/recommendations?seed_artits=\(seed_artists)" +
-                "&seed_genres=\(seed_genres)&seed_tracks=\(seed_tracks)"
+                "&seed_genres=\(seed_genres)&seed_tracks=\(seed_tracks)&limit=\(limit)"
             ).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
             
             self!.createRequest(

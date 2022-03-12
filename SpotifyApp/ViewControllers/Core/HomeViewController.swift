@@ -56,10 +56,10 @@ extension HomeViewController {
         case 2:
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(1.0))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 2, bottom: 4, trailing: 2)
             
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(70))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(60))
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
             
             let section = NSCollectionLayoutSection(group: group)
@@ -84,8 +84,8 @@ extension HomeViewController {
             item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
             
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(400))
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
+            let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(230), heightDimension: .absolute(300))
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 3)
             
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPaging
@@ -106,7 +106,7 @@ extension HomeViewController {
         collectionView.dataSource = self
         collectionView.register(NewReleasesCollectionViewCell.self, forCellWithReuseIdentifier: NewReleasesCollectionViewCell.identifier)
         collectionView.register(FeaturedPlaylistCollectionViewCell.self, forCellWithReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier)
-        collectionView.register(RecommendationsViewCell.self, forCellWithReuseIdentifier: RecommendationsViewCell.identifier)
+        collectionView.register(RecommendationTrackViewCell.self, forCellWithReuseIdentifier: RecommendationTrackViewCell.identifier)
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
@@ -161,7 +161,21 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let data = viewModel.sections.value[indexPath.section].items[indexPath.row]
         switch indexPath.section {
         case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NewReleasesCollectionViewCell.identifier, for: indexPath) as! NewReleasesCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: NewReleasesCollectionViewCell.identifier,
+                for: indexPath) as! NewReleasesCollectionViewCell
+            cell.configure(data)
+            return cell
+        case 1:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier,
+                for: indexPath) as! FeaturedPlaylistCollectionViewCell
+            cell.configure(data)
+            return cell
+        case 2:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RecommendationTrackViewCell.identifier,
+                for: indexPath) as! RecommendationTrackViewCell
             cell.configure(data)
             return cell
         default:

@@ -33,7 +33,7 @@ struct Playlist: Codable {
     let id: String
     let images: [SpotifyImage]
     let name: String
-    let owner: Owner
+    let owner: Owner?
     let snapshotID: String
     let tracks: Tracks
     let type, uri: String

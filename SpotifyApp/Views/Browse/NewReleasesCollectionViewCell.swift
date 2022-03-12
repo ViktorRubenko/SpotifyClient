@@ -23,7 +23,7 @@ class NewReleasesCollectionViewCell: UICollectionViewCell {
     private let albumNameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -31,7 +31,7 @@ class NewReleasesCollectionViewCell: UICollectionViewCell {
     private let artistNameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.font = .systemFont(ofSize: 11, weight: .light)
+        label.font = .systemFont(ofSize: 14, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -72,20 +72,20 @@ class NewReleasesCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(artistNameLabel)
         
         albumImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(2)
-            make.trailing.equalToSuperview().offset(-2)
             make.top.equalToSuperview().offset(2)
-            make.height.equalTo(albumImageView.snp.width)
+            make.bottom.equalToSuperview().offset(-2)
+            make.leading.equalToSuperview().offset(2)
+            make.width.equalTo(albumImageView.snp.height)
         }
         
         albumNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(albumImageView)
-            make.trailing.equalTo(albumImageView)
-            make.top.equalTo(albumImageView.snp.bottom).offset(4)
+            make.leading.equalTo(albumImageView.snp.trailing).offset(4)
+            make.trailing.equalToSuperview().offset(-2)
+            make.top.equalTo(albumImageView).offset(4)
         }
         
         artistNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(albumNameLabel.snp.bottom)
+            make.top.equalTo(albumNameLabel.snp.bottom).offset(4)
             make.leading.equalTo(albumNameLabel)
             make.trailing.equalTo(albumNameLabel)
             make.bottom.lessThanOrEqualToSuperview()

@@ -12,6 +12,17 @@ protocol CellModel {}
 struct NewReleasesCellModel: CellModel {
     let name: String
     let imageURL: URL?
-    let numberOfTracks: Int
+    let artistsName: String
+}
+
+struct FeaturesPlaylistCellModel: CellModel {
+    let name: String
+    let imageURL: URL?
+}
+
+struct RecommendationTrackCellModel: CellModel {
+    let name: String
+    let type: String
+    let albumImageURL: URL?
     let artistsName: String
 }
