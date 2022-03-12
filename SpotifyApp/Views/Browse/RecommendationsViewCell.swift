@@ -8,5 +8,6 @@
 import UIKit
 
 class RecommendationsViewCell: UICollectionViewCell {
+    static let identifier = "RecommendationsViewCell"
     
 }

@@ -7,9 +7,11 @@
 
 import Foundation
 
-struct NewReleasesCellModel {
+protocol CellModel {}
+
+struct NewReleasesCellModel: CellModel {
     let name: String
-    let imageURL: String?
+    let imageURL: URL?
     let numberOfTracks: Int
     let artistsName: String
 }

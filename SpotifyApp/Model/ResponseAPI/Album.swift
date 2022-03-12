@@ -35,5 +35,3 @@ struct Album: Codable {
         case type, uri
     }
 }
-
-
