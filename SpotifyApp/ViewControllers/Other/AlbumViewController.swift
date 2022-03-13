@@ -36,7 +36,7 @@ class AlbumViewController: UIViewController {
         viewModel.fetch()
         
     }
-    
+        
     init(id: String) {
         self.viewModel = AlbumViewModel(id: id)
         super.init(nibName: nil, bundle: nil)
@@ -122,10 +122,22 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
         let model = viewModel.album.value.tracks[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackViewCell.id, for: indexPath) as! TrackViewCell
         cell.configure(model)
+        cell.accessotyHandler = { [weak self] in
+            let alert = UIAlertController(title: "test", message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+            self?.present(alert, animated: true)
+        }
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        headerView.scroll(scrollView.contentOffset.y + 91)
+        let yOffset = scrollView.contentOffset.y + 91
+        title = yOffset <= 0 ? "" : viewModel.album.value.name
+        headerView.scroll(yOffset)
     }
 }

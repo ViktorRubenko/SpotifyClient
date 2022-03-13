@@ -31,7 +31,7 @@ final class AlbumViewModel {
             case .success(let albumDetails):
                 self?.album.value = AlbumDetailModel(
                     name: albumDetails.name,
-                    imageURL: findClosestSizeImage(images: albumDetails.images, height: 300, width: 300),
+                    imageURL: findClosestSizeImage(images: albumDetails.images, height: 250, width: 250),
                     year: albumDetails.releaseDate,
                     albumType: albumDetails.type,
                     artistName: albumDetails.artists.compactMap({$0.name}).joined(separator: ", "),

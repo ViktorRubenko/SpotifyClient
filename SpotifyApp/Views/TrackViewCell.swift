@@ -31,8 +31,18 @@ class TrackViewCell: UICollectionViewListCell {
         return label
     }()
     
-    private let customAccessory = UICellAccessory.CustomViewConfiguration(
-        customView: UIImageView(image: UIImage(systemName: "ellipsis.circle")), placement: .trailing(displayed: .always))
+    private let accessoryButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        button.addTarget(self, action: #selector(didTapAccessotyButton), for: .touchUpInside)
+        return button
+    }()
+    
+    var accessotyHandler: (() -> Void)?
+    
+    private lazy var customAccessory = UICellAccessory.CustomViewConfiguration(
+        customView: accessoryButton, placement: .trailing(displayed: .always))
     
     private var widthConstraint: Constraint!
     
@@ -40,7 +50,7 @@ class TrackViewCell: UICollectionViewListCell {
         super.init(frame: frame)
         
         setupViews()
-        
+//        isUserInteractionEnabled = false
         accessories = [.customView(configuration: customAccessory)]
     }
     
@@ -97,5 +107,9 @@ class TrackViewCell: UICollectionViewListCell {
                 widthConstraint = make.width.equalTo(0).constraint
             }
         }
+    }
+    
+    @objc private func didTapAccessotyButton() {
+        accessotyHandler?()
     }
 }

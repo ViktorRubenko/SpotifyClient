@@ -26,7 +26,6 @@
 		E341042827DA65D4006BCAB6 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341042727DA65D4006BCAB6 /* UserProfileViewController.swift */; };
 		E341042B27DA662D006BCAB6 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341042A27DA662D006BCAB6 /* UserProfileViewModel.swift */; };
 		E341042E27DA6702006BCAB6 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341042D27DA6702006BCAB6 /* Observable.swift */; };
-		E341043227DA6A64006BCAB6 /* ImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341043127DA6A64006BCAB6 /* ImageViewExtension.swift */; };
 		E341043527DA7354006BCAB6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341043427DA7354006BCAB6 /* SettingsViewController.swift */; };
 		E341043927DA875F006BCAB6 /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341043827DA875F006BCAB6 /* SettingsModels.swift */; };
 		E341043B27DA8ACB006BCAB6 /* SettingsViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341043A27DA8ACB006BCAB6 /* SettingsViewModelDelegate.swift */; };
@@ -81,7 +80,6 @@
 		E341042727DA65D4006BCAB6 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		E341042A27DA662D006BCAB6 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		E341042D27DA6702006BCAB6 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
-		E341043127DA6A64006BCAB6 /* ImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewExtension.swift; sourceTree = "<group>"; };
 		E341043427DA7354006BCAB6 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E341043827DA875F006BCAB6 /* SettingsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModels.swift; sourceTree = "<group>"; };
 		E341043A27DA8ACB006BCAB6 /* SettingsViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelDelegate.swift; sourceTree = "<group>"; };
@@ -191,7 +189,6 @@
 			children = (
 				E341042D27DA6702006BCAB6 /* Observable.swift */,
 				E38EC3C327DD27F700482502 /* Functions.swift */,
-				E341043127DA6A64006BCAB6 /* ImageViewExtension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -467,7 +464,6 @@
 				E337F77A27DD55AC00689A7A /* AlbumDetailResponse.swift in Sources */,
 				E337F78827DE293900689A7A /* SearchResponse.swift in Sources */,
 				E337F79127DE772D00689A7A /* TrackViewCell.swift in Sources */,
-				E341043227DA6A64006BCAB6 /* ImageViewExtension.swift in Sources */,
 				E341042827DA65D4006BCAB6 /* UserProfileViewController.swift in Sources */,
 				E341042527DA55A6006BCAB6 /* UserProfileResponse.swift in Sources */,
 				E341042E27DA6702006BCAB6 /* Observable.swift in Sources */,
