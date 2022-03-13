@@ -10,7 +10,20 @@ import UIKit
 class AlbumViewController: UIViewController {
     
     private var viewModel: AlbumViewModel!
-    private var tableView = UITableView()
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(
+            TrackViewCell.self,
+            forCellWithReuseIdentifier: TrackViewCell.id)
+        collectionView.register(
+            ImageHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: ImageHeaderView.id)
+        return collectionView
+    }()
+    private var headerView = ImageHeaderView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +32,7 @@ class AlbumViewController: UIViewController {
         setupNavigationBar()
         setupBinders()
         
+        print("fetch")
         viewModel.fetch()
         
     }
@@ -36,39 +50,82 @@ class AlbumViewController: UIViewController {
 //MARK: - Methods
 extension AlbumViewController {
     private func setupViews() {
+        
+        let safeArea = view.safeAreaLayoutGuide
+        
         view.backgroundColor = .systemBackground
         
-        tableView.backgroundColor = .clear
-        tableView.delegate = self
-        tableView.dataSource = self
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        view.addSubview(headerView)
+        headerView.backgroundColor = .red
+        headerView.snp.makeConstraints { make in
+            make.top.equalTo(safeArea.snp.top)
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview()
         }
     }
     
     private func setupNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
+        title = ""
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.backward.circle"),
+            style: .done,
+            target: self,
+            action: #selector(didTapBackButton))
     }
     
     private func setupBinders() {
-        viewModel.album.bind { [weak self] _ in
-            self?.tableView.reloadData()
+        viewModel.album.bind { [weak self] album in
+            self?.collectionView.reloadData()
+            self?.headerView.setImage(album.imageURL)
         }
     }
+    
+    func createLayout() -> UICollectionViewCompositionalLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 2
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(250))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
+        section.boundarySupplementaryItems = [sectionHeader]
+        
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }
 }
-//MARK: - TableView Delegate/DataSource
-extension AlbumViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(viewModel.album.value)
+//MARK: - Actions
+extension AlbumViewController {
+    @objc func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+}
+//MARK: - CollectionView Delegate/DataSource
+extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.album.value.tracks.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        var contentConfig = cell.defaultContentConfiguration()
-        contentConfig.text = viewModel.album.value.tracks[indexPath.row].name
-        cell.contentConfiguration = contentConfig
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let model = viewModel.album.value.tracks[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackViewCell.id, for: indexPath) as! TrackViewCell
+        cell.configure(model)
         return cell
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        headerView.scroll(scrollView.contentOffset.y + 91)
     }
 }

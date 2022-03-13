@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BrowseSectionHeaderView: UICollectionReusableView {
+class HomeSectionHeaderView: UICollectionReusableView {
     
     static let id = "BrowseSectionHeaderView"
     

@@ -25,15 +25,15 @@ class HomeViewController: UIViewController {
             FeaturedPlaylistCollectionViewCell.self,
             forCellWithReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier)
         collectionView.register(
-            TrackViewCell.self,
-            forCellWithReuseIdentifier: TrackViewCell.identifier)
+            HomeTrackViewCell.self,
+            forCellWithReuseIdentifier: HomeTrackViewCell.identifier)
         collectionView.register(
             UserPlaylistCollectionViewCell.self,
             forCellWithReuseIdentifier: UserPlaylistCollectionViewCell.id)
         collectionView.register(
-            BrowseSectionHeaderView.self,
+            HomeSectionHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: BrowseSectionHeaderView.id)
+            withReuseIdentifier: HomeSectionHeaderView.id)
         return collectionView
     }()
     private var activityIndicator: UIActivityIndicatorView = {
@@ -58,7 +58,7 @@ class HomeViewController: UIViewController {
 extension HomeViewController {
     
     private func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
-        let section = BrowseSectionType(fromRawValue: section)
+        let section = HomeSectionType(fromRawValue: section)
         switch section {
         case .userPlaylists:
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension:.fractionalHeight(1.0))
@@ -194,7 +194,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let section = BrowseSectionType(fromRawValue: indexPath.section)
+        let section = HomeSectionType(fromRawValue: indexPath.section)
         let model = viewModel.sections.value[indexPath.section].items[indexPath.row]
         switch section {
         case .userPlaylists:
@@ -217,18 +217,18 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return cell
         case .recommendations, .recentlyPlayed:
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: TrackViewCell.identifier,
-                for: indexPath) as! TrackViewCell
+                withReuseIdentifier: HomeTrackViewCell.identifier,
+                for: indexPath) as! HomeTrackViewCell
             cell.configure(model)
             return cell
         default:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackViewCell.identifier, for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeTrackViewCell.identifier, for: indexPath)
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let section = BrowseSectionType(fromRawValue: indexPath.section)
+        let section = HomeSectionType(fromRawValue: indexPath.section)
         let item = viewModel.sections.value[indexPath.section].items[indexPath.row]
         switch section {
         case .userPlaylists:
@@ -247,7 +247,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let title = viewModel.sections.value[indexPath.section].title
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: BrowseSectionHeaderView.id, for: indexPath) as! BrowseSectionHeaderView
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeSectionHeaderView.id, for: indexPath) as! HomeSectionHeaderView
         view.setTitle(title)
         return view
     }
