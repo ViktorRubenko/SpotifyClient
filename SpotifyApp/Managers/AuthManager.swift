@@ -28,9 +28,10 @@ final class AuthManager {
             "playlist-modify-private",
             "playlist-read-private",
             "playlist-modify-public",
+            "playlist-read-collaborative",
             "user-read-private",
             "user-follow-read",
-            "user-read-email"
+            "user-read-email",
         ].joined(separator: "%20")
     }
     

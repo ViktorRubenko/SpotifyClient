@@ -8,6 +8,11 @@
 import Foundation
 import Alamofire
 
+enum SpotifySearchTypes: String {
+    case album, artist, playlist, track
+    case all = "track,album,artist,playlist"
+}
+
 class APICaller {
     static let shared = APICaller()
     
@@ -71,7 +76,7 @@ class APICaller {
     }
     
     func getUsersTopTracks(completion: @escaping
-    (Result<UsersTopTracksResponse, AFError>) -> Void) {
+                           (Result<UsersTopTracksResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/me/top/tracks", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: UsersTopTracksResponse.self) { response in
                 completion(response.result)
@@ -136,6 +141,29 @@ class APICaller {
     func getAlbum(id: String, completion: @escaping (Result<AlbumDetailResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/albums/\(id)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: AlbumDetailResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
+    
+    func searchRequest(
+        _ query: String,
+        type: SpotifySearchTypes = .all,
+        limit: Int = 50,
+        offset: Int = 0,
+        completion: @escaping (Result<SearchResponse, AFError>) -> Void) {
+        createRequest(
+            url: baseURL + "/search?limit=\(limit)&offset=\(offset)&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)&type=\(type.rawValue)",
+            method: .get) { dataRequest in
+                dataRequest.responseDecodable(of: SearchResponse.self) { response in
+                    completion(response.result)
+                }
+            }
+    }
+    
+    func getRecentlyPlayedTracks(limit: Int = 20, completion: @escaping (Result<RecentlyPlayedResponse, AFError>) -> Void) {
+        createRequest(url: baseURL + "/me/player/recently-played?limit=\(limit)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: RecentlyPlayedResponse.self) { response in
                 completion(response.result)
             }
         }

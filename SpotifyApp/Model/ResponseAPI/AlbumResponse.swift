@@ -10,7 +10,6 @@ import Foundation
 
 // MARK: - Album
 struct AlbumResponse: Codable {
-    let albumType: String
     let artists: [ArtistResponse]
     let externalUrls: ExternalUrls
     let id: String
@@ -21,7 +20,6 @@ struct AlbumResponse: Codable {
     let type: String
 
     enum CodingKeys: String, CodingKey {
-        case albumType = "album_type"
         case artists
         case externalUrls = "external_urls"
         case id, images, name

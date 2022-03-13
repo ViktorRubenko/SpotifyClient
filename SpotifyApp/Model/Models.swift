@@ -1,5 +1,5 @@
 //
-//  NewReleasesCellModel.swift
+//  Models.swift
 //  SpotifyApp
 //
 //  Created by Victor Rubenko on 12.03.2022.

@@ -7,12 +7,12 @@
 
 import UIKit
 
-class RecommendationTrackViewCell: UICollectionViewCell {
-    static let identifier = "RecommendationsViewCell"
+class TrackViewCell: UICollectionViewCell {
+    static let identifier = "TrackViewCell"
     
     private let trackNameLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 12, weight: .regular)
         return label
     }()
     
@@ -26,7 +26,7 @@ class RecommendationTrackViewCell: UICollectionViewCell {
     
     private let trackInfoLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 13, weight: .light)
+        label.font = .systemFont(ofSize: 11, weight: .light)
         return label
     }()
     
@@ -54,23 +54,22 @@ class RecommendationTrackViewCell: UICollectionViewCell {
         
         albumImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.top.equalToSuperview()
-            make.width.equalTo(albumImageView.snp.height)
+            make.height.equalTo(albumImageView.snp.width)
         }
         
         trackNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(albumImageView.snp.trailing).offset(10)
-            make.bottom.equalTo(albumImageView.snp.centerY)
-            make.top.greaterThanOrEqualTo(albumImageView)
-            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(2)
+            make.trailing.equalToSuperview().offset(-2)
+            make.top.equalTo(albumImageView.snp.bottom).offset(2)
         }
         
         trackInfoLabel.snp.makeConstraints { make in
             make.leading.equalTo(trackNameLabel)
-            make.top.equalTo(albumImageView.snp.centerY).offset(4)
-            make.bottom.lessThanOrEqualToSuperview()
             make.trailing.equalTo(trackNameLabel)
+            make.top.equalTo(trackNameLabel.snp.bottom)
+            make.bottom.lessThanOrEqualToSuperview()
         }
     }
     
@@ -79,7 +78,7 @@ class RecommendationTrackViewCell: UICollectionViewCell {
             return
         }
         trackNameLabel.text = viewModel.name
-        trackInfoLabel.text = "\(viewModel.type) • \(viewModel.artistsName)"
+        trackInfoLabel.text = "\(viewModel.artistsName)"
         albumImageView.sd_setImage(with: viewModel.albumImageURL, completed: nil)
     }
 }

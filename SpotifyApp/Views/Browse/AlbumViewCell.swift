@@ -8,9 +8,9 @@
 import UIKit
 import SDWebImage
 
-class NewReleasesCollectionViewCell: UICollectionViewCell {
+class AlbumViewCell: UICollectionViewCell {
     
-    static let identifier = "NewReleasesCollectionViewCell"
+    static let identifier = "AlbumViewCell"
     
     private let albumImageView: UIImageView = {
         let imageView = UIImageView()
@@ -23,7 +23,7 @@ class NewReleasesCollectionViewCell: UICollectionViewCell {
     private let albumNameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -31,7 +31,7 @@ class NewReleasesCollectionViewCell: UICollectionViewCell {
     private let artistNameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.font = .systemFont(ofSize: 14, weight: .light)
+        label.font = .systemFont(ofSize: 13, weight: .light)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -55,7 +55,7 @@ class NewReleasesCollectionViewCell: UICollectionViewCell {
     
     func configure(_ viewModel: CellModel) {
         guard let viewModel = viewModel as? AlbumModel else {
-            print("Failed to read NewReleasesCellModel")
+            print("Failed to read AlbumModel")
             return
         }
         albumNameLabel.text = viewModel.name
@@ -64,28 +64,25 @@ class NewReleasesCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupViews() {
-        
-        backgroundColor = UIColor(named: "SubBGColor")
-        
         contentView.addSubview(albumImageView)
         contentView.addSubview(albumNameLabel)
         contentView.addSubview(artistNameLabel)
         
         albumImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(2)
-            make.bottom.equalToSuperview().offset(-2)
-            make.leading.equalToSuperview().offset(2)
-            make.width.equalTo(albumImageView.snp.height)
+            make.top.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.height.equalTo(albumImageView.snp.width)
         }
         
         albumNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(albumImageView.snp.trailing).offset(4)
+            make.top.equalTo(albumImageView.snp.bottom).offset(4)
+            make.leading.equalToSuperview().offset(2)
             make.trailing.equalToSuperview().offset(-2)
-            make.top.equalTo(albumImageView).offset(4)
         }
         
         artistNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(albumNameLabel.snp.bottom).offset(4)
+            make.top.equalTo(albumNameLabel.snp.bottom).offset(2)
             make.leading.equalTo(albumNameLabel)
             make.trailing.equalTo(albumNameLabel)
             make.bottom.lessThanOrEqualToSuperview()
