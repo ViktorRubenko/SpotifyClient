@@ -11,6 +11,12 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+        
 
         let vc1 = HomeViewController()
         let vc2 = SearchViewController()
@@ -28,9 +34,14 @@ class TabBarController: UITabBarController {
         let nav2 = UINavigationController(rootViewController: vc2)
         let nav3 = UINavigationController(rootViewController: vc3)
         
-        nav1.navigationBar.prefersLargeTitles = true
-        nav2.navigationBar.prefersLargeTitles = true
-        nav3.navigationBar.prefersLargeTitles = true
+        for nav in [nav1, nav2, nav3] {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithDefaultBackground()
+            nav.navigationBar.standardAppearance = appearance
+            nav.navigationBar.scrollEdgeAppearance = appearance
+            
+            nav.navigationBar.prefersLargeTitles = true
+        }
         
         nav1.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
         nav2.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 1)
