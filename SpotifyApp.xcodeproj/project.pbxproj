@@ -34,7 +34,11 @@
 		E341044527DBF39C006BCAB6 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341044427DBF39C006BCAB6 /* HomeViewModel.swift */; };
 		E341044927DBF46E006BCAB6 /* SpotifyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341044827DBF46E006BCAB6 /* SpotifyImage.swift */; };
 		E341045527DC003A006BCAB6 /* FeaturedPlaylistsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E341045427DC003A006BCAB6 /* FeaturedPlaylistsResponse.swift */; };
+		E369E1C227DF726D00B6DCE8 /* TrackActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369E1C127DF726D00B6DCE8 /* TrackActionsViewController.swift */; };
+		E369E1C427DF732E00B6DCE8 /* TrackActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369E1C327DF732E00B6DCE8 /* TrackActionsViewModel.swift */; };
 		E38EC3C427DD27F700482502 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38EC3C327DD27F700482502 /* Functions.swift */; };
+		E39AAA5827DFC30E0033877A /* AlbumHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA5727DFC30E0033877A /* AlbumHeaderView.swift */; };
+		E39AAA5A27DFCD0A0033877A /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA5927DFCD0A0033877A /* UIImageExtension.swift */; };
 		E3A7BC6827D95D600046154C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC6727D95D600046154C /* AppDelegate.swift */; };
 		E3A7BC6A27D95D600046154C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC6927D95D600046154C /* SceneDelegate.swift */; };
 		E3A7BC7127D95D620046154C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3A7BC7027D95D620046154C /* Assets.xcassets */; };
@@ -88,7 +92,11 @@
 		E341044427DBF39C006BCAB6 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		E341044827DBF46E006BCAB6 /* SpotifyImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyImage.swift; sourceTree = "<group>"; };
 		E341045427DC003A006BCAB6 /* FeaturedPlaylistsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedPlaylistsResponse.swift; sourceTree = "<group>"; };
+		E369E1C127DF726D00B6DCE8 /* TrackActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackActionsViewController.swift; sourceTree = "<group>"; };
+		E369E1C327DF732E00B6DCE8 /* TrackActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackActionsViewModel.swift; sourceTree = "<group>"; };
 		E38EC3C327DD27F700482502 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		E39AAA5727DFC30E0033877A /* AlbumHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumHeaderView.swift; sourceTree = "<group>"; };
+		E39AAA5927DFCD0A0033877A /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		E3A7BC6427D95D600046154C /* SpotifyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotifyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A7BC6727D95D600046154C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3A7BC6927D95D600046154C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -169,6 +177,7 @@
 				E337F76F27DD4B1400689A7A /* AlbumViewController.swift */,
 				E341042727DA65D4006BCAB6 /* UserProfileViewController.swift */,
 				E341043427DA7354006BCAB6 /* SettingsViewController.swift */,
+				E369E1C127DF726D00B6DCE8 /* TrackActionsViewController.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -180,6 +189,7 @@
 				E341043C27DA8B27006BCAB6 /* SettingsViewModel.swift */,
 				E341044427DBF39C006BCAB6 /* HomeViewModel.swift */,
 				E337F77127DD4B2200689A7A /* AlbumViewModel.swift */,
+				E369E1C327DF732E00B6DCE8 /* TrackActionsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -189,6 +199,7 @@
 			children = (
 				E341042D27DA6702006BCAB6 /* Observable.swift */,
 				E38EC3C327DD27F700482502 /* Functions.swift */,
+				E39AAA5927DFCD0A0033877A /* UIImageExtension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -210,6 +221,7 @@
 				E341043F27DA92F3006BCAB6 /* UserProfileHeader.swift */,
 				E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */,
 				E337F79027DE772D00689A7A /* TrackViewCell.swift */,
+				E39AAA5727DFC30E0033877A /* AlbumHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -457,7 +469,10 @@
 				E3AA50AD27DCDCC200575C7F /* HomeTrackViewCell.swift in Sources */,
 				E3AA509A27DC016700575C7F /* NewReleasesResponse.swift in Sources */,
 				E3AA50AB27DCDCB500575C7F /* FeaturedPlaylistCollectionViewCell.swift in Sources */,
+				E369E1C227DF726D00B6DCE8 /* TrackActionsViewController.swift in Sources */,
 				E341044027DA92F3006BCAB6 /* UserProfileHeader.swift in Sources */,
+				E369E1C427DF732E00B6DCE8 /* TrackActionsViewModel.swift in Sources */,
+				E39AAA5827DFC30E0033877A /* AlbumHeaderView.swift in Sources */,
 				E3A7BC8527D95E500046154C /* LibraryViewController.swift in Sources */,
 				E341043527DA7354006BCAB6 /* SettingsViewController.swift in Sources */,
 				E3A7BC6827D95D600046154C /* AppDelegate.swift in Sources */,
@@ -475,6 +490,7 @@
 				E3AA50B027DCE04900575C7F /* Models.swift in Sources */,
 				E341043927DA875F006BCAB6 /* SettingsModels.swift in Sources */,
 				E3AA509E27DC09F100575C7F /* UsersTopTracksResponse.swift in Sources */,
+				E39AAA5A27DFCD0A0033877A /* UIImageExtension.swift in Sources */,
 				E3AA50A427DC0B6A00575C7F /* TrackResponse.swift in Sources */,
 				E341043B27DA8ACB006BCAB6 /* SettingsViewModelDelegate.swift in Sources */,
 				E337F78227DDF8BE00689A7A /* ImageHeaderView.swift in Sources */,

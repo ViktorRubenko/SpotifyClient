@@ -36,6 +36,7 @@ class TrackViewCell: UICollectionViewListCell {
         button.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.addTarget(self, action: #selector(didTapAccessotyButton), for: .touchUpInside)
+        button.backgroundColor = .clear
         return button
     }()
     
@@ -50,8 +51,9 @@ class TrackViewCell: UICollectionViewListCell {
         super.init(frame: frame)
         
         setupViews()
-//        isUserInteractionEnabled = false
         accessories = [.customView(configuration: customAccessory)]
+        setupBackground()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -65,13 +67,17 @@ class TrackViewCell: UICollectionViewListCell {
         albumImageView.image = UIImage(systemName: "photo")
     }
     
+    private func setupBackground() {
+        var bgConfig = UIBackgroundConfiguration.listGroupedCell()
+        bgConfig.backgroundColor = UIColor(named: "SubBGColor")?.withAlphaComponent(0.5)
+        backgroundConfiguration = bgConfig
+    }
+    
     private func setupViews() {
         
         contentView.addSubview(albumImageView)
         contentView.addSubview(trackNameLabel)
         contentView.addSubview(trackInfoLabel)
-        
-        backgroundColor = .systemGreen
         
         albumImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()

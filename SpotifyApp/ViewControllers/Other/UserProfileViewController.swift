@@ -94,7 +94,7 @@ extension UserProfileViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header") as! UserProfileHeader
-        view.profileImageView.imageFromURL(urlString: viewModel.userImageURL.value)
+        view.profileImageView.sd_setImage(with: viewModel.userImageURL.value, completed: nil)
         view.userNameLabel.text = viewModel.userName.value
         return view
     }

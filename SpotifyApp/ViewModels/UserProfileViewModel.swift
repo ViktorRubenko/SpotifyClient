@@ -10,7 +10,7 @@ import Alamofire
 
 
 final class UserProfileViewModel {
-    var userImageURL = Observable<String?>(nil)
+    var userImageURL = Observable<URL?>(nil)
     var userName = Observable<String?>(nil)
     var contents = Observable<[String]>([])
     var error = Observable<AFError?>(nil)
@@ -22,7 +22,7 @@ final class UserProfileViewModel {
             switch result {
             case .success(let userProfile):
                 self?.userName.value = userProfile.displayName
-                self?.userImageURL.value = userProfile.images.first!.url
+                self?.userImageURL.value = URL(string: userProfile.images.first?.url ?? "")
                 
                 var contents = [String]()
                 contents.append("Email Address: \(userProfile.email)")

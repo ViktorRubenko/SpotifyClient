@@ -12,7 +12,7 @@ class AlbumViewCell: UICollectionViewCell {
     
     static let identifier = "AlbumViewCell"
     
-    private let albumImageView: UIImageView = {
+    let albumImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
         imageView.contentMode = .scaleAspectFill

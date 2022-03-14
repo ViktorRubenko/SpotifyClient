@@ -20,8 +20,16 @@ class ImageHeaderView: UIView {
         return imageView
     }()
     
+    private var imageHeight = 250.0
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupViews()
+    }
+    
+    init(imageHeight: Double) {
+        super.init(frame: .zero)
+        self.imageHeight = imageHeight
         setupViews()
     }
     
@@ -36,7 +44,7 @@ class ImageHeaderView: UIView {
         imageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
-            heightConstraint = make.height.equalTo(250).constraint
+            heightConstraint = make.height.equalTo(imageHeight).constraint
             make.width.equalTo(imageView.snp.height)
         }
     }
@@ -49,10 +57,12 @@ class ImageHeaderView: UIView {
         
         isHidden = yOffset > 180
         alpha = (180 - yOffset) / 180.0
+        var height = imageHeight - yOffset / 2
+        height = height >= 0 ? height : 0
         
         heightConstraint.deactivate()
         imageView.snp.makeConstraints { make in
-            heightConstraint = make.height.equalTo(250 - yOffset / 2).constraint
+            heightConstraint = make.height.equalTo(height).constraint
         }
     }
 }

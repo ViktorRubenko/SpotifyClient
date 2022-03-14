@@ -49,7 +49,7 @@ final class HomeViewModel {
         APICaller.shared.searchRequest("Discover Weekly", type: .playlist, limit: 1) { [weak self] result in
             switch result {
             case .success(let response):
-                userPlaylists = response.playlists!.items.compactMap { playlist in
+                userPlaylists += response.playlists!.items.compactMap { playlist in
                     PlaylistModel(
                         name: playlist.name,
                         imageURL: findClosestSizeImage(images: playlist.images, height: 70, width: 70),
@@ -62,7 +62,7 @@ final class HomeViewModel {
         }
         
         group.enter()
-        APICaller.shared.searchRequest("Liked Songs", type: .playlist, limit: 1) { [weak self] result in
+        APICaller.shared.searchRequest("Release Radar", type: .playlist, limit: 1) { [weak self] result in
             switch result {
             case .success(let response):
                 userPlaylists += response.playlists!.items.compactMap { playlist in

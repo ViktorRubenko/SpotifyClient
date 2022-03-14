@@ -50,3 +50,9 @@ struct AlbumDetailModel: CellModel {
     let copyright: String
     let id: String
 }
+
+struct AlbumHeaderModel {
+    let name: String
+    let artists: String
+    let info: String
+}
