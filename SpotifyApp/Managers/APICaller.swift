@@ -168,4 +168,12 @@ class APICaller {
             }
         }
     }
+    
+    func getTrack(id: String, completion: @escaping (Result<TrackDetailResponse, AFError>) -> Void) {
+        createRequest(url: baseURL + "/tracks/\(id)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: TrackDetailResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
 }
