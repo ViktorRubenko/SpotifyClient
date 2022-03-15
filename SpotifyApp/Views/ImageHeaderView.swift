@@ -16,7 +16,7 @@ class ImageHeaderView: UIView {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(systemName: "photo")
+        imageView.image = UIImage(systemName: "music.note")
         return imageView
     }()
     

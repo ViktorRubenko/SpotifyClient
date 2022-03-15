@@ -7,6 +7,10 @@
 
 import UIKit
 
+enum TrackContainerType {
+    case album, playlist
+}
+
 class TrackContainerViewController: UIViewController {
     
     private var viewModel: TrackContainerViewModelProtocol!
@@ -30,10 +34,12 @@ class TrackContainerViewController: UIViewController {
     private var backgroundGradientView: UIView!
     private var imageAverageColor: UIColor?
     private var previousNavigatioBaraAppearance: UINavigationBarAppearance?
+    private var containerType: TrackContainerType!
     
-    required init(viewModel: TrackContainerViewModelProtocol, imageAverageColor: UIColor?) {
+    required init(viewModel: TrackContainerViewModelProtocol, containerType: TrackContainerType, imageAverageColor: UIColor?) {
         self.viewModel = viewModel
         self.imageAverageColor = imageAverageColor
+        self.containerType = containerType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -183,7 +189,7 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
                 withReuseIdentifier: TrackContainerHeaderView.id,
                 for: indexPath) as! TrackContainerHeaderView
             if let headerModel = viewModel.headerModel {
-                headerView.configure(headerModel)
+                headerView.configure(headerModel, type: containerType)
             }
             return headerView
         }

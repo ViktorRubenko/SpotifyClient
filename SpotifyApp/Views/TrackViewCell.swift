@@ -88,7 +88,7 @@ class TrackViewCell: UICollectionViewListCell {
         
         trackNameLabel.snp.makeConstraints { make in
             make.bottom.equalTo(albumImageView.snp.centerY)
-            make.leading.equalTo(albumImageView.snp.trailing).offset(2)
+            make.leading.equalTo(albumImageView.snp.trailing).offset(4)
             make.trailing.equalToSuperview().offset(-2)
         }
         

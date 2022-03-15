@@ -11,19 +11,19 @@ class TrackContainerHeaderView: UICollectionReusableView {
     
     static let id = "AlbumHeaderView"
     
-    private let albumNameLabel: UILabel = {
+    private let topLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .semibold)
         return label
     }()
     
-    private let artistsLabel: UILabel = {
+    private let middleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13, weight: .semibold)
         return label
     }()
     
-    private let albumInfoLabel: UILabel = {
+    private let bottomLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 11, weight: .regular)
         return label
@@ -48,9 +48,9 @@ class TrackContainerHeaderView: UICollectionReusableView {
     }
     
     private func setupViews() {
-        stackView.addArrangedSubview(albumNameLabel)
-        stackView.addArrangedSubview(artistsLabel)
-        stackView.addArrangedSubview(albumInfoLabel)
+        stackView.addArrangedSubview(topLabel)
+        stackView.addArrangedSubview(middleLabel)
+        stackView.addArrangedSubview(bottomLabel)
         
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -58,9 +58,14 @@ class TrackContainerHeaderView: UICollectionReusableView {
         }
     }
     
-    public func configure(_ model: TrackContainerHeaderModel) {
-        albumNameLabel.text = model.name
-        albumInfoLabel.text = model.info
-        artistsLabel.text = model.artists
+    public func configure(_ model: TrackContainerHeaderModel, type: TrackContainerType = .album) {
+        if type == .playlist {
+            topLabel.font = .systemFont(ofSize: 13, weight: .light)
+            middleLabel.font = .systemFont(ofSize: 14, weight: .regular)
+            bottomLabel.font = .systemFont(ofSize: 13, weight: .light)
+        }
+        topLabel.text = model.topText
+        middleLabel.text = model.middleText
+        bottomLabel.text = model.bottomText
     }
 }

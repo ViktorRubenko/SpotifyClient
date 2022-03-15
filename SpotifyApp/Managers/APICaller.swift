@@ -176,4 +176,12 @@ class APICaller {
             }
         }
     }
+    
+    func getPlaylist(id: String, completion: @escaping (Result<PlaylistDetailResponse, AFError>) -> Void) {
+        createRequest(url: baseURL + "/playlists/\(id)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: PlaylistDetailResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
 }

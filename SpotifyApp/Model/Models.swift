@@ -58,8 +58,15 @@ struct AlbumDetailModel: TrackContainerModelProtocol {
     let id: String
 }
 
-struct TrackContainerHeaderModel {
+struct PlaylistDetailModel: TrackContainerModelProtocol {
     let name: String
-    let artists: String
-    let info: String
+    let imageURL: URL?
+    let tracks: [TrackModel]
+    let id: String
+}
+
+struct TrackContainerHeaderModel {
+    let topText: String
+    let middleText: String
+    let bottomText: String
 }
