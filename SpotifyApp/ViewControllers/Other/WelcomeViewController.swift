@@ -13,8 +13,24 @@ class WelcomeViewController: UIViewController {
     let signInButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("SignIn", for: .normal)
-        button.sizeToFit()
+        button.setTitleColor(.systemBackground, for: .normal)
+        button.backgroundColor = .label
         return button
+    }()
+    
+    let logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "SpotifyIcon")
+        return imageView
+    }()
+    
+    let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.isHidden = true
+        return activityIndicator
     }()
 
     override func viewDidLoad() {
@@ -31,8 +47,27 @@ extension WelcomeViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
         
+        let safeArea = view.safeAreaLayoutGuide
+        
+        view.addSubview(logoImageView)
+        logoImageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(safeArea).multipliedBy(0.7)
+            make.height.equalTo(logoImageView.snp.width)
+        }
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
         view.addSubview(signInButton)
-        signInButton.center = view.center
+        signInButton.snp.makeConstraints { make in
+            make.bottom.equalTo(safeArea)
+            make.centerX.equalTo(safeArea)
+            make.width.equalTo(safeArea).multipliedBy(0.7)
+            make.height.equalTo(50)
+        }
         signInButton.addTarget(self, action: #selector(tapSignIn), for: .touchUpInside)
     }
     
@@ -48,8 +83,11 @@ extension WelcomeViewController {
 //MARK: - Acitons
 extension WelcomeViewController {
     @objc func tapSignIn() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
         AuthManager.shared.openAuthSession(presentationContextProvider: self) { [weak self] success in
             self?.handleSignIn(success: success)
+            self?.activityIndicator.stopAnimating()
         }
     }
 }

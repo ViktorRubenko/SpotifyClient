@@ -144,6 +144,7 @@ extension HomeViewController {
         view.backgroundColor = .systemBackground
         
         collectionView.backgroundColor = .clear
+        collectionView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
