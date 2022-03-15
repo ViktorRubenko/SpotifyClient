@@ -41,6 +41,7 @@ class WelcomeViewController: UIViewController {
         title = "Spotify"
         
         setupViews()
+        setupAnimation()
     }
 }
 
@@ -72,6 +73,17 @@ extension WelcomeViewController {
         }
         signInButton.addTarget(self, action: #selector(tapSignIn), for: .touchUpInside)
     }
+    
+    func setupAnimation() {
+        UIView.animate(
+            withDuration: 2,
+            delay: 0.5,
+            options: [.autoreverse, .repeat],
+            animations: {
+                self.logoImageView.transform = CGAffineTransform.identity.scaledBy(x: 0.9, y: 0.9)
+            })
+    }
+        
     
     private func handleSignIn(success: Bool) {
         guard success else { return }
