@@ -82,13 +82,12 @@ extension SearchViewController {
     private func createLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 6, bottom: 6, trailing: 6)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(110))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
-        group.interItemSpacing = NSCollectionLayoutSpacing.fixed(15)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 15
         
         return UICollectionViewCompositionalLayout(section: section)
     }
