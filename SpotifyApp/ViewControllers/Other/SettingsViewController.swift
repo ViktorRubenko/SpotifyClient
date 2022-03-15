@@ -51,15 +51,34 @@ extension SettingsViewController {
         
     }
 }
-//MARK: SettingsViewModel delegate
+//MARK: - SettingsViewModel delegate
 extension SettingsViewController: SettingsViewModelDelegate {
     func openUserProfile() {
         let profileVC = UserProfileViewController()
         navigationController?.pushViewController(profileVC, animated: true)
     }
     
+    func signOutTapped() {
+        let alert = UIAlertController(
+            title: "Sign Out",
+            message: "Are you sure?",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { [weak self] _ in
+            self?.viewModel.sightOut()
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
+    
     func signOut() {
-        print("signOut")
+        let vc = WelcomeViewController()
+        vc.relogin = true
+        let navController = UINavigationController(rootViewController: vc)
+        navController.navigationBar.prefersLargeTitles = true
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true) { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: false)
+        }
     }
 }
 //MARK: - TableView Delegate/DataSource

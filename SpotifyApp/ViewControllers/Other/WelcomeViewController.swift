@@ -32,6 +32,8 @@ class WelcomeViewController: UIViewController {
         activityIndicator.isHidden = true
         return activityIndicator
     }()
+    
+    var relogin = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,9 +76,13 @@ extension WelcomeViewController {
     private func handleSignIn(success: Bool) {
         guard success else { return }
         
-        let mainVC = TabBarController()
-        mainVC.modalPresentationStyle = .fullScreen
-        present(mainVC, animated: true)
+        if relogin {
+            dismiss(animated: true, completion: nil)
+        } else {
+            let mainVC = TabBarController()
+            mainVC.modalPresentationStyle = .fullScreen
+            present(mainVC, animated: true)
+        }
     }
 }
 
@@ -86,8 +92,8 @@ extension WelcomeViewController {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         AuthManager.shared.openAuthSession(presentationContextProvider: self) { [weak self] success in
-            self?.handleSignIn(success: success)
             self?.activityIndicator.stopAnimating()
+            self?.handleSignIn(success: success)
         }
     }
 }

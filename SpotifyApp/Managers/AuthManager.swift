@@ -204,4 +204,10 @@ final class AuthManager {
             completion(token)
         }
     }
+    
+    func signOut() {
+        UserDefaults.standard.removeObject(forKey: Keys.accessToken.rawValue)
+        UserDefaults.standard.removeObject(forKey: Keys.expirationDate.rawValue)
+        UserDefaults.standard.removeObject(forKey: Keys.refreshToken.rawValue)
+    }
 }

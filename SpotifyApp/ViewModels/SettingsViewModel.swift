@@ -27,9 +27,15 @@ final class SettingsViewModel {
             title: "Account",
             options: [
                 Option(title: "Sign Out", handler: { [weak self] in
-                    
-                    self?.delegate?.signOut()
+                    self?.delegate?.signOutTapped()
                 })
             ]))
     }
+    
+    func sightOut() {
+        AuthManager.shared.signOut()
+        delegate?.signOut()
+    }
+    
+    
 }
