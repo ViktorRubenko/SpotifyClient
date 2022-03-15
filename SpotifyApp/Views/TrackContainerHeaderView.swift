@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlbumHeaderView: UICollectionReusableView {
+class TrackContainerHeaderView: UICollectionReusableView {
     
     static let id = "AlbumHeaderView"
     
@@ -58,7 +58,7 @@ class AlbumHeaderView: UICollectionReusableView {
         }
     }
     
-    public func configure(_ model: AlbumHeaderModel) {
+    public func configure(_ model: TrackContainerHeaderModel) {
         albumNameLabel.text = model.name
         albumInfoLabel.text = model.info
         artistsLabel.text = model.artists

@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - AlbumDetailResponse
 struct AlbumDetailResponse: Codable {
-    let artists: [AlbumDetailArtist]
+    let artists: [DetailArtist]
     let copyrights: [Copyrights]
     let externalUrls: ExternalUrls
     let genres: [String?]
@@ -36,7 +36,7 @@ struct AlbumDetailResponse: Codable {
 
 struct AlbumDetailTracks: Codable {
     let href: String
-    let items: [AlbumDetailTrack]
+    let items: [DetailTrack]
     let limit: Int
     let next: String?
     let offset: Int
@@ -49,8 +49,8 @@ struct Copyrights: Codable {
     let type: String
 }
 
-struct AlbumDetailTrack: Codable {
-    let artists: [AlbumDetailArtist]
+struct DetailTrack: Codable {
+    let artists: [DetailArtist]
     let discNumber, durationMS: Int
     let explicit: Bool
     let externalUrls: ExternalUrls
@@ -74,7 +74,7 @@ struct AlbumDetailTrack: Codable {
     }
 }
 
-struct AlbumDetailArtist: Codable {
+struct DetailArtist: Codable {
     let externalUrls: ExternalUrls
     let id, name, type: String
 

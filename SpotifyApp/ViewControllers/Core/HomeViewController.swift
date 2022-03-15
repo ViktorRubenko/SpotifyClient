@@ -235,10 +235,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             break
         case .newReleases:
             let averageColor = (collectionView.cellForItem(at: indexPath) as! AlbumViewCell).albumImageView.image?.averageColor
-            let vc = AlbumViewController(id: item.id, albumAverageColor: averageColor)
+            let vc = TrackContainerViewController(viewModel: AlbumViewModel(id: item.id), imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .featuredPlaylists:
-            let playlist = viewModel.sections.value[indexPath.section].items[indexPath.row]
+            let averageColor = (collectionView.cellForItem(at: indexPath) as! FeaturedPlaylistCollectionViewCell).playlistImageView.image?.averageColor
+            let vc = TrackContainerViewController(viewModel: PlaylistViewModel(id: item.id), imageAverageColor: averageColor)
+            navigationController?.pushViewController(vc, animated: true)
         case .recommendations:
             let track = viewModel.sections.value[indexPath.section].items[indexPath.row]
         default:

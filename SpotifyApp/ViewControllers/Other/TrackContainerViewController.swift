@@ -1,15 +1,15 @@
 //
-//  AlbumViewController.swift
+//  TrackContainerViewController.swift
 //  SpotifyApp
 //
-//  Created by Victor Rubenko on 13.03.2022.
+//  Created by Victor Rubenko on 15.03.2022.
 //
 
 import UIKit
 
-class AlbumViewController: UIViewController {
+class TrackContainerViewController: UIViewController {
     
-    private var viewModel: AlbumViewModel!
+    private var viewModel: TrackContainerViewModelProtocol!
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -20,21 +20,25 @@ class AlbumViewController: UIViewController {
             TrackViewCell.self,
             forCellWithReuseIdentifier: TrackViewCell.id)
         collectionView.register(
-            AlbumHeaderView.self,
+            TrackContainerHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: AlbumHeaderView.id)
+            withReuseIdentifier: TrackContainerHeaderView.id)
         return collectionView
     }()
     private var headerView = ImageHeaderView()
     private var collectionViewTopInset = 260.0
     private var backgroundGradientView: UIView!
-    private var albumAverageColor: UIColor?
+    private var imageAverageColor: UIColor?
     private var previousNavigatioBaraAppearance: UINavigationBarAppearance?
     
-    init(id: String, albumAverageColor: UIColor?) {
-        self.viewModel = AlbumViewModel(id: id)
-        self.albumAverageColor = albumAverageColor
+    required init(viewModel: TrackContainerViewModelProtocol, imageAverageColor: UIColor?) {
+        self.viewModel = viewModel
+        self.imageAverageColor = imageAverageColor
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
@@ -56,14 +60,9 @@ class AlbumViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
 //MARK: - Methods
-extension AlbumViewController {
+extension TrackContainerViewController {
     private func setupViews() {
         
         view.backgroundColor = .systemBackground
@@ -78,7 +77,7 @@ extension AlbumViewController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
         }
-
+        
         view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
             make.top.equalTo(safeArea.snp.top)
@@ -96,7 +95,7 @@ extension AlbumViewController {
     }
     
     private func changeBackgroundGradient() {
-        guard let averageColor = albumAverageColor else { return }
+        guard let averageColor = imageAverageColor else { return }
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [averageColor.cgColor, UIColor.clear.cgColor]
@@ -118,15 +117,15 @@ extension AlbumViewController {
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = albumAverageColor
+        appearance.backgroundColor = imageAverageColor
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
     private func setupBinders() {
-        viewModel.album.bind { [weak self] album in
+        viewModel.fetched.bind { [weak self] _ in
             self?.collectionView.reloadData()
-            self?.headerView.setImage(album.imageURL)
+            self?.headerView.setImage(self?.viewModel.model?.imageURL)
         }
     }
     
@@ -152,31 +151,28 @@ extension AlbumViewController {
     }
 }
 //MARK: - Actions
-extension AlbumViewController {
+extension TrackContainerViewController {
     @objc func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
 }
 //MARK: - CollectionView Delegate/DataSource
-extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension TrackContainerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.album.value.tracks.count
+        guard let model = viewModel.model else { return 0}
+        return model.tracks.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-            
-        default:
-            let model = viewModel.album.value.tracks[indexPath.row]
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackViewCell.id, for: indexPath) as! TrackViewCell
-            cell.configure(model)
-            cell.accessotyHandler = { [weak self] in
-                let vc = TrackActionsViewController(id: model.id, fromAlbum: true)
-                vc.modalPresentationStyle = .overFullScreen
-                self?.present(vc, animated: true)
-            }
-            return cell
+        let model = viewModel.model!.tracks[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackViewCell.id, for: indexPath) as! TrackViewCell
+        cell.configure(model)
+        cell.accessotyHandler = { [weak self] in
+            let vc = TrackActionsViewController(id: model.id, fromAlbum: true)
+            vc.modalPresentationStyle = .overFullScreen
+            self?.present(vc, animated: true)
         }
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -184,9 +180,11 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
         default:
             let headerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: UICollectionView.elementKindSectionHeader,
-                withReuseIdentifier: AlbumHeaderView.id,
-                for: indexPath) as! AlbumHeaderView
-            headerView.configure(viewModel.albumHeader)
+                withReuseIdentifier: TrackContainerHeaderView.id,
+                for: indexPath) as! TrackContainerHeaderView
+            if let headerModel = viewModel.headerModel {
+                headerView.configure(headerModel)
+            }
             return headerView
         }
     }
@@ -197,7 +195,7 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y + 91 + collectionViewTopInset
-        title = yOffset <= collectionViewTopInset ? "" : viewModel.album.value.name
+        title = yOffset <= collectionViewTopInset ? "" : viewModel.model?.name
         headerView.scroll(yOffset)
     }
 }

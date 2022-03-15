@@ -50,15 +50,14 @@ struct Playlist: Codable {
 
 // MARK: - Owner
 struct Owner: Codable {
-    let displayName: String
+    let displayName: String?
     let externalUrls: ExternalUrls
-    let href: String
-    let id, type, uri: String
+    let id, type: String
 
     enum CodingKeys: String, CodingKey {
         case displayName = "display_name"
         case externalUrls = "external_urls"
-        case href, id, type, uri
+        case id, type
     }
 }
 
