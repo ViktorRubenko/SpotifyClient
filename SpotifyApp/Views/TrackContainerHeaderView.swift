@@ -9,7 +9,7 @@ import UIKit
 
 class TrackContainerHeaderView: UICollectionReusableView {
     
-    static let id = "AlbumHeaderView"
+    static let id = "TrackContainerHeaderView"
     
     private let topLabel: UILabel = {
         let label = UILabel()
@@ -37,6 +37,24 @@ class TrackContainerHeaderView: UICollectionReusableView {
         return stackView
     }()
     
+    private lazy var playButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        let imageConfig = UIImage.SymbolConfiguration.init(scale: .large)
+        let image = UIImage(systemName: "play.fill", withConfiguration: imageConfig)
+        
+        button.setImage(image, for: .normal)
+        button.tintColor = .black
+        button.clipsToBounds = true
+        button.backgroundColor = .systemGreen
+        button.layer.cornerRadius = buttonSize / 2.0
+        button.addTarget(self, action: #selector(didTapPlayButton), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+    private let buttonSize = 55.0
+    private var buttonCallback: (() -> Void)?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -52,10 +70,26 @@ class TrackContainerHeaderView: UICollectionReusableView {
         stackView.addArrangedSubview(middleLabel)
         stackView.addArrangedSubview(bottomLabel)
         
+        addSubview(playButton)
+        playButton.snp.makeConstraints { make in
+            make.width.equalTo(buttonSize)
+            make.height.equalTo(buttonSize)
+            make.trailing.equalToSuperview().offset(-10)
+            make.bottom.equalToSuperview()
+        }
+        
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.trailing.equalTo(playButton.snp.leading)
         }
+    }
+    
+    @objc func didTapPlayButton() {
+        print("play")
+        buttonCallback?()
     }
     
     public func configure(_ model: TrackContainerHeaderModel, type: TrackContainerType = .album) {
@@ -67,5 +101,10 @@ class TrackContainerHeaderView: UICollectionReusableView {
         topLabel.text = model.topText
         middleLabel.text = model.middleText
         bottomLabel.text = model.bottomText
+        playButton.isHidden = false
+    }
+    
+    public func setPlayButtonCallback(_ callback: @escaping () -> Void) {
+        buttonCallback = callback
     }
 }

@@ -41,6 +41,7 @@ class ImageHeaderView: UIView {
     
     private func setupViews() {
         addSubview(imageView)
+
         imageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
