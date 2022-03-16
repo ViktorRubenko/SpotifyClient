@@ -60,7 +60,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 
+extension SceneDelegate {
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        guard let window = self.window else { return }
+        
+        window.rootViewController = vc
+        
+        if animated {
+            UIView.transition(
+                with: window,
+                duration: 0.5,
+                options: [.showHideTransitionViews],
+                animations: nil,
+                completion: nil)
+        }
+    }
+}

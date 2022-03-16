@@ -72,13 +72,9 @@ extension SettingsViewController: SettingsViewModelDelegate {
     
     func signOut() {
         let vc = WelcomeViewController()
-        vc.relogin = true
         let navController = UINavigationController(rootViewController: vc)
         navController.navigationBar.prefersLargeTitles = true
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true) { [weak self] in
-            self?.navigationController?.popToRootViewController(animated: false)
-        }
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(vc)
     }
 }
 //MARK: - TableView Delegate/DataSource

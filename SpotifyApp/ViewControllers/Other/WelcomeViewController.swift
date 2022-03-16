@@ -32,8 +32,6 @@ class WelcomeViewController: UIViewController {
         activityIndicator.isHidden = true
         return activityIndicator
     }()
-    
-    var relogin = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,23 +86,20 @@ extension WelcomeViewController {
     private func handleSignIn(success: Bool) {
         guard success else { return }
         
-        if relogin {
-            dismiss(animated: true, completion: nil)
-        } else {
-            let mainVC = TabBarController()
-            mainVC.modalPresentationStyle = .fullScreen
-            present(mainVC, animated: true)
-        }
+        let mainTabBarController = TabBarController()
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(mainTabBarController)
     }
 }
 
 //MARK: - Acitons
 extension WelcomeViewController {
     @objc func tapSignIn() {
+        logoImageView.isHidden = true
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         AuthManager.shared.openAuthSession(presentationContextProvider: self) { [weak self] success in
             self?.activityIndicator.stopAnimating()
+            self?.logoImageView.isHidden = false
             self?.handleSignIn(success: success)
         }
     }
