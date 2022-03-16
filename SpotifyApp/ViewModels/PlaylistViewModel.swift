@@ -33,20 +33,20 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
                 self?.model = PlaylistDetailModel(
                     name: response.name,
                     imageURL: findClosestSizeImage(images: response.images, height: 250, width: 250),
-                    tracks: response.tracks.items.compactMap( {
+                    tracks: response.tracks.items.filter({$0.track != nil}).compactMap( {
                         TrackModel(
-                            name: $0.track.name,
-                            type: $0.track.type,
-                            albumImageURL: findClosestSizeImage(images: $0.track.album!.images, height: 50, width: 50),
-                            artistsName: $0.track.artists.compactMap({$0.name}).joined(separator: ", "),
-                            id: $0.track.id)}),
+                            name: $0.track!.name,
+                            type: $0.track!.type,
+                            albumImageURL: findClosestSizeImage(images: $0.track!.album!.images, height: 50, width: 50),
+                            artistsName: $0.track!.artists.compactMap({$0.name}).joined(separator: ", "),
+                            id: $0.track!.id)}),
                     id: response.id)
                 
                 self?.headerModel = TrackContainerHeaderModel(
                     topText: response.welcomeDescription,
                     middleText: response.owner.displayName ?? "Spotify",
-                    bottomText: "Followers: \(response.followers.total)")
-                self?.detailTracks = response.tracks.items.compactMap({$0.track})
+                    bottomText: response.followers.total > 0 ? "Followers: \(response.followers.total)" : "")
+                self?.detailTracks = response.tracks.items.filter({$0.track != nil}).compactMap({$0.track})
             case .failure(let error):
                 print(error)
                 print(error.localizedDescription)

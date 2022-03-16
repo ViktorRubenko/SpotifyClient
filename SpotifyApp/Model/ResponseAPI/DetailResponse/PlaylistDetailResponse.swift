@@ -50,7 +50,7 @@ struct PlaylistDetailItem: Codable {
     let addedAt: String?
     let addedBy: Owner
     let isLocal: Bool
-    let track: TrackResponse
+    let track: TrackResponse?
     
     enum CodingKeys: String, CodingKey {
         case addedAt = "added_at"

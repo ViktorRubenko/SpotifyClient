@@ -13,6 +13,7 @@ class TrackContainerHeaderView: UICollectionReusableView {
     
     private let topLabel: UILabel = {
         let label = UILabel()
+        label.numberOfLines = 2
         label.font = .systemFont(ofSize: 20, weight: .semibold)
         return label
     }()
@@ -80,10 +81,10 @@ class TrackContainerHeaderView: UICollectionReusableView {
         
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.trailing.equalTo(playButton.snp.leading)
+            make.trailing.equalTo(playButton.snp.leading).offset(-2)
         }
     }
     
@@ -94,9 +95,9 @@ class TrackContainerHeaderView: UICollectionReusableView {
     
     public func configure(_ model: TrackContainerHeaderModel, type: TrackContainerType = .album) {
         if type == .playlist {
-            topLabel.font = .systemFont(ofSize: 13, weight: .light)
-            middleLabel.font = .systemFont(ofSize: 14, weight: .regular)
-            bottomLabel.font = .systemFont(ofSize: 13, weight: .light)
+            topLabel.font = .systemFont(ofSize: 12, weight: .light)
+            middleLabel.font = .systemFont(ofSize: 13, weight: .regular)
+            bottomLabel.font = .systemFont(ofSize: 12, weight: .light)
         }
         topLabel.text = model.topText
         middleLabel.text = model.middleText

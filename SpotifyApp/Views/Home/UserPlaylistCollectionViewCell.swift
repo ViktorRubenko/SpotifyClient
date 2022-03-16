@@ -11,7 +11,7 @@ class UserPlaylistCollectionViewCell: UICollectionViewCell {
     
     static let id = "UserPlaylistCollectionViewCell"
     
-    private let imageView: UIImageView = {
+    let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
