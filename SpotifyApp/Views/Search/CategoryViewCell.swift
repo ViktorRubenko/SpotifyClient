@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SuggestionGroupViewCell: UICollectionViewCell {
+class CategoryViewCell: UICollectionViewCell {
     static let id = "SuggestionGroupViewCell"
     
     private let titleLabel: UILabel = {
@@ -22,6 +22,8 @@ class SuggestionGroupViewCell: UICollectionViewCell {
         imageView.image = UIImage(systemName: "music.quarternote.3")
         imageView.contentMode = .scaleAspectFill
         imageView.transform = imageView.transform.rotated(by: .pi/8)
+        imageView.layer.cornerRadius = 5
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -34,29 +36,36 @@ class SuggestionGroupViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+        titleLabel.text = nil
+    }
+    
     private func setupViews() {
         clipsToBounds = true
         layer.cornerRadius = 10
         
         contentView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(10)
             make.top.equalTo(contentView.snp.centerY)
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().offset(5)
             make.width.equalTo(imageView.snp.height)
         }
         
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
-            make.leading.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(5)
             make.trailing.equalToSuperview()
             make.bottom.lessThanOrEqualToSuperview()
         }
     }
     
-    public func configure(title: String, backgroundColor: UIColor) {
-        titleLabel.text = title
+    public func configure(_ model: CategoryCellModel, backgroundColor: UIColor) {
+        titleLabel.text = model.name
+        imageView.sd_setImage(with: model.iconURL, completed: nil)
         self.backgroundColor = backgroundColor
     }
 }

@@ -55,11 +55,11 @@ class APICaller {
             }
     }
     
-    func getFeaturedPlalists(limit: Int = 30, completion: @escaping (Result<FeaturedPlaylistsResponse, AFError>) -> Void) {
+    func getFeaturedPlalists(limit: Int = 30, completion: @escaping (Result<PlaylistsResponse, AFError>) -> Void) {
         createRequest(
             url: baseURL + "/browse/featured-playlists?limit=\(limit)",
             method: .get) { dataRequest in
-                dataRequest.responseDecodable(of: FeaturedPlaylistsResponse.self) { response in
+                dataRequest.responseDecodable(of: PlaylistsResponse.self) { response in
                     completion(response.result)
                 }
             }
@@ -180,6 +180,22 @@ class APICaller {
     func getPlaylist(id: String, completion: @escaping (Result<PlaylistDetailResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/playlists/\(id)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: PlaylistDetailResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
+    
+    func getCategories(limit: Int = 20, completion: @escaping (Result<CategoriesResponse,AFError>) -> Void) {
+        createRequest(url: baseURL + "/browse/categories?limit=\(limit)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: CategoriesResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
+    
+    func getCategoryPlaylists(id: String, limit: Int = 20, completion: @escaping (Result<PlaylistsResponse,AFError>) -> Void) {
+        createRequest(url: baseURL + "/browse/categories/\(id)/playlists?limit=\(limit)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: PlaylistsResponse.self) { response in
                 completion(response.result)
             }
         }

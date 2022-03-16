@@ -19,11 +19,11 @@ class HomeViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(
-            AlbumViewCell.self,
-            forCellWithReuseIdentifier: AlbumViewCell.identifier)
+            ImageWithInfoCollectionViewCell.self,
+            forCellWithReuseIdentifier: ImageWithInfoCollectionViewCell.identifier)
         collectionView.register(
-            FeaturedPlaylistCollectionViewCell.self,
-            forCellWithReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier)
+            FullImageCollectionViewCell.self,
+            forCellWithReuseIdentifier: FullImageCollectionViewCell.identifier)
         collectionView.register(
             HomeTrackViewCell.self,
             forCellWithReuseIdentifier: HomeTrackViewCell.identifier)
@@ -206,14 +206,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return cell
         case .newReleases:
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: AlbumViewCell.identifier,
-                for: indexPath) as! AlbumViewCell
+                withReuseIdentifier: ImageWithInfoCollectionViewCell.identifier,
+                for: indexPath) as! ImageWithInfoCollectionViewCell
             cell.configure(model)
             return cell
         case .featuredPlaylists:
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier,
-                for: indexPath) as! FeaturedPlaylistCollectionViewCell
+                withReuseIdentifier: FullImageCollectionViewCell.identifier,
+                for: indexPath) as! FullImageCollectionViewCell
             cell.configure(model)
             return cell
         case .recommendations, .recentlyPlayed:
@@ -235,11 +235,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case .userPlaylists:
             break
         case .newReleases:
-            let averageColor = (collectionView.cellForItem(at: indexPath) as! AlbumViewCell).albumImageView.image?.averageColor
+            let averageColor = (collectionView.cellForItem(at: indexPath) as! ImageWithInfoCollectionViewCell).imageView.image?.averageColor
             let vc = TrackContainerViewController(viewModel: AlbumViewModel(id: item.id), containerType: .album, imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .featuredPlaylists:
-            let averageColor = (collectionView.cellForItem(at: indexPath) as! FeaturedPlaylistCollectionViewCell).playlistImageView.image?.averageColor
+            let averageColor = (collectionView.cellForItem(at: indexPath) as! FullImageCollectionViewCell).playlistImageView.image?.averageColor
             let vc = TrackContainerViewController(viewModel: PlaylistViewModel(id: item.id), containerType: .playlist, imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .recommendations:

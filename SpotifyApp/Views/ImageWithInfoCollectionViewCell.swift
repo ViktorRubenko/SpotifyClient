@@ -8,11 +8,11 @@
 import UIKit
 import SDWebImage
 
-class AlbumViewCell: UICollectionViewCell {
+class ImageWithInfoCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "AlbumViewCell"
+    static let identifier = "ImageWithInfoCollectionViewCell"
     
-    let albumImageView: UIImageView = {
+    let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
         imageView.contentMode = .scaleAspectFill
@@ -20,7 +20,7 @@ class AlbumViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    private let albumNameLabel: UILabel = {
+    private let topLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 14, weight: .regular)
@@ -28,7 +28,7 @@ class AlbumViewCell: UICollectionViewCell {
         return label
     }()
     
-    private let artistNameLabel: UILabel = {
+    private let bottomLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 13, weight: .light)
@@ -48,43 +48,43 @@ class AlbumViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        albumNameLabel.text = nil
-        artistNameLabel.text = nil
-        albumImageView.image = nil
+        topLabel.text = nil
+        bottomLabel.text = nil
+        imageView.image = nil
     }
     
-    func configure(_ viewModel: CellModel) {
-        guard let viewModel = viewModel as? AlbumModel else {
+    func configure(_ model: CellModel) {
+        guard let model = model as? ImageInfoModel else {
             print("Failed to read AlbumModel")
             return
         }
-        albumNameLabel.text = viewModel.name
-        artistNameLabel.text = viewModel.artistsName
-        albumImageView.sd_setImage(with: viewModel.imageURL, completed: nil)
+        topLabel.text = model.name
+        bottomLabel.text = model.info
+        imageView.sd_setImage(with: model.imageURL, completed: nil)
     }
     
     private func setupViews() {
-        contentView.addSubview(albumImageView)
-        contentView.addSubview(albumNameLabel)
-        contentView.addSubview(artistNameLabel)
+        contentView.addSubview(imageView)
+        contentView.addSubview(topLabel)
+        contentView.addSubview(bottomLabel)
         
-        albumImageView.snp.makeConstraints { make in
+        imageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.trailing.equalToSuperview()
             make.leading.equalToSuperview()
-            make.height.equalTo(albumImageView.snp.width)
+            make.height.equalTo(imageView.snp.width)
         }
         
-        albumNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(albumImageView.snp.bottom).offset(4)
+        topLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(4)
             make.leading.equalToSuperview().offset(2)
             make.trailing.equalToSuperview().offset(-2)
         }
         
-        artistNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(albumNameLabel.snp.bottom).offset(2)
-            make.leading.equalTo(albumNameLabel)
-            make.trailing.equalTo(albumNameLabel)
+        bottomLabel.snp.makeConstraints { make in
+            make.top.equalTo(topLabel.snp.bottom).offset(2)
+            make.leading.equalTo(topLabel)
+            make.trailing.equalTo(topLabel)
             make.bottom.lessThanOrEqualToSuperview()
         }
     }

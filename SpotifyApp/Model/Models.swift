@@ -12,6 +12,12 @@ protocol CellModel {
     var name: String { get }
 }
 
+protocol ImageInfoModel {
+    var name: String { get }
+    var imageURL: URL? { get }
+    var info: String? { get }
+}
+
 protocol TrackContainerModelProtocol {
     var id: String { get }
     var name: String { get }
@@ -19,16 +25,17 @@ protocol TrackContainerModelProtocol {
     var tracks: [TrackModel] { get }
 }
 
-struct AlbumModel: CellModel {
+struct AlbumModel: CellModel, ImageInfoModel {
     let name: String
     let imageURL: URL?
-    let artistsName: String
+    let info: String?
     let id: String
 }
 
-struct PlaylistModel: CellModel {
+struct PlaylistModel: CellModel, ImageInfoModel {
     let name: String
     let imageURL: URL?
+    let info: String?
     let id: String
 }
 
@@ -43,6 +50,12 @@ struct TrackModel: CellModel {
 struct ArtistModel: CellModel {
     let name: String
     let id: String
+}
+
+struct CategoryCellModel: CellModel {
+    let name: String
+    let id: String
+    let iconURL: URL?
 }
 
 struct AlbumDetailModel: TrackContainerModelProtocol {

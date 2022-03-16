@@ -33,8 +33,8 @@ class SearchViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(
-            SuggestionGroupViewCell.self,
-            forCellWithReuseIdentifier: SuggestionGroupViewCell.id)
+            CategoryViewCell.self,
+            forCellWithReuseIdentifier: CategoryViewCell.id)
         return collectionView
     }()
     private let viewModel = searchViewModel()
@@ -53,6 +53,9 @@ class SearchViewController: UIViewController {
         
         setupNavigationBar()
         setupViews()
+        setupBinders()
+        
+        viewModel.fetchCategories()
     }
 }
 //MARK: - Methods
@@ -77,6 +80,12 @@ extension SearchViewController {
     
     private func setupNavigationBar() {
         navigationItem.searchController = searchController
+    }
+    
+    private func setupBinders() {
+        viewModel.categories.bind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
     }
     
     private func createLayout() -> UICollectionViewCompositionalLayout {
@@ -105,14 +114,20 @@ extension SearchViewController: UISearchBarDelegate {
 //MARK: CollectionView Delegate/DataSource
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        viewModel.categories.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let model = viewModel.categories.value[indexPath.row]
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SuggestionGroupViewCell.id,
-            for: indexPath) as! SuggestionGroupViewCell
-        cell.configure(title: "Rok", backgroundColor: colors[indexPath.row % colors.count])
+            withReuseIdentifier: CategoryViewCell.id,
+            for: indexPath) as! CategoryViewCell
+        cell.configure(model, backgroundColor: colors[indexPath.row % colors.count])
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = PlaylistsViewController(viewModel: viewModel.createPlaylistsViewModel(index: indexPath.row))
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

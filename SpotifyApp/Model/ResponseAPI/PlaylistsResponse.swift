@@ -8,8 +8,7 @@
 import Foundation
 
 // MARK: - FeaturedPlaylistsResponse
-struct FeaturedPlaylistsResponse: Codable {
-    let message: String
+struct PlaylistsResponse: Codable {
     let playlists: Playlists
 }
 

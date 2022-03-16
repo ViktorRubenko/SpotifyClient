@@ -53,6 +53,7 @@ final class HomeViewModel {
                     PlaylistModel(
                         name: playlist.name,
                         imageURL: findClosestSizeImage(images: playlist.images, height: 70, width: 70),
+                        info: playlist.owner?.displayName,
                         id: playlist.id)
                 }
             case .failure(let error):
@@ -69,6 +70,7 @@ final class HomeViewModel {
                     PlaylistModel(
                         name: playlist.name,
                         imageURL: findClosestSizeImage(images: playlist.images, height: 70, width: 70),
+                        info: playlist.owner?.displayName ?? "",
                         id: playlist.id)
                 }
             case .failure(let error):
@@ -103,7 +105,7 @@ final class HomeViewModel {
                     AlbumModel(
                         name: album.name,
                         imageURL: findClosestSizeImage(images: album.images, height: 250, width: 250),
-                        artistsName: album.artists.compactMap({$0.name}).joined(separator: ", "),
+                        info: album.artists.compactMap({$0.name}).joined(separator: ", "),
                         id: album.id)
                 }
                 print("Get NewReleases")
@@ -121,6 +123,7 @@ final class HomeViewModel {
                     PlaylistModel(
                         name: playlist.name,
                         imageURL: findClosestSizeImage(images: playlist.images, height: 300, width: 300),
+                        info: playlist.owner?.displayName ?? "",
                         id: playlist.id)
                 }
                 print("Get FeaturedPlaylists")
