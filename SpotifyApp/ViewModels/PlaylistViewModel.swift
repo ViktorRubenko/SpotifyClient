@@ -10,14 +10,20 @@ import Foundation
 final class PlaylistViewModel: TrackContainerViewModelProtocol {
     var itemID: String
     
+    var detailTracks: [TrackResponse] = []
     var model: TrackContainerModelProtocol?
-    
     var headerModel: TrackContainerHeaderModel?
-    
     var fetched = Observable<Bool>(false)
     
     init(id: String) {
         self.itemID = id
+    }
+    
+    func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
+        TrackActionsViewModel(
+            trackResponse: detailTracks[index],
+            albumImages: detailTracks[index].album!.images
+        )
     }
     
     func fetch() {
@@ -31,7 +37,7 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
                         TrackModel(
                             name: $0.track.name,
                             type: $0.track.type,
-                            albumImageURL: findClosestSizeImage(images: $0.track.album.images, height: 50, width: 50),
+                            albumImageURL: findClosestSizeImage(images: $0.track.album!.images, height: 50, width: 50),
                             artistsName: $0.track.artists.compactMap({$0.name}).joined(separator: ", "),
                             id: $0.track.id)}),
                     id: response.id)
@@ -40,7 +46,9 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
                     topText: response.welcomeDescription,
                     middleText: response.owner.displayName ?? "Spotify",
                     bottomText: "Followers: \(response.followers.total)")
+                self?.detailTracks = response.tracks.items.compactMap({$0.track})
             case .failure(let error):
+                print(error)
                 print(error.localizedDescription)
             }
             self?.fetched.value = true

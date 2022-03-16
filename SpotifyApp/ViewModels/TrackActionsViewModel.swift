@@ -7,19 +7,40 @@
 
 import Foundation
 
-struct TrackActionsViewModel {
-    private let itemID: String
-    
-    private(set) var actions = ["Favorite", "Hide", "Add", "add", "Share", "radio", "arist", "about"]
+struct TrackAction {
+    let name: String
+    let callback: (() -> Void)
+}
 
-    init(itemID: String, fromAlbum: Bool) {
-        self.itemID = itemID
+class TrackActionsViewModel {
+    private let trackResponse: TrackResponse
+    weak var delegate: TrackActionsViewModelDelegate?
+    private(set) var trackActions = [TrackAction]()
+    let albumImageURL: URL?
+    let topText: String
+    let bottomText: String
+    
+    init(trackResponse: TrackResponse, albumImages: [SpotifyImage]) {
+        self.trackResponse = trackResponse
+        self.albumImageURL = findClosestSizeImage(images: albumImages, height: 200, width: 200)
+        self.topText = trackResponse.name
+        self.bottomText = trackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
+        fillActions()
     }
     
-    func fetch() {
-        APICaller.shared.getTrack(id: itemID) { result in
-            
+    private func fillActions() {
+        trackActions.append(contentsOf: [
+            TrackAction(name: "Add to Favorites", callback: { self.delegate?.addToFavorites() }),
+            TrackAction(name: "Share", callback: {
+                self.delegate?.share(externalURL: self.trackResponse.externalUrls.spotify)
+            }),
+        ])
+        if trackResponse.album != nil {
+            trackActions.append(TrackAction(name: "Album", callback: {
+                
+            }))
         }
+        trackActions.append(TrackAction(name: "Artist", callback: { self.delegate?.showArtist() }))
     }
 }
 

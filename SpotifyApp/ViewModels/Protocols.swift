@@ -14,4 +14,5 @@ protocol TrackContainerViewModelProtocol {
     var fetched: Observable<Bool> { get }
     
     func fetch()
+    func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel
 }

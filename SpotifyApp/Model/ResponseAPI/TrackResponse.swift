@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Track
 struct TrackResponse: Codable {
-    let album: AlbumResponse
+    let album: AlbumResponse?
     let artists: [ArtistResponse]
     let discNumber, durationMS: Int
     let explicit: Bool
@@ -17,7 +17,7 @@ struct TrackResponse: Codable {
     let id: String
     let isLocal: Bool
     let name: String
-    let popularity: Int
+    let popularity: Int?
     let trackNumber: Int
     let type: String
 

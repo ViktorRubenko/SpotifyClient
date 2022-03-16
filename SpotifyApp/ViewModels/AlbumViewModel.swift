@@ -10,21 +10,30 @@ import UIKit
 import SDWebImage
 
 final class AlbumViewModel: TrackContainerViewModelProtocol {
-    
+
     let itemID: String
 
+    private var detailTracks: [TrackResponse] = []
     var model: TrackContainerModelProtocol?
     var headerModel: TrackContainerHeaderModel?
     let fetched = Observable<Bool>(false)
+    private var albumImages = [SpotifyImage]()
     
     init(id: String) {
         itemID = id
     }
     
-    public func fetch() {
+    func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
+        TrackActionsViewModel(
+            trackResponse: detailTracks[index],
+            albumImages: albumImages)
+    }
+    
+    func fetch() {
         APICaller.shared.getAlbum(id: itemID) { [weak self] result in
             switch result {
             case .success(let albumDetails):
+                self?.albumImages = albumDetails.images
                 self?.headerModel = TrackContainerHeaderModel(
                     topText: albumDetails.name,
                     middleText: albumDetails.artists.compactMap({$0.name}).joined(separator: "•"),
@@ -46,6 +55,7 @@ final class AlbumViewModel: TrackContainerViewModelProtocol {
                     artists: albumDetails.artists.compactMap({ArtistModel(name: $0.name, id: $0.id)}),
                     copyright: albumDetails.copyrights.compactMap({$0.text}).joined(separator: ",\n"),
                     id: albumDetails.id)
+                self?.detailTracks = albumDetails.tracks.items
                 self?.fetched.value = true
             case .failure(let error):
                 print(error.localizedDescription)

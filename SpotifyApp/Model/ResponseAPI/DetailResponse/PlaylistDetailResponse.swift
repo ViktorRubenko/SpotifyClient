@@ -50,40 +50,12 @@ struct PlaylistDetailItem: Codable {
     let addedAt: String?
     let addedBy: Owner
     let isLocal: Bool
-    let track: PlaylistDetailTrack
+    let track: TrackResponse
     
     enum CodingKeys: String, CodingKey {
         case addedAt = "added_at"
         case addedBy = "added_by"
         case isLocal = "is_local"
         case track
-    }
-}
-
-// MARK: - Track
-struct PlaylistDetailTrack: Codable {
-    let album: AlbumResponse
-    let artists: [DetailArtist]
-    let discNumber, durationMS: Int
-    let externalUrls: ExternalUrls
-    let id: String
-    let isLocal: Bool
-    let name: String
-    let popularity: Int
-    let track: Bool
-    let trackNumber: Int
-    let type: String
-    
-    enum CodingKeys: String, CodingKey {
-        case album, artists
-        case discNumber = "disc_number"
-        case durationMS = "duration_ms"
-        case externalUrls = "external_urls"
-        case id
-        case isLocal = "is_local"
-        case name, popularity
-        case track
-        case trackNumber = "track_number"
-        case type
     }
 }

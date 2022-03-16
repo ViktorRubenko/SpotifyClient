@@ -36,7 +36,7 @@ struct AlbumDetailResponse: Codable {
 
 struct AlbumDetailTracks: Codable {
     let href: String
-    let items: [DetailTrack]
+    let items: [TrackResponse]
     let limit: Int
     let next: String?
     let offset: Int
@@ -47,31 +47,6 @@ struct AlbumDetailTracks: Codable {
 struct Copyrights: Codable {
     let text: String
     let type: String
-}
-
-struct DetailTrack: Codable {
-    let artists: [DetailArtist]
-    let discNumber, durationMS: Int
-    let explicit: Bool
-    let externalUrls: ExternalUrls
-    let id: String
-    let isLocal: Bool
-    let name: String
-    let trackNumber: Int
-    let type: String
-
-    enum CodingKeys: String, CodingKey {
-        case artists
-        case discNumber = "disc_number"
-        case durationMS = "duration_ms"
-        case explicit
-        case externalUrls = "external_urls"
-        case id
-        case isLocal = "is_local"
-        case name
-        case trackNumber = "track_number"
-        case type
-    }
 }
 
 struct DetailArtist: Codable {

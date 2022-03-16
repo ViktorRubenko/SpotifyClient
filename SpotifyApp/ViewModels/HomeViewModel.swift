@@ -57,6 +57,7 @@ final class HomeViewModel {
                         id: playlist.id)
                 }
             case .failure(let error):
+                print(error.localizedDescription)
                 self?.error = error
             }
             group.leave()
@@ -74,6 +75,7 @@ final class HomeViewModel {
                         id: playlist.id)
                 }
             case .failure(let error):
+                print(error.localizedDescription)
                 self?.error = error
             }
             group.leave()
@@ -87,7 +89,7 @@ final class HomeViewModel {
                     TrackModel(
                         name: $0.track.name,
                         type: $0.track.type,
-                        albumImageURL: findClosestSizeImage(images: $0.track.album.images, height: 200, width: 200),
+                        albumImageURL: findClosestSizeImage(images: $0.track.album!.images, height: 200, width: 200),
                         artistsName: $0.track.artists.compactMap({$0.name}).joined(separator: ", "),
                         id: $0.track.id)
                 }
@@ -110,6 +112,7 @@ final class HomeViewModel {
                 }
                 print("Get NewReleases")
             case .failure(let error):
+                print(error.localizedDescription)
                 self?.error = error
             }
             group.leave()
@@ -129,7 +132,7 @@ final class HomeViewModel {
                 print("Get FeaturedPlaylists")
             case .failure(let error):
                 self?.error = error
-                print(error)
+                print(error.localizedDescription)
             }
             group.leave()
         }
@@ -142,11 +145,12 @@ final class HomeViewModel {
                     TrackModel(
                         name: track.name,
                         type: track.type.capitalized,
-                        albumImageURL: findClosestSizeImage(images: track.album.images, height: 250, width: 250),
+                        albumImageURL: findClosestSizeImage(images: track.album!.images, height: 250, width: 250),
                         artistsName: track.artists.compactMap({$0.name}).joined(separator: ", "),
                         id: track.id)
                 }
             case .failure(let error):
+                print(error.localizedDescription)
                 self?.error = error
             }
             group.leave()

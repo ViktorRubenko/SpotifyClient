@@ -36,7 +36,10 @@ class TrackContainerViewController: UIViewController {
     private var previousNavigatioBaraAppearance: UINavigationBarAppearance?
     private var containerType: TrackContainerType!
     
-    required init(viewModel: TrackContainerViewModelProtocol, containerType: TrackContainerType, imageAverageColor: UIColor?) {
+    required init(
+        viewModel: TrackContainerViewModelProtocol,
+        containerType: TrackContainerType,
+        imageAverageColor: UIColor? = nil) {
         self.viewModel = viewModel
         self.imageAverageColor = imageAverageColor
         self.containerType = containerType
@@ -174,7 +177,8 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackViewCell.id, for: indexPath) as! TrackViewCell
         cell.configure(model)
         cell.accessotyHandler = { [weak self] in
-            let vc = TrackActionsViewController(id: model.id, fromAlbum: true)
+            let vc = TrackActionsViewController(
+                viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row))
             vc.modalPresentationStyle = .overFullScreen
             self?.present(vc, animated: true)
         }

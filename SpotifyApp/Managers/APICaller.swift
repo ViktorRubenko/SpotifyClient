@@ -169,15 +169,20 @@ class APICaller {
         }
     }
     
-    func getTrack(id: String, completion: @escaping (Result<TrackDetailResponse, AFError>) -> Void) {
+    func getTrack(id: String, completion: @escaping (Result<TrackResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/tracks/\(id)", method: .get) { dataRequest in
-            dataRequest.responseDecodable(of: TrackDetailResponse.self) { response in
+            dataRequest.responseDecodable(of: TrackResponse.self) { response in
                 completion(response.result)
             }
         }
     }
     
     func getPlaylist(id: String, completion: @escaping (Result<PlaylistDetailResponse, AFError>) -> Void) {
+//        createRequest(url: baseURL + "/playlists/\(id)", method: .get) { dateRequest in
+//            dateRequest.response { response in
+//                print(NSString(string: String(data: response.value!!, encoding: .utf8)!))
+//            }
+//        }
         createRequest(url: baseURL + "/playlists/\(id)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: PlaylistDetailResponse.self) { response in
                 completion(response.result)

@@ -10,12 +10,13 @@ import UIKit
 class TrackActionsViewController: UIViewController {
     
     private var viewModel: TrackActionsViewModel!
-    private let headerHeight = 150.0
+    private lazy var headerHeight = max(250.0, view.bounds.height / 3)
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.register(ImageTextHeader.self, forHeaderFooterViewReuseIdentifier: ImageTextHeader.id)
         return tableView
     }()
     
@@ -41,9 +42,10 @@ class TrackActionsViewController: UIViewController {
         return containerView
     }()
 
-    init(id: String, fromAlbum: Bool) {
-        viewModel = TrackActionsViewModel(itemID: id, fromAlbum: fromAlbum)
+    init(viewModel: TrackActionsViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        viewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -54,7 +56,6 @@ class TrackActionsViewController: UIViewController {
         super.viewDidLoad()
 
         setupViews()
-        viewModel.fetch()
     }
 }
 //MARK: - Methods
@@ -77,8 +78,8 @@ extension TrackActionsViewController {
         tableView.backgroundColor = .clear
         tableView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
             make.bottom.equalTo(closeButton.snp.top)
         }
     }
@@ -92,13 +93,13 @@ extension TrackActionsViewController {
 //MARK: - TableView Delegate/DataSource
 extension TrackActionsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.actions.count
+        viewModel.trackActions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         var contentConfig = cell.defaultContentConfiguration()
-        contentConfig.text = viewModel.actions[indexPath.row]
+        contentConfig.text = viewModel.trackActions[indexPath.row].name
         cell.contentConfiguration = contentConfig
         cell.backgroundColor = .clear
         return cell
@@ -109,17 +110,51 @@ extension TrackActionsViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        ImageHeaderView(imageHeight: headerHeight)
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ImageTextHeader.id) as! ImageTextHeader
+        header.configure(imageURL: viewModel.albumImageURL, topText: viewModel.topText, bottomText: viewModel.bottomText)
+        return header
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.trackActions[indexPath.row].callback()
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -scrollView.bounds.height / 3 {
+        if scrollView.contentOffset.y < -scrollView.bounds.height / 4 {
             dismiss(animated: true, completion: nil)
         }
     }
+}
+
+extension TrackActionsViewController: TrackActionsViewModelDelegate {
     
+    func openAlbum(viewModel: AlbumViewModel) {
+        let vc = TrackContainerViewController(viewModel: viewModel, containerType: .album)
+        weak var pvc = self.presentingViewController
+        dismiss(animated: true) {
+            pvc?.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    func addToFavorites() {
+        
+    }
+    
+    func share(externalURL: String) {
+        weak var pvc = self.presentingViewController
+        let vc = UIActivityViewController(
+            activityItems: [externalURL],
+            applicationActivities: [])
+        dismiss(animated: true) {
+            pvc?.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    func showArtist() {
+        
+    }
 }
