@@ -239,7 +239,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let vc = TrackContainerViewController(viewModel: AlbumViewModel(id: item.id), containerType: .album, imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .featuredPlaylists:
-            let averageColor = (collectionView.cellForItem(at: indexPath) as! FullImageCollectionViewCell).playlistImageView.image?.averageColor
+            let averageColor = (collectionView.cellForItem(at: indexPath) as! FullImageCollectionViewCell).imageView.image?.averageColor
             let vc = TrackContainerViewController(viewModel: PlaylistViewModel(id: item.id), containerType: .playlist, imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .recommendations:

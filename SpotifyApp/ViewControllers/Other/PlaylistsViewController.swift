@@ -99,4 +99,13 @@ extension PlaylistsViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.configure(model)
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let averageColor = (collectionView.cellForItem(at: indexPath) as! ImageWithInfoCollectionViewCell).imageView.image?.averageColor
+        let vc = TrackContainerViewController(
+            viewModel: viewModel.createTrackContainerViewModel(index: indexPath.row),
+            containerType: .playlist,
+            imageAverageColor: averageColor)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

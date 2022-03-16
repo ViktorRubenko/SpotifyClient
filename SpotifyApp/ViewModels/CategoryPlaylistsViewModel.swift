@@ -33,4 +33,9 @@ final class CategoryPlaylistsViewModel {
             }
         }
     }
+    
+    func createTrackContainerViewModel(index: Int) -> PlaylistViewModel {
+        let playlist = playlists.value[index]
+        return PlaylistViewModel(id: playlist.id)
+    }
 }

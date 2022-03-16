@@ -10,7 +10,7 @@ import UIKit
 class FullImageCollectionViewCell: UICollectionViewCell {
     static let identifier = "FullImageCollectionViewCell"
     
-    let playlistImageView: UIImageView = {
+    let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
         imageView.contentMode = .scaleAspectFill
@@ -30,26 +30,26 @@ class FullImageCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        playlistImageView.image = UIImage(systemName: "photo")
+        imageView.image = UIImage(systemName: "photo")
     }
     
     private func setupViews() {
         backgroundColor = .clear
         
-        contentView.addSubview(playlistImageView)
+        contentView.addSubview(imageView)
         
-        playlistImageView.snp.makeConstraints { make in
+        imageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(2)
             make.trailing.equalToSuperview().offset(-2)
             make.top.equalToSuperview().offset(2)
-            make.height.equalTo(playlistImageView.snp.width)
+            make.height.equalTo(imageView.snp.width)
         }
     }
     
-    func configure(_ viewModel: CellModel) {
-        guard let viewModel = viewModel as? PlaylistModel else {
+    func configure(_ model: CellModel) {
+        guard let model = model as? ImageInfoModel else {
             return
         }
-        playlistImageView.sd_setImage(with: viewModel.imageURL, completed: nil)
+        imageView.sd_setImage(with: model.imageURL, completed: nil)
     }
 }
