@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SearchResultsViewControllerDelegate: AnyObject {
+    func selectResultAt(indexPath: IndexPath, averageColor: UIColor?)
+}
+
 class SearchResultsViewController: UIViewController {
 
     private lazy var collectionView: UICollectionView = {
@@ -23,6 +27,7 @@ class SearchResultsViewController: UIViewController {
     }()
     
     private let viewModel: SearchViewModel!
+    weak var delegate: SearchResultsViewControllerDelegate?
     
     init(viewModel: SearchViewModel) {
         self.viewModel = viewModel
@@ -106,5 +111,10 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
         let section = viewModel.resultSections.value[indexPath.section]
         view.setTitle(section.title)
         return view
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! ItemListCell
+        delegate?.selectResultAt(indexPath: indexPath, averageColor: cell.averageColor)
     }
 }

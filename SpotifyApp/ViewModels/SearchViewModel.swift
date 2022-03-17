@@ -42,7 +42,7 @@ final class SearchViewModel {
                                     name: $0.name,
                                     info: "Artist",
                                     imageURL: findClosestSizeImage(images: $0.images, height: 100, width: 100),
-                                    type: .trackContainer)
+                                    type: .artist)
                             })
                     )
                 }
@@ -72,7 +72,7 @@ final class SearchViewModel {
                                     name: $0.name,
                                     info: "Album • \($0.artists.compactMap({$0.name}).joined(separator: ", "))",
                                     imageURL: findClosestSizeImage(images: $0.images, height: 100, width: 100),
-                                    type: .trackContainer)
+                                    type: .album)
                             })
                     )
                 }
@@ -88,7 +88,7 @@ final class SearchViewModel {
                                     name: $0.name,
                                     info: "Playlist",
                                     imageURL: findClosestSizeImage(images: $0.images, height: 100, width: 100),
-                                    type: .trackContainer)
+                                    type: .playlist)
                             })
                     )
                 }

@@ -200,6 +200,7 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath)
         collectionView.deselectItem(at: indexPath, animated: false)
     }
     

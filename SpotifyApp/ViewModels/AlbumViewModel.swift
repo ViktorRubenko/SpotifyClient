@@ -37,11 +37,11 @@ final class AlbumViewModel: TrackContainerViewModelProtocol {
                 self?.headerModel = TrackContainerHeaderModel(
                     topText: albumDetails.name,
                     middleText: albumDetails.artists.compactMap({$0.name}).joined(separator: "•"),
-                    bottomText: "\(albumDetails.releaseDate)")
+                    bottomText: String(albumDetails.releaseDate.split(separator: "-")[0]))
                 self?.model = AlbumDetailModel(
                     name: albumDetails.name,
                     imageURL: findClosestSizeImage(images: albumDetails.images, height: 250, width: 250),
-                    year: albumDetails.releaseDate,
+                    year: String(albumDetails.releaseDate.split(separator: "-")[0]),
                     albumType: albumDetails.type,
                     artistName: albumDetails.artists.compactMap({$0.name}).joined(separator: ", "),
                     tracks: albumDetails.tracks.items.compactMap {

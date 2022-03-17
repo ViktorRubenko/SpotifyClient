@@ -72,6 +72,10 @@ class ItemListCell: UICollectionViewListCell {
         backgroundConfiguration = bgConfig
     }
     
+    var averageColor: UIColor? {
+        imageView.image?.averageColor
+    }
+    
     private func setupViews() {
         
         contentView.addSubview(imageView)
@@ -103,7 +107,7 @@ class ItemListCell: UICollectionViewListCell {
         switch type {
         case .track:
             accessoryButton.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
-        case .trackContainer:
+        case .album, .playlist, .artist:
             accessoryButton.setImage(UIImage(systemName: "chevron.forward.circle"), for: .normal)
         default:
             break

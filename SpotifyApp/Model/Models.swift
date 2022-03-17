@@ -89,7 +89,7 @@ struct TrackContainerHeaderModel {
 }
 
 enum ItemType {
-    case track, trackContainer, noResults
+    case track, album, playlist, artist, noResults
 }
 
 struct ItemModel: CellModel {

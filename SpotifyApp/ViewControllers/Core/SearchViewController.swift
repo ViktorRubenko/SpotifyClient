@@ -8,9 +8,14 @@
 import UIKit
 
 class SearchViewController: UIViewController {
+    private lazy var searchResultsController: SearchResultsViewController = {
+        let controller = SearchResultsViewController(viewModel: self.viewModel)
+        controller.delegate = self
+        return controller
+    }()
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(
-            searchResultsController: SearchResultsViewController(viewModel: self.viewModel))
+            searchResultsController: searchResultsController)
         searchController.searchBar.placeholder = "Artists, songs and albums"
         searchController.searchBar.delegate = self
         return searchController
@@ -55,15 +60,6 @@ extension SearchViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
         
-        let safeArea = view.safeAreaLayoutGuide
-        
-//        view.addSubview(segmentedControl)
-//        segmentedControl.snp.makeConstraints { make in
-//            make.top.equalTo(safeArea)
-//            make.leading.equalToSuperview()
-//            make.trailing.equalToSuperview()
-//        }
-        
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -103,7 +99,7 @@ extension SearchViewController: UISearchBarDelegate {
         performSearch()
     }
 }
-//MARK: CollectionView Delegate/DataSource
+//MARK: - CollectionView Delegate/DataSource
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.categories.value.count
@@ -121,5 +117,28 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = PlaylistsViewController(viewModel: viewModel.createPlaylistsViewModel(index: indexPath.row))
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+//MARK: - SearchResultsViewControllerDelegate
+extension SearchViewController: SearchResultsViewControllerDelegate {
+    func selectResultAt(indexPath: IndexPath, averageColor: UIColor?) {
+        print(indexPath)
+        let model = viewModel.resultSections.value[indexPath.section].items[indexPath.row]
+        switch model.type {
+        case .album:
+            let vc = TrackContainerViewController(
+                viewModel: AlbumViewModel(id: model.id),
+                containerType: .album,
+                imageAverageColor: averageColor)
+            navigationController?.pushViewController(vc, animated: true)
+        case .playlist:
+            let vc = TrackContainerViewController(
+                viewModel: PlaylistViewModel(id: model.id),
+                containerType: .playlist,
+                imageAverageColor: averageColor)
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
+        }
     }
 }
