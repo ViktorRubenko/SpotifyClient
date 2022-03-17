@@ -21,8 +21,8 @@ class TrackContainerViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(
-            TrackViewCell.self,
-            forCellWithReuseIdentifier: TrackViewCell.id)
+            ItemListCell.self,
+            forCellWithReuseIdentifier: ItemListCell.id)
         collectionView.register(
             TrackContainerHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -174,7 +174,7 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = viewModel.model!.tracks[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackViewCell.id, for: indexPath) as! TrackViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
         cell.configure(model)
         cell.accessotyHandler = { [weak self] in
             let vc = TrackActionsViewController(

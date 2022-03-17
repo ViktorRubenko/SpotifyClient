@@ -36,9 +36,8 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
                     tracks: response.tracks.items.filter({$0.track != nil}).compactMap( {
                         TrackModel(
                             name: $0.track!.name,
-                            type: $0.track!.type,
-                            albumImageURL: findClosestSizeImage(images: $0.track!.album!.images, height: 50, width: 50),
-                            artistsName: $0.track!.artists.compactMap({$0.name}).joined(separator: ", "),
+                            imageURL: findClosestSizeImage(images: $0.track!.album!.images, height: 50, width: 50),
+                            info: $0.track!.artists.compactMap({$0.name}).joined(separator: ", "),
                             id: $0.track!.id)}),
                     id: response.id)
                 

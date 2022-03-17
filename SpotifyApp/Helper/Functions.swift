@@ -7,7 +7,10 @@
 
 import Foundation
 
-func findClosestSizeImage(images: [SpotifyImage], height: Double, width: Double) -> URL? {
+func findClosestSizeImage(images: [SpotifyImage]?, height: Double, width: Double) -> URL? {
+    guard let images = images else {
+        return nil
+    }
     
     func distance(_ image: SpotifyImage) -> Double {
         let h = Double(image.height ?? 1000)

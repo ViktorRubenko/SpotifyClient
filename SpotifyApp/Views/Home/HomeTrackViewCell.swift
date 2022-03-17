@@ -78,7 +78,7 @@ class HomeTrackViewCell: UICollectionViewCell {
             return
         }
         trackNameLabel.text = viewModel.name
-        trackInfoLabel.text = "\(viewModel.artistsName)"
-        albumImageView.sd_setImage(with: viewModel.albumImageURL, completed: nil)
+        trackInfoLabel.text = viewModel.info
+        albumImageView.sd_setImage(with: viewModel.imageURL, completed: nil)
     }
 }

@@ -12,11 +12,11 @@ struct ArtistResponse: Codable {
     let externalUrls: ExternalUrls
     let id: String
     let name: String
-    let type: String
+    let images: [SpotifyImage]?
 
     enum CodingKeys: String, CodingKey {
         case externalUrls = "external_urls"
-        case id, name, type
+        case id, name, images
     }
 }
 

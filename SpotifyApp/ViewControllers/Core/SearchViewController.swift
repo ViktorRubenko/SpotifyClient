@@ -9,7 +9,8 @@ import UIKit
 
 class SearchViewController: UIViewController {
     private lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: SearchResultsController())
+        let searchController = UISearchController(
+            searchResultsController: SearchResultsViewController(viewModel: self.viewModel))
         searchController.searchBar.placeholder = "Artists, songs and albums"
         searchController.searchBar.delegate = self
         return searchController
@@ -37,7 +38,7 @@ class SearchViewController: UIViewController {
             forCellWithReuseIdentifier: CategoryViewCell.id)
         return collectionView
     }()
-    private let viewModel = searchViewModel()
+    private let viewModel = SearchViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()

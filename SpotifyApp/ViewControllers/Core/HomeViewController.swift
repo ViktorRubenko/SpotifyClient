@@ -31,9 +31,9 @@ class HomeViewController: UIViewController {
             UserPlaylistCollectionViewCell.self,
             forCellWithReuseIdentifier: UserPlaylistCollectionViewCell.id)
         collectionView.register(
-            HomeSectionHeaderView.self,
+            TextHeader.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: HomeSectionHeaderView.id)
+            withReuseIdentifier: TextHeader.id)
         return collectionView
     }()
     private var activityIndicator: UIActivityIndicatorView = {
@@ -253,7 +253,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let title = viewModel.sections.value[indexPath.section].title
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeSectionHeaderView.id, for: indexPath) as! HomeSectionHeaderView
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TextHeader.id, for: indexPath) as! TextHeader
         view.setTitle(title)
         return view
     }

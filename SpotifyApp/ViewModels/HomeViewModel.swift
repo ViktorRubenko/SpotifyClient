@@ -88,9 +88,8 @@ final class HomeViewModel {
                 recentlyPlayedTracks = tracksResponse.items.compactMap {
                     TrackModel(
                         name: $0.track.name,
-                        type: $0.track.type,
-                        albumImageURL: findClosestSizeImage(images: $0.track.album!.images, height: 200, width: 200),
-                        artistsName: $0.track.artists.compactMap({$0.name}).joined(separator: ", "),
+                        imageURL: findClosestSizeImage(images: $0.track.album!.images, height: 200, width: 200),
+                        info: $0.track.artists.compactMap({$0.name}).joined(separator: ", "),
                         id: $0.track.id)
                 }
             case .failure(let error):
@@ -144,9 +143,8 @@ final class HomeViewModel {
                 recommendationTracks = response.tracks.compactMap { track in
                     TrackModel(
                         name: track.name,
-                        type: track.type.capitalized,
-                        albumImageURL: findClosestSizeImage(images: track.album!.images, height: 250, width: 250),
-                        artistsName: track.artists.compactMap({$0.name}).joined(separator: ", "),
+                        imageURL: findClosestSizeImage(images: track.album!.images, height: 250, width: 250),
+                        info: track.artists.compactMap({$0.name}).joined(separator: ", "),
                         id: track.id)
                 }
             case .failure(let error):

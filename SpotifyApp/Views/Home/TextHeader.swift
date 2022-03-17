@@ -7,9 +7,9 @@
 
 import UIKit
 
-class HomeSectionHeaderView: UICollectionReusableView {
+class TextHeader: UICollectionReusableView {
     
-    static let id = "BrowseSectionHeaderView"
+    static let id = "TextHeader"
     
     private let titleLabel: UILabel = {
         let label = UILabel()

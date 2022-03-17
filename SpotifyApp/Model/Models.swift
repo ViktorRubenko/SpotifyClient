@@ -10,6 +10,8 @@ import Foundation
 protocol CellModel {
     var id: String { get }
     var name: String { get }
+    var info: String? { get }
+    var imageURL: URL? { get }
 }
 
 protocol ImageInfoModel {
@@ -41,21 +43,23 @@ struct PlaylistModel: CellModel, ImageInfoModel {
 
 struct TrackModel: CellModel {
     let name: String
-    let type: String
-    let albumImageURL: URL?
-    let artistsName: String
+    let imageURL: URL?
+    let info: String?
     let id: String
 }
 
 struct ArtistModel: CellModel {
     let name: String
     let id: String
+    let info: String?
+    let imageURL: URL?
 }
 
 struct CategoryCellModel: CellModel {
     let name: String
     let id: String
-    let iconURL: URL?
+    let imageURL: URL?
+    let info: String?
 }
 
 struct AlbumDetailModel: TrackContainerModelProtocol {
@@ -82,4 +86,16 @@ struct TrackContainerHeaderModel {
     let topText: String
     let middleText: String
     let bottomText: String
+}
+
+enum ItemType {
+    case track, trackContainer, noResults
+}
+
+struct ItemModel: CellModel {
+    let id: String
+    let name: String
+    let info : String?
+    let imageURL: URL?
+    let type: ItemType
 }

@@ -65,7 +65,7 @@ class CategoryViewCell: UICollectionViewCell {
     
     public func configure(_ model: CategoryCellModel, backgroundColor: UIColor) {
         titleLabel.text = model.name
-        imageView.sd_setImage(with: model.iconURL, completed: nil)
+        imageView.sd_setImage(with: model.imageURL, completed: nil)
         self.backgroundColor = backgroundColor
     }
 }
