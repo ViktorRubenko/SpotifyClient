@@ -38,15 +38,6 @@ class SearchViewController: UIViewController {
         return collectionView
     }()
     private let viewModel = searchViewModel()
-    private let colors: [UIColor] = [
-        .systemGreen,
-        .systemBlue,
-        .systemRed,
-        .systemGray,
-        .systemPink,
-        .systemPurple,
-        .systemBrown,
-    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,7 +113,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CategoryViewCell.id,
             for: indexPath) as! CategoryViewCell
-        cell.configure(model, backgroundColor: colors[indexPath.row % colors.count])
+        cell.configure(model, backgroundColor: ColorPicker.getColor())
         return cell
     }
     
