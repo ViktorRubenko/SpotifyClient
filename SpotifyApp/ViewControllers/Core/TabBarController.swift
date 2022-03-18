@@ -35,11 +35,6 @@ class TabBarController: UITabBarController {
         let nav3 = UINavigationController(rootViewController: vc3)
         
         for nav in [nav1, nav2, nav3] {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithDefaultBackground()
-            nav.navigationBar.standardAppearance = appearance
-            nav.navigationBar.scrollEdgeAppearance = appearance
-            
             nav.navigationBar.prefersLargeTitles = true
         }
         

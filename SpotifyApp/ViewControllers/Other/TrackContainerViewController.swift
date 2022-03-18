@@ -216,6 +216,7 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y + topContentOffset
+        title = yOffset >= topContentOffset ? viewModel.model?.name : ""
         headerConstraint.deactivate()
         headerView.snp.makeConstraints { make in
             headerConstraint = make.height.equalTo(view.snp.width).multipliedBy(0.65).offset(-yOffset / 2).constraint
