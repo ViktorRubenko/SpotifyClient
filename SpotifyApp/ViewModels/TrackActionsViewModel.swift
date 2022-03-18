@@ -17,12 +17,13 @@ protocol TrackActionsViewModelDelegate: AnyObject {
     func share(externalURL: String)
     func openAlbum(viewModel: AlbumViewModel)
     func showArtist()
+    func openArtist(id: String)
 }
 
 class TrackActionsViewModel {
     private let trackResponse: TrackResponse
     weak var delegate: TrackActionsViewModelDelegate?
-    private(set) var trackActions = [TrackAction]()
+    var trackActions = Observable<[TrackAction]>([])
     let albumImageURL: URL?
     let topText: String
     let bottomText: String
@@ -32,10 +33,10 @@ class TrackActionsViewModel {
         self.albumImageURL = findClosestSizeImage(images: albumImages, height: 200, width: 200)
         self.topText = trackResponse.name
         self.bottomText = trackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
-        fillActions()
     }
     
-    private func fillActions() {
+    func getActions() {
+        var trackActions = [TrackAction]()
         trackActions.append(contentsOf: [
             TrackAction(name: "Add to Favorites", callback: { self.delegate?.addToFavorites() }),
             TrackAction(name: "Share", callback: {
@@ -48,6 +49,21 @@ class TrackActionsViewModel {
             }))
         }
         trackActions.append(TrackAction(name: "Artist", callback: { self.delegate?.showArtist() }))
+        self.trackActions.value = trackActions
+    }
+    
+    func getArtistActions() {
+        if trackResponse.artists.count > 1 {
+            var trackActions = [TrackAction]()
+            for artist in trackResponse.artists {
+                trackActions.append(TrackAction(
+                    name: artist.name,
+                    callback: { self.delegate?.openArtist(id: artist.id) }))
+            }
+            self.trackActions.value = trackActions
+        } else {
+            delegate?.openArtist(id: trackResponse.artists[0].id)
+        }
     }
 }
 

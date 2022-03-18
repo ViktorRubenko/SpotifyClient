@@ -42,6 +42,7 @@ class TrackActionsViewController: UIViewController {
         return containerView
     }()
     private let averageColor: UIColor?
+    private var needShowArtist = false
 
     init(viewModel: TrackActionsViewModel, averageColor: UIColor? = nil) {
         self.viewModel = viewModel
@@ -58,6 +59,9 @@ class TrackActionsViewController: UIViewController {
         super.viewDidLoad()
 
         setupViews()
+        setupBinders()
+        
+        viewModel.getActions()
     }
 }
 //MARK: - Methods
@@ -85,6 +89,26 @@ extension TrackActionsViewController {
             make.bottom.equalTo(closeButton.snp.top)
         }
     }
+    
+    private func setupBinders() {
+        viewModel.trackActions.bind { [weak self] _ in
+            if self!.needShowArtist {
+                let centerY = self!.tableView.center.y
+                UIView.animate(
+                    withDuration: 0.5) {
+                        self!.tableView.center.y = -self!.tableView.center.y
+                    } completion: { _ in
+                        self!.tableView.center.y = centerY * 3
+                        self!.tableView.reloadData()
+                        UIView.animate(withDuration: 0.5) {
+                            self!.tableView.center.y = centerY
+                        }
+                    }
+            } else {
+                self?.tableView.reloadData()
+            }
+        }
+    }
 }
 //MARK: - Actions
 extension TrackActionsViewController {
@@ -95,13 +119,13 @@ extension TrackActionsViewController {
 //MARK: - TableView Delegate/DataSource
 extension TrackActionsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.trackActions.count
+        viewModel.trackActions.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         var contentConfig = cell.defaultContentConfiguration()
-        contentConfig.text = viewModel.trackActions[indexPath.row].name
+        contentConfig.text = viewModel.trackActions.value[indexPath.row].name
         cell.contentConfiguration = contentConfig
         cell.backgroundColor = .clear
         return cell
@@ -111,10 +135,20 @@ extension TrackActionsViewController: UITableViewDelegate, UITableViewDataSource
         headerHeight
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if needShowArtist {
+            return "Artists"
+        }
+        return nil
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ImageTextHeader.id) as! ImageTextHeader
-        header.configure(imageURL: viewModel.albumImageURL, topText: viewModel.topText, bottomText: viewModel.bottomText)
-        return header
+        if !needShowArtist {
+            let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ImageTextHeader.id) as! ImageTextHeader
+            header.configure(imageURL: viewModel.albumImageURL, topText: viewModel.topText, bottomText: viewModel.bottomText)
+            return header
+        }
+        return nil
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -122,7 +156,7 @@ extension TrackActionsViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.trackActions[indexPath.row].callback()
+        viewModel.trackActions.value[indexPath.row].callback()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -161,6 +195,19 @@ extension TrackActionsViewController: TrackActionsViewModelDelegate {
     }
     
     func showArtist() {
-        
+        needShowArtist = true
+        viewModel.getArtistActions()
+    }
+    
+    func openArtist(id: String) {
+        weak var pvc = self.presentingViewController as? TabBarController
+        let vc = ArtistViewController(id: id)
+        dismiss(animated: true) {
+            if let navigationController = pvc?.selectedViewController as? UINavigationController {
+                navigationController.pushViewController(vc, animated: true)
+            } else {
+                pvc?.present(vc, animated: true, completion: nil)
+            }
+        }
     }
 }
