@@ -41,9 +41,11 @@ class TrackActionsViewController: UIViewController {
         
         return containerView
     }()
+    private let averageColor: UIColor?
 
-    init(viewModel: TrackActionsViewModel) {
+    init(viewModel: TrackActionsViewModel, averageColor: UIColor? = nil) {
         self.viewModel = viewModel
+        self.averageColor = averageColor
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = self
     }
@@ -131,12 +133,16 @@ extension TrackActionsViewController: UITableViewDelegate, UITableViewDataSource
 }
 
 extension TrackActionsViewController: TrackActionsViewModelDelegate {
-    
+
     func openAlbum(viewModel: AlbumViewModel) {
-        let vc = TrackContainerViewController(viewModel: viewModel, containerType: .album)
-        weak var pvc = self.presentingViewController
+        let vc = TrackContainerViewController(viewModel: viewModel, containerType: .album, imageAverageColor: averageColor)
+        weak var pvc = self.presentingViewController as? UITabBarController
         dismiss(animated: true) {
-            pvc?.present(vc, animated: true, completion: nil)
+            if let navigationController = pvc?.selectedViewController as? UINavigationController {
+                navigationController.pushViewController(vc, animated: true)
+            } else {
+                pvc?.present(vc, animated: true, completion: nil)
+            }
         }
     }
     

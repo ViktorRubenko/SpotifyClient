@@ -12,6 +12,13 @@ struct TrackAction {
     let callback: (() -> Void)
 }
 
+protocol TrackActionsViewModelDelegate: AnyObject {
+    func addToFavorites()
+    func share(externalURL: String)
+    func openAlbum(viewModel: AlbumViewModel)
+    func showArtist()
+}
+
 class TrackActionsViewModel {
     private let trackResponse: TrackResponse
     weak var delegate: TrackActionsViewModelDelegate?
@@ -37,7 +44,7 @@ class TrackActionsViewModel {
         ])
         if trackResponse.album != nil {
             trackActions.append(TrackAction(name: "Album", callback: {
-                
+                self.delegate?.openAlbum(viewModel: AlbumViewModel(id: self.trackResponse.album!.id))
             }))
         }
         trackActions.append(TrackAction(name: "Artist", callback: { self.delegate?.showArtist() }))

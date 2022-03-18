@@ -57,10 +57,14 @@ class TrackContainerViewController: UIViewController {
         changeBackgroundGradient()
         setupNavigationBar()
         setupBinders()
-        
-        print("fetch")
+    
         viewModel.fetch()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationColor()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -121,7 +125,10 @@ extension TrackContainerViewController {
             style: .done,
             target: self,
             action: #selector(didTapBackButton))
-        
+    }
+    
+    private func setupNavigationColor() {
+        guard let imageAverageColor = imageAverageColor else { return }
         previousNavigatioBaraAppearance = navigationController?.navigationBar.standardAppearance
         
         let appearance = UINavigationBarAppearance()
@@ -178,7 +185,8 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
         cell.configure(model)
         cell.accessotyHandler = { [weak self] in
             let vc = TrackActionsViewController(
-                viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row))
+                viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row),
+                averageColor: cell.averageColor)
             vc.modalPresentationStyle = .overFullScreen
             self?.present(vc, animated: true)
         }
@@ -200,7 +208,6 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath)
         collectionView.deselectItem(at: indexPath, animated: false)
     }
     

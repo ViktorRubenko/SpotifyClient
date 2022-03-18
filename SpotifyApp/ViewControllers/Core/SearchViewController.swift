@@ -122,7 +122,6 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 //MARK: - SearchResultsViewControllerDelegate
 extension SearchViewController: SearchResultsViewControllerDelegate {
     func selectResultAt(indexPath: IndexPath, averageColor: UIColor?) {
-        print(indexPath)
         let model = viewModel.resultSections.value[indexPath.section].items[indexPath.row]
         switch model.type {
         case .album:
