@@ -14,6 +14,7 @@ class TextHeader: UICollectionReusableView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 25, weight: .semibold)
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -31,9 +32,9 @@ class TextHeader: UICollectionReusableView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(5)
-            make.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-10)
-            make.top.equalToSuperview().offset(25)
+            make.trailing.equalToSuperview().offset(-5)
+            make.bottom.equalToSuperview().offset(-5)
+            make.top.equalToSuperview().offset(15)
         }
     }
     

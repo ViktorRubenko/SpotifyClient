@@ -92,13 +92,13 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let section = viewModel.resultSections.value[indexPath.section]
         let model = section.items[indexPath.row]
-        switch model.type {
+        switch model.itemType {
         case .noResults:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NoResultsListCell.id, for: indexPath)
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
-            cell.configure(model, type: model.type)
+            cell.configure(model, type: model.itemType, useDefaultImage: true)
             return cell
         }
     }

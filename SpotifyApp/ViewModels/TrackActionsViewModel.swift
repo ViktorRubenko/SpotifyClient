@@ -27,12 +27,14 @@ class TrackActionsViewModel {
     let albumImageURL: URL?
     let topText: String
     let bottomText: String
+    private let fromArtist: Bool
     
-    init(trackResponse: TrackResponse, albumImages: [SpotifyImage]) {
+    init(trackResponse: TrackResponse, albumImages: [SpotifyImage]?, fromArtist: Bool = false) {
         self.trackResponse = trackResponse
         self.albumImageURL = findClosestSizeImage(images: albumImages, height: 200, width: 200)
         self.topText = trackResponse.name
         self.bottomText = trackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
+        self.fromArtist = fromArtist
     }
     
     func getActions() {
@@ -48,7 +50,9 @@ class TrackActionsViewModel {
                 self.delegate?.openAlbum(viewModel: AlbumViewModel(id: self.trackResponse.album!.id))
             }))
         }
-        trackActions.append(TrackAction(name: "Artist", callback: { self.delegate?.showArtist() }))
+        if !fromArtist {
+            trackActions.append(TrackAction(name: "Artist", callback: { self.delegate?.showArtist() }))
+        }
         self.trackActions.value = trackActions
     }
     

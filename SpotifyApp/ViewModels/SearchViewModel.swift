@@ -12,7 +12,7 @@ struct searchResultSection {
     private(set) var items: [ItemModel]
     
     fileprivate mutating func addNoResultItem() {
-        items.append(ItemModel(id: "", name: "No Results", info: nil, imageURL: nil, type: .noResults))
+        items.append(ItemModel(id: "", name: "No Results", info: nil, imageURL: nil, itemType: .noResults))
     }
 }
 
@@ -42,7 +42,7 @@ final class SearchViewModel {
                                     name: $0.name,
                                     info: "Artist",
                                     imageURL: findClosestSizeImage(images: $0.images, height: 100, width: 100),
-                                    type: .artist)
+                                    itemType: .artist)
                             })
                     )
                 }
@@ -57,7 +57,7 @@ final class SearchViewModel {
                                     name: $0.name,
                                     info: "Track • \($0.artists.compactMap({$0.name}).joined(separator: ", "))",
                                     imageURL: findClosestSizeImage(images: $0.album!.images, height: 100, width: 100),
-                                    type: .track)
+                                    itemType: .track)
                             })
                     )
                 }
@@ -72,7 +72,7 @@ final class SearchViewModel {
                                     name: $0.name,
                                     info: "Album • \($0.artists.compactMap({$0.name}).joined(separator: ", "))",
                                     imageURL: findClosestSizeImage(images: $0.images, height: 100, width: 100),
-                                    type: .album)
+                                    itemType: .album)
                             })
                     )
                 }
@@ -88,7 +88,7 @@ final class SearchViewModel {
                                     name: $0.name,
                                     info: "Playlist",
                                     imageURL: findClosestSizeImage(images: $0.images, height: 100, width: 100),
-                                    type: .playlist)
+                                    itemType: .playlist)
                             })
                     )
                 }

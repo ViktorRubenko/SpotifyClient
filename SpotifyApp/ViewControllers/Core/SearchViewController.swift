@@ -123,7 +123,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 extension SearchViewController: SearchResultsViewControllerDelegate {
     func selectResultAt(indexPath: IndexPath, averageColor: UIColor?) {
         let model = viewModel.resultSections.value[indexPath.section].items[indexPath.row]
-        switch model.type {
+        switch model.itemType {
         case .album:
             let vc = TrackContainerViewController(
                 viewModel: AlbumViewModel(id: model.id),
@@ -135,6 +135,9 @@ extension SearchViewController: SearchResultsViewControllerDelegate {
                 viewModel: PlaylistViewModel(id: model.id),
                 containerType: .playlist,
                 imageAverageColor: averageColor)
+            navigationController?.pushViewController(vc, animated: true)
+        case .artist:
+            let vc = ArtistViewController(id: model.id)
             navigationController?.pushViewController(vc, animated: true)
         default:
             break

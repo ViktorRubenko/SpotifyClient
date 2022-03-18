@@ -200,4 +200,22 @@ class APICaller {
             }
         }
     }
+    
+    func getArtist(id: String, completion: @escaping (Result<ArtistDetailResponse,AFError>) -> Void) {
+        createRequest(url: baseURL + "/artists/\(id)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: ArtistDetailResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
+    
+    func getArtistsTopTracks(id: String, completion: @escaping (Result<ArtistsTopTracksResponse,AFError>) -> Void) {
+        let market = Locale.current.regionCode ?? "US"
+        createRequest(url: baseURL + "/artists/\(id)/top-tracks?market=\(market)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: ArtistsTopTracksResponse.self) { response in
+                completion(response.result)
+                print(NSString(string: String(data: response.data!, encoding: .utf8)!))
+            }
+        }
+    }
 }

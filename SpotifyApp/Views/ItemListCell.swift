@@ -11,6 +11,13 @@ import SnapKit
 class ItemListCell: UICollectionViewListCell {
     static let id = "TrackListCell"
     
+    private let indexLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textAlignment = .center
+        return label
+    }()
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
@@ -39,12 +46,13 @@ class ItemListCell: UICollectionViewListCell {
         return button
     }()
     
-    var accessotyHandler: (() -> Void)?
+    var accessoryHandler: (() -> Void)?
     
     private lazy var customAccessory = UICellAccessory.CustomViewConfiguration(
         customView: accessoryButton, placement: .trailing(displayed: .always))
     
-    private var widthConstraint: Constraint!
+    private var imageLeadingContraint: Constraint!
+    private var imageWidthContraint: Constraint!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -78,15 +86,22 @@ class ItemListCell: UICollectionViewListCell {
     
     private func setupViews() {
         
+        contentView.addSubview(indexLabel)
         contentView.addSubview(imageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(infoLabel)
         
+        indexLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.width.equalTo(40)
+        }
+        
         imageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
-            make.leading.equalToSuperview()
-            widthConstraint = make.width.equalTo(imageView.snp.height).constraint
+            imageLeadingContraint = make.leading.equalTo(indexLabel.snp.trailing).offset(4).constraint
+            imageWidthContraint = make.width.equalTo(imageView.snp.height).constraint
         }
         
         nameLabel.snp.makeConstraints { make in
@@ -103,7 +118,7 @@ class ItemListCell: UICollectionViewListCell {
         }
     }
     
-    func configure(_ model: CellModel, type: ItemType = .track) {
+    func configure(_ model: CellModel, type: ItemType = .track, index: String? = nil, useDefaultImage: Bool = false) {
         switch type {
         case .track:
             accessoryButton.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
@@ -114,16 +129,42 @@ class ItemListCell: UICollectionViewListCell {
         }
         nameLabel.text = model.name
         infoLabel.text = model.info
-        imageView.sd_setImage(with: model.imageURL, completed: nil)
-        if model.imageURL == nil {
-            widthConstraint.deactivate()
+        indexLabel.text = index
+        
+        if useDefaultImage {
+            switch type {
+            case .track:
+                imageView.image = UIImage(systemName: "music.note")
+            case .artist:
+                imageView.image = UIImage(systemName: "music.mic")
+            case .album:
+                imageView.image = UIImage(systemName: "circle")
+            case .playlist:
+                imageView.image = UIImage(systemName: "play.circle")
+            default:
+                break
+            }
+        }
+        
+        if model.imageURL != nil {
+            imageView.sd_setImage(with: model.imageURL, completed: nil)
+        }
+        
+        if index == nil {
+            imageLeadingContraint.deactivate()
             imageView.snp.makeConstraints { make in
-                widthConstraint = make.width.equalTo(0).constraint
+                imageLeadingContraint = make.leading.equalToSuperview().constraint
+            }
+        }
+        if !useDefaultImage && model.imageURL == nil {
+            imageWidthContraint.deactivate()
+            imageView.snp.makeConstraints { make in
+                imageWidthContraint = make.width.equalTo(0).constraint
             }
         }
     }
     
     @objc private func didTapAccessotyButton() {
-        accessotyHandler?()
+        accessoryHandler?()
     }
 }

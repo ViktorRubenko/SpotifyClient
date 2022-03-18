@@ -97,5 +97,5 @@ struct ItemModel: CellModel {
     let name: String
     let info : String?
     let imageURL: URL?
-    let type: ItemType
+    let itemType: ItemType
 }

@@ -7,6 +7,18 @@
 
 import Foundation
 
-struct ArtistDetailResponse {
+// MARK: - ArtistDetailResponse
+struct ArtistDetailResponse: Codable {
+    let externalUrls: ExternalUrls
+    let followers: Followers
+    let genres: [String]
+    let id: String
+    let images: [SpotifyImage]
+    let name: String
+    let popularity: Int
 
+    enum CodingKeys: String, CodingKey {
+        case externalUrls = "external_urls"
+        case followers, genres, id, images, name, popularity
+    }
 }

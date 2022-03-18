@@ -186,7 +186,7 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
         let model = viewModel.model!.tracks[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
         cell.configure(model)
-        cell.accessotyHandler = { [weak self] in
+        cell.accessoryHandler = { [weak self] in
             let vc = TrackActionsViewController(
                 viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row),
                 averageColor: cell.averageColor)
