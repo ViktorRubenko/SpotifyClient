@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 enum TrackContainerType {
     case album, playlist
@@ -29,22 +30,24 @@ class TrackContainerViewController: UIViewController {
             withReuseIdentifier: TrackContainerHeaderView.id)
         return collectionView
     }()
-    private var headerView = ImageHeaderView()
-    private var collectionViewTopInset = 260.0
+    private let headerView = ImageHeaderView()
+    private var headerConstraint: Constraint!
     private var backgroundGradientView: UIView!
     private var imageAverageColor: UIColor?
-    private var previousNavigatioBaraAppearance: UINavigationBarAppearance?
+    private var previousNavigatioBarAppearance: UINavigationBarAppearance?
     private var containerType: TrackContainerType!
+    private var needSetContentOffset = true
+    private var topContentOffset = 0.0
     
     required init(
         viewModel: TrackContainerViewModelProtocol,
         containerType: TrackContainerType,
         imageAverageColor: UIColor? = nil) {
-        self.viewModel = viewModel
-        self.imageAverageColor = imageAverageColor
-        self.containerType = containerType
-        super.init(nibName: nil, bundle: nil)
-    }
+            self.viewModel = viewModel
+            self.imageAverageColor = imageAverageColor
+            self.containerType = containerType
+            super.init(nibName: nil, bundle: nil)
+        }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -52,26 +55,27 @@ class TrackContainerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupNavigationBar()
         setupViews()
         changeBackgroundGradient()
-        setupNavigationBar()
         setupBinders()
-    
+        
         viewModel.fetch()
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationColor()
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        guard let appearance = previousNavigatioBaraAppearance else { return }
-        navigationController?.navigationBar.standardAppearance = appearance
+        guard let appearance = previousNavigatioBarAppearance else { return }
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    override func viewWillLayoutSubviews() {
+        if needSetContentOffset {
+            needSetContentOffset = false
+            topContentOffset = view.bounds.width * 0.65
+            collectionView.contentInset = UIEdgeInsets(top: topContentOffset, left: 0, bottom: 0, right: 0)
+        }
     }
 }
 //MARK: - Methods
@@ -85,7 +89,7 @@ extension TrackContainerViewController {
         backgroundGradientView = UIView()
         view.addSubview(backgroundGradientView)
         backgroundGradientView.snp.makeConstraints { make in
-            make.top.equalTo(safeArea)
+            make.top.equalToSuperview()
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
@@ -93,18 +97,21 @@ extension TrackContainerViewController {
         
         view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
-            make.top.equalTo(safeArea.snp.top)
+            make.top.equalTo(safeArea.snp.top).offset(-30)
+            headerConstraint = make.height.equalTo(view.snp.width).multipliedBy(0.65).constraint
             make.centerX.equalToSuperview()
             make.width.equalToSuperview()
         }
         
         view.addSubview(collectionView)
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(safeArea)
+            make.bottom.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
         }
         collectionView.backgroundColor = .clear
-        collectionView.contentInset = UIEdgeInsets(top: collectionViewTopInset, left: 0, bottom: 0, right: 0)
-        
     }
     
     private func changeBackgroundGradient() {
@@ -118,24 +125,20 @@ extension TrackContainerViewController {
     }
     
     private func setupNavigationBar() {
-        navigationItem.largeTitleDisplayMode = .never
         title = ""
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.backward.circle"),
             style: .done,
             target: self,
             action: #selector(didTapBackButton))
-    }
-    
-    private func setupNavigationColor() {
-        guard let imageAverageColor = imageAverageColor else { return }
-        previousNavigatioBaraAppearance = navigationController?.navigationBar.standardAppearance
         
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = imageAverageColor
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        previousNavigatioBarAppearance = navigationController?.navigationBar.scrollEdgeAppearance
+        
+        let transparentBackground = UINavigationBarAppearance()
+        transparentBackground.configureWithTransparentBackground()
+        transparentBackground.backgroundColor = .clear
+        navigationController?.navigationBar.scrollEdgeAppearance = transparentBackground
     }
     
     private func setupBinders() {
@@ -212,8 +215,12 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let yOffset = scrollView.contentOffset.y + 91 + collectionViewTopInset
-        title = yOffset <= collectionViewTopInset ? "" : viewModel.model?.name
-        headerView.scroll(yOffset)
+        let yOffset = scrollView.contentOffset.y + topContentOffset
+        headerConstraint.deactivate()
+        headerView.snp.makeConstraints { make in
+            headerConstraint = make.height.equalTo(view.snp.width).multipliedBy(0.65).offset(-yOffset / 2).constraint
+        }
+        headerView.alpha = (180 - yOffset) / 180
+        headerView.isHidden = yOffset >= 180
     }
 }

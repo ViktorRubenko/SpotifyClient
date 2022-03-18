@@ -20,16 +20,8 @@ class ImageHeaderView: UIView {
         return imageView
     }()
     
-    private var imageHeight = 250.0
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
-    }
-    
-    init(imageHeight: Double) {
-        super.init(frame: .zero)
-        self.imageHeight = imageHeight
         setupViews()
     }
     
@@ -44,26 +36,13 @@ class ImageHeaderView: UIView {
 
         imageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
             make.centerX.equalToSuperview()
-            heightConstraint = make.height.equalTo(imageHeight).constraint
-            make.width.equalTo(imageView.snp.height)
+            make.width.equalTo(snp.height)
         }
     }
     
     func setImage(_ url: URL?) {
         imageView.sd_setImage(with: url, completed: nil)
-    }
-    
-    func scroll(_ yOffset: Double) {
-        
-        isHidden = yOffset > 180
-        alpha = (180 - yOffset) / 180.0
-        var height = imageHeight - yOffset / 2
-        height = height >= 0 ? height : 0
-        
-        heightConstraint.deactivate()
-        imageView.snp.makeConstraints { make in
-            heightConstraint = make.height.equalTo(height).constraint
-        }
     }
 }
