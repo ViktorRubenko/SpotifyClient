@@ -51,6 +51,8 @@ class ImageTextHeader: UITableViewHeaderFooterView {
         containerView.addSubview(bottomLabel)
         
         containerView.snp.makeConstraints { make in
+            make.leading.equalTo(snp.leading)
+            make.trailing.equalTo(snp.trailing)
             make.center.equalToSuperview()
             make.top.equalTo(imageView)
             make.bottom.equalTo(bottomLabel)
