@@ -217,11 +217,14 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y + topContentOffset
         title = yOffset >= topContentOffset ? viewModel.model?.name : ""
-        headerConstraint.deactivate()
-        headerView.snp.makeConstraints { make in
-            headerConstraint = make.height.equalTo(view.snp.width).multipliedBy(0.65).offset(-yOffset / 2).constraint
+        
+        if yOffset <= topContentOffset {
+            headerConstraint.deactivate()
+            headerView.snp.makeConstraints { make in
+                headerConstraint = make.height.equalTo(view.snp.width).multipliedBy(0.65).offset(-yOffset / 2).constraint
+            }
+            headerView.alpha = (180 - yOffset) / 180
+            headerView.isHidden = yOffset >= 180
         }
-        headerView.alpha = (180 - yOffset) / 180
-        headerView.isHidden = yOffset >= 180
     }
 }
