@@ -33,8 +33,23 @@ class ArtistViewController: UIViewController {
         return imageView
     }()
     
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 60, weight: .bold)
+        label.numberOfLines = 2
+        label.adjustsFontSizeToFitWidth = true
+        return label
+    }()
+    
     private var viewModel: ArtistViewModel!
     private let gradientBackgroundView = GradientBackgroundView()
+    private let reverseGradientView: GradientBackgroundView = {
+        let view = GradientBackgroundView()
+        view.reverse = true
+        view.style = .medium
+        view.setStartColor(.black)
+        return view
+    }()
     private var previousNavigationBarAppearance: UINavigationBarAppearance?
     private var needSetOffset = true
     private var topContentOffset = 0.0
@@ -42,6 +57,8 @@ class ArtistViewController: UIViewController {
         topContentOffset * 1.5
     }
     private var backgroundBottomContraint: Constraint!
+    private var nameLabelBottomConstraint: Constraint!
+    private let reverseGradientAlpha = 0.33
     
     init(id: String) {
         self.viewModel = ArtistViewModel(itemID: id)
@@ -67,7 +84,17 @@ class ArtistViewController: UIViewController {
             needSetOffset = false
             topContentOffset = view.bounds.height * 0.3 > 250 ? view.bounds.height * 0.3 : 250
             collectionView.contentInset = UIEdgeInsets(top: topContentOffset, left: 0, bottom: 0, right: 0)
+            
+            nameLabelBottomConstraint.deactivate()
+            nameLabel.snp.makeConstraints { make in
+                nameLabelBottomConstraint = make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(topContentOffset).constraint
+            }
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.scrollEdgeAppearance = previousNavigationBarAppearance
     }
 }
 // MARK: - Methods
@@ -118,6 +145,21 @@ extension ArtistViewController {
             make.top.equalTo(view.safeAreaLayoutGuide)
         }
         
+        collectionView.addSubview(reverseGradientView)
+        reverseGradientView.alpha = reverseGradientAlpha
+        collectionView.addSubview(nameLabel)
+        
+        reverseGradientView.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.bottom.equalTo(nameLabel)
+            make.top.equalTo(nameLabel)
+        }
+        nameLabel.snp.makeConstraints { make in
+            make.width.equalToSuperview().multipliedBy(0.9)
+            make.centerX.equalToSuperview()
+            nameLabelBottomConstraint = make.bottom.equalTo(view.snp.centerY).constraint
+        }
+        
     }
     
     private func setupBinders() {
@@ -127,6 +169,9 @@ extension ArtistViewController {
         viewModel.artistImage.bind { [weak self] image in
             self?.artistImageBackground.image = image
             self?.gradientBackgroundView.setStartColor(image?.averageColor)
+        }
+        viewModel.name.bind { [weak self] name in
+            self?.nameLabel.text = name
         }
     }
     
@@ -211,6 +256,14 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
             return ((view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0.0) +
                     (self.navigationController?.navigationBar.frame.height ?? 0.0))
         }
+        
+        title = -yOffset <= topContentOffset * 0.10 ? viewModel.name.value : ""
+        
+        nameLabelBottomConstraint.deactivate()
+        nameLabel.snp.makeConstraints { make in
+            nameLabelBottomConstraint = make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(-yOffset).constraint
+        }
+        
         let fixedDownOffset = topBarHeight - yOffset
         if fixedDownOffset >= view.center.y {
             backgroundBottomContraint.deactivate()
@@ -219,9 +272,10 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
             }
         }
 
-        let fixedTopOffset = yOffset + topContentOffset
-        if fixedTopOffset >= 0 {
-            artistImageBackground.alpha = (topContentOffset * 0.7 - fixedTopOffset) / (topContentOffset * 0.7)
+        let normalizedTopOffset = yOffset + topContentOffset
+        if normalizedTopOffset >= 0 {
+            reverseGradientView.alpha = reverseGradientAlpha * (topContentOffset - normalizedTopOffset * 1.5) / topContentOffset
+            artistImageBackground.alpha = (topContentOffset * 0.7 - normalizedTopOffset) / (topContentOffset * 0.7)
         }
     }
 }

@@ -102,7 +102,7 @@ final class ArtistViewModel {
                 if error == nil, let image = image {
                     self.artistImage.value = image
                 } else {
-                    print("Failing to load artist image with: \(error?.localizedDescription)")
+                    print("Failing to load artist image with: \(error!.localizedDescription)")
                 }
             }
     }

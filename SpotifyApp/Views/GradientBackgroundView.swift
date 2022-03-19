@@ -9,8 +9,14 @@ import UIKit
 
 class GradientBackgroundView: UIView {
     
+    enum GradientStyle {
+        case light, medium, hard
+    }
+    
     private var startColor: UIColor?
     private var gradientLayer: CAGradientLayer?
+    var reverse = false
+    var style: GradientStyle = .hard
 
     public func setStartColor(_ startColor: UIColor?) {
         self.startColor = startColor
@@ -21,9 +27,16 @@ class GradientBackgroundView: UIView {
         guard let startColor = startColor else { return }
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = bounds
-        gradientLayer.colors = [startColor.cgColor, UIColor.clear.cgColor]
+        gradientLayer.colors = !reverse ? [startColor.cgColor, UIColor.clear.cgColor] : [UIColor.clear.cgColor, startColor.cgColor]
         gradientLayer.shouldRasterize = true
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.7)
+        switch style {
+        case .light:
+            gradientLayer.endPoint = !reverse ? CGPoint(x: 0.5, y: 0.25) : CGPoint(x: 0.5, y: 0.7)
+        case .medium:
+            gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.5)
+        case .hard:
+            gradientLayer.endPoint = !reverse ? CGPoint(x: 0.5, y: 0.7) : CGPoint(x: 0.5, y: 0.25)
+        }
         layer.addSublayer(gradientLayer)
         self.gradientLayer = gradientLayer
     }
