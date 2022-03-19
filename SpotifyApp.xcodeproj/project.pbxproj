@@ -53,6 +53,8 @@
 		E39AAA8727E50C190033877A /* ArtistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA8627E50C190033877A /* ArtistViewController.swift */; };
 		E39AAA8927E50CE40033877A /* ArtistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA8827E50CE40033877A /* ArtistViewModel.swift */; };
 		E39AAA8B27E53D5A0033877A /* ArtistsTopTracksResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA8A27E53D5A0033877A /* ArtistsTopTracksResponse.swift */; };
+		E39AAA9527E626620033877A /* SectionBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA9427E626620033877A /* SectionBackgroundView.swift */; };
+		E39AAA9727E63CA60033877A /* GradientBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA9627E63CA60033877A /* GradientBackgroundView.swift */; };
 		E3A7BC6827D95D600046154C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC6727D95D600046154C /* AppDelegate.swift */; };
 		E3A7BC6A27D95D600046154C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A7BC6927D95D600046154C /* SceneDelegate.swift */; };
 		E3A7BC7127D95D620046154C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3A7BC7027D95D620046154C /* Assets.xcassets */; };
@@ -125,6 +127,8 @@
 		E39AAA8627E50C190033877A /* ArtistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistViewController.swift; sourceTree = "<group>"; };
 		E39AAA8827E50CE40033877A /* ArtistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistViewModel.swift; sourceTree = "<group>"; };
 		E39AAA8A27E53D5A0033877A /* ArtistsTopTracksResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistsTopTracksResponse.swift; sourceTree = "<group>"; };
+		E39AAA9427E626620033877A /* SectionBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionBackgroundView.swift; sourceTree = "<group>"; };
+		E39AAA9627E63CA60033877A /* GradientBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackgroundView.swift; sourceTree = "<group>"; };
 		E3A7BC6427D95D600046154C /* SpotifyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpotifyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3A7BC6727D95D600046154C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3A7BC6927D95D600046154C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -264,6 +268,8 @@
 				E337F79027DE772D00689A7A /* ItemListCell.swift */,
 				E39AAA7F27E381AD0033877A /* NoResultsListCell.swift */,
 				E39AAA5727DFC30E0033877A /* TrackContainerHeaderView.swift */,
+				E39AAA9427E626620033877A /* SectionBackgroundView.swift */,
+				E39AAA9627E63CA60033877A /* GradientBackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -521,6 +527,7 @@
 				E3AA50A027DC0A9100575C7F /* ArtistResponse.swift in Sources */,
 				E337F77227DD4B2200689A7A /* AlbumViewModel.swift in Sources */,
 				E3A7BC8727D9609F0046154C /* AuthManager.swift in Sources */,
+				E39AAA9527E626620033877A /* SectionBackgroundView.swift in Sources */,
 				E341042B27DA662D006BCAB6 /* UserProfileViewModel.swift in Sources */,
 				E39AAA6227E0D8CF0033877A /* PlaylistDetailResponse.swift in Sources */,
 				E341044927DBF46E006BCAB6 /* SpotifyImage.swift in Sources */,
@@ -542,6 +549,7 @@
 				E3AA50AB27DCDCB500575C7F /* FullImageCollectionViewCell.swift in Sources */,
 				E369E1C227DF726D00B6DCE8 /* TrackActionsViewController.swift in Sources */,
 				E341044027DA92F3006BCAB6 /* UserProfileHeader.swift in Sources */,
+				E39AAA9727E63CA60033877A /* GradientBackgroundView.swift in Sources */,
 				E369E1C427DF732E00B6DCE8 /* TrackActionsViewModel.swift in Sources */,
 				E39AAA5827DFC30E0033877A /* TrackContainerHeaderView.swift in Sources */,
 				E3A7BC8527D95E500046154C /* LibraryViewController.swift in Sources */,

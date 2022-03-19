@@ -32,7 +32,7 @@ class TrackContainerViewController: UIViewController {
     }()
     private let headerView = ImageHeaderView()
     private var headerConstraint: Constraint!
-    private var backgroundGradientView: UIView!
+    private var backgroundGradientView = GradientBackgroundView()
     private var imageAverageColor: UIColor?
     private var previousNavigatioBarAppearance: UINavigationBarAppearance?
     private var containerType: TrackContainerType!
@@ -57,7 +57,6 @@ class TrackContainerViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
         setupViews()
-        changeBackgroundGradient()
         setupBinders()
         
         viewModel.fetch()
@@ -86,7 +85,7 @@ extension TrackContainerViewController {
         
         let safeArea = view.safeAreaLayoutGuide
         
-        backgroundGradientView = UIView()
+        backgroundGradientView.setStartColor(imageAverageColor)
         view.addSubview(backgroundGradientView)
         backgroundGradientView.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -112,16 +111,6 @@ extension TrackContainerViewController {
             make.trailing.equalToSuperview()
         }
         collectionView.backgroundColor = .clear
-    }
-    
-    private func changeBackgroundGradient() {
-        guard let averageColor = imageAverageColor else { return }
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = view.bounds
-        gradientLayer.colors = [averageColor.cgColor, UIColor.clear.cgColor]
-        gradientLayer.shouldRasterize = true
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.7)
-        backgroundGradientView.layer.addSublayer(gradientLayer)
     }
     
     private func setupNavigationBar() {

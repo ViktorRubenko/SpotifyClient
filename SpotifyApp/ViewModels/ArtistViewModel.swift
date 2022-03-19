@@ -21,7 +21,11 @@ struct ArtistSection {
 
 final class ArtistViewModel {
     private let itemID: String
-    private var artistResponse: ArtistDetailResponse?
+    private var artistResponse: ArtistDetailResponse? {
+        didSet {
+            fetchImage()
+        }
+    }
     private var artistsTopTracksResposne: ArtistsTopTracksResponse?
     
     var sections = Observable<[ArtistSection]>([])
@@ -73,10 +77,10 @@ final class ArtistViewModel {
         var sections = [ArtistSection]()
         
         if let topTracks = artistsTopTracksResposne {
-            let count = topTracks.tracks.count >= 5 ? 4 : topTracks.tracks.count
+            let count = topTracks.tracks.count >= 5 ? 5 : topTracks.tracks.count
             sections.append(ArtistSection(
                 title: "Popular tracks",
-                items: topTracks.tracks[0...count].compactMap({
+                items: topTracks.tracks[0..<count].compactMap({
                     ItemModel(
                         id: $0.id,
                         name: $0.name,
@@ -88,6 +92,19 @@ final class ArtistViewModel {
         }
         
         self.sections.value = sections
+    }
+    
+    private func fetchImage() {
+        SDWebImageManager.shared.loadImage(
+            with: findClosestSizeImage(images: artistResponse?.images, height: 500, width: 500),
+            options: [.highPriority],
+            progress: nil) { image, _, error, _, _, _ in
+                if error == nil, let image = image {
+                    self.artistImage.value = image
+                } else {
+                    print("Failing to load artist image with: \(error?.localizedDescription)")
+                }
+            }
     }
     
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {

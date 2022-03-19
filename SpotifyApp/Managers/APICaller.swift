@@ -214,7 +214,6 @@ class APICaller {
         createRequest(url: baseURL + "/artists/\(id)/top-tracks?market=\(market)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: ArtistsTopTracksResponse.self) { response in
                 completion(response.result)
-                print(NSString(string: String(data: response.data!, encoding: .utf8)!))
             }
         }
     }
