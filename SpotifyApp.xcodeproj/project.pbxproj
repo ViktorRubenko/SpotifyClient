@@ -259,16 +259,12 @@
 		E341043E27DA92CE006BCAB6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E39AAA6827E113F40033877A /* Search */,
 				E3AA50A727DCDC8F00575C7F /* Home */,
 				E3A7BC7227D95D620046154C /* LaunchScreen.storyboard */,
-				E3AA50A827DCDCA700575C7F /* ImageWithInfoCollectionViewCell.swift */,
-				E3AA50AA27DCDCB500575C7F /* FullImageCollectionViewCell.swift */,
+				E39AAA9A27E696030033877A /* CollectionsCells */,
 				E341043F27DA92F3006BCAB6 /* UserProfileHeader.swift */,
 				E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */,
 				E39AAA7727E261830033877A /* ImageTextHeader.swift */,
-				E337F79027DE772D00689A7A /* ItemListCell.swift */,
-				E39AAA7F27E381AD0033877A /* NoResultsListCell.swift */,
 				E39AAA5727DFC30E0033877A /* TrackContainerHeaderView.swift */,
 				E39AAA9427E626620033877A /* SectionBackgroundView.swift */,
 				E39AAA9627E63CA60033877A /* GradientBackgroundView.swift */,
@@ -308,6 +304,18 @@
 				E39AAA5D27E0CE690033877A /* TrackContainerViewModelProtocol.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		E39AAA9A27E696030033877A /* CollectionsCells */ = {
+			isa = PBXGroup;
+			children = (
+				E39AAA6827E113F40033877A /* Search */,
+				E3AA50A827DCDCA700575C7F /* ImageWithInfoCollectionViewCell.swift */,
+				E3AA50AA27DCDCB500575C7F /* FullImageCollectionViewCell.swift */,
+				E337F79027DE772D00689A7A /* ItemListCell.swift */,
+				E39AAA7F27E381AD0033877A /* NoResultsListCell.swift */,
+			);
+			path = CollectionsCells;
 			sourceTree = "<group>";
 		};
 		E3A7BC5B27D95D5F0046154C = {

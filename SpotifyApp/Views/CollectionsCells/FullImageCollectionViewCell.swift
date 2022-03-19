@@ -10,7 +10,7 @@ import UIKit
 class FullImageCollectionViewCell: UICollectionViewCell {
     static let identifier = "FullImageCollectionViewCell"
     
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
         imageView.contentMode = .scaleAspectFill
@@ -48,5 +48,11 @@ class FullImageCollectionViewCell: UICollectionViewCell {
     
     func configure(_ model: CellModel) {
         imageView.sd_setImage(with: model.imageURL, completed: nil)
+    }
+}
+
+extension FullImageCollectionViewCell: AverageColorProtocol {
+    var averageColor: UIColor? {
+        imageView.image?.averageColor
     }
 }

@@ -246,18 +246,25 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let section = HomeSectionType(fromRawValue: indexPath.section)
         let item = viewModel.sections.value[indexPath.section].items[indexPath.row]
+        let averageColor = (collectionView.cellForItem(at: indexPath) as? AverageColorProtocol)?.averageColor
         switch section {
         case .userPlaylists:
-            let averageColor = (collectionView.cellForItem(at: indexPath) as! UserPlaylistCollectionViewCell).imageView.image?.averageColor
-            let vc = TrackContainerViewController(viewModel: PlaylistViewModel(id: item.id), containerType: .playlist, imageAverageColor: averageColor)
+            let vc = TrackContainerViewController(
+                viewModel: PlaylistViewModel(id: item.id),
+                containerType: .playlist,
+                imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .newReleases:
-            let averageColor = (collectionView.cellForItem(at: indexPath) as! ImageWithInfoCollectionViewCell).imageView.image?.averageColor
-            let vc = TrackContainerViewController(viewModel: AlbumViewModel(id: item.id), containerType: .album, imageAverageColor: averageColor)
+            let vc = TrackContainerViewController(
+                viewModel: AlbumViewModel(id: item.id),
+                containerType: .album,
+                imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .featuredPlaylists:
-            let averageColor = (collectionView.cellForItem(at: indexPath) as! FullImageCollectionViewCell).imageView.image?.averageColor
-            let vc = TrackContainerViewController(viewModel: PlaylistViewModel(id: item.id), containerType: .playlist, imageAverageColor: averageColor)
+            let vc = TrackContainerViewController(
+                viewModel: PlaylistViewModel(id: item.id),
+                containerType: .playlist,
+                imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .recommendations:
             let track = viewModel.sections.value[indexPath.section].items[indexPath.row]

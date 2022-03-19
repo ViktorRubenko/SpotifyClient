@@ -8,7 +8,11 @@
 import UIKit
 import SnapKit
 
-class ItemListCell: UICollectionViewListCell {
+protocol AverageColorProtocol: AnyObject {
+    var averageColor: UIColor? { get }
+}
+
+class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
     static let id = "TrackListCell"
     
     private let indexLabel: UILabel = {

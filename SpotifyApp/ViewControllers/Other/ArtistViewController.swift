@@ -230,14 +230,32 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let model = viewModel.sections.value[indexPath.section].items[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
         cell.configure(model, index: String(indexPath.row + 1))
-        cell.accessoryHandler = { [weak self] in
-            let vc = TrackActionsViewController(
-                viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row),
-                averageColor: cell.averageColor)
-            vc.modalPresentationStyle = .overFullScreen
-            self?.present(vc, animated: true)
+        if model.itemType == .track {
+            cell.accessoryHandler = { [weak self] in
+                let vc = TrackActionsViewController(
+                    viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row),
+                    averageColor: cell.averageColor)
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: true)
+            }
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: false)
+        let model = viewModel.sections.value[indexPath.section].items[indexPath.row]
+        switch model.itemType {
+        case .album:
+            let averageColor = (collectionView.cellForItem(at: indexPath) as? AverageColorProtocol)?.averageColor
+            let vc = TrackContainerViewController(
+                viewModel: AlbumViewModel(id: model.id),
+                containerType: .album,
+                imageAverageColor: averageColor)
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -275,7 +293,7 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let normalizedTopOffset = yOffset + topContentOffset
         if normalizedTopOffset >= 0 {
             reverseGradientView.alpha = reverseGradientAlpha * (topContentOffset - normalizedTopOffset * 1.5) / topContentOffset
-            artistImageBackground.alpha = (topContentOffset * 0.7 - normalizedTopOffset) / (topContentOffset * 0.7)
+            artistImageBackground.alpha = (topContentOffset - normalizedTopOffset * 1.85) / topContentOffset 
         }
     }
 }

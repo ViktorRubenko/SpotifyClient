@@ -12,7 +12,7 @@ class ImageWithInfoCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "ImageWithInfoCollectionViewCell"
     
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "photo")
         imageView.contentMode = .scaleAspectFill
@@ -83,5 +83,11 @@ class ImageWithInfoCollectionViewCell: UICollectionViewCell {
             make.trailing.equalTo(topLabel)
             make.bottom.lessThanOrEqualToSuperview()
         }
+    }
+}
+
+extension ImageWithInfoCollectionViewCell: AverageColorProtocol {
+    var averageColor: UIColor? {
+        imageView.image?.averageColor
     }
 }
