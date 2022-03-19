@@ -152,14 +152,14 @@ class APICaller {
         limit: Int = 50,
         offset: Int = 0,
         completion: @escaping (Result<SearchResponse, AFError>) -> Void) {
-        createRequest(
-            url: baseURL + "/search?limit=\(limit)&offset=\(offset)&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)&type=\(type.rawValue)",
-            method: .get) { dataRequest in
-                dataRequest.responseDecodable(of: SearchResponse.self) { response in
-                    completion(response.result)
+            createRequest(
+                url: baseURL + "/search?limit=\(limit)&offset=\(offset)&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)&type=\(type.rawValue)",
+                method: .get) { dataRequest in
+                    dataRequest.responseDecodable(of: SearchResponse.self) { response in
+                        completion(response.result)
+                    }
                 }
-            }
-    }
+        }
     
     func getRecentlyPlayedTracks(limit: Int = 20, completion: @escaping (Result<RecentlyPlayedResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/me/player/recently-played?limit=\(limit)", method: .get) { dataRequest in
@@ -213,6 +213,14 @@ class APICaller {
         let market = Locale.current.regionCode ?? "US"
         createRequest(url: baseURL + "/artists/\(id)/top-tracks?market=\(market)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: ArtistsTopTracksResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
+    
+    func getArtistAlbums(id: String, limit: Int = 50, completion: @escaping (Result<ArtistsAlbumsResponse,AFError>) -> Void) {
+        createRequest(url: baseURL + "/artists/\(id)/albums", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: ArtistsAlbumsResponse.self) { response in
                 completion(response.result)
             }
         }

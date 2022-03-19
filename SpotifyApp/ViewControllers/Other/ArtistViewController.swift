@@ -229,7 +229,7 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = viewModel.sections.value[indexPath.section].items[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
-        cell.configure(model, type: .track, index: String(indexPath.row + 1))
+        cell.configure(model, index: String(indexPath.row + 1))
         cell.accessoryHandler = { [weak self] in
             let vc = TrackActionsViewController(
                 viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row),

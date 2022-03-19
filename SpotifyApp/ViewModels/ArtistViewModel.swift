@@ -10,7 +10,7 @@ import UIKit
 import SDWebImage
 
 enum ArtistSectionType: Int {
-    case popularTracks, popularReleases, appearsOn, reletedArtists
+    case popularTracks, releases, appearsOn, reletedArtists
 }
 
 struct ArtistSection {
@@ -27,6 +27,7 @@ final class ArtistViewModel {
         }
     }
     private var artistsTopTracksResposne: ArtistsTopTracksResponse?
+    private var artistsAlbumsResponse: ArtistsAlbumsResponse?
     
     var sections = Observable<[ArtistSection]>([])
     var name = Observable<String>("")
@@ -68,6 +69,17 @@ final class ArtistViewModel {
             group.leave()
         }
         
+        group.enter()
+        APICaller.shared.getArtistAlbums(id: itemID) { [weak self] response in
+            switch response {
+            case .success(let response):
+                self?.artistsAlbumsResponse = response
+            case .failure(let error):
+                print("Failing get ArtistsAlbums, \(error.localizedDescription)")
+            }
+            group.leave()
+        }
+        
         group.notify(queue: .main) { [weak self] in
             self?.extractSections()
         }
@@ -89,6 +101,21 @@ final class ArtistViewModel {
                         itemType: .track)
                 }),
                 sectionType: .popularTracks))
+        }
+        
+        if let albums = artistsAlbumsResponse {
+            let count = albums.items.count >= 4 ? 4 : albums.items.count
+            sections.append(ArtistSection(
+                title: "Releases",
+                items: albums.items[0..<count].compactMap({
+                    ItemModel(
+                        id: $0.id,
+                        name: $0.name,
+                        info: $0.releaseDate.split(separator: "-")[0] + ($0.albumType != nil ? "• \($0.albumType!.capitalized)" : ""),
+                        imageURL: findClosestSizeImage(images: $0.images, height: 200, width: 200),
+                        itemType: .album)
+                }),
+                sectionType: .releases))
         }
         
         self.sections.value = sections
