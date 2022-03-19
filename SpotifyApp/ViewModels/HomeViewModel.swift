@@ -25,7 +25,7 @@ enum HomeSectionType: Int {
 struct HomeSection {
     let type: HomeSectionType
     let title: String
-    let items: [CellModel]
+    let items: [ItemModel]
 }
 
 final class HomeViewModel {
@@ -37,11 +37,11 @@ final class HomeViewModel {
     
     func fetchData() {
         
-        var userPlaylists = [PlaylistModel]()
-        var recentlyPlayedTracks = [TrackModel]()
-        var featuredPlaylists = [PlaylistModel]()
-        var newReleases = [AlbumModel]()
-        var recommendationTracks = [TrackModel]()
+        var userPlaylists = [ItemModel]()
+        var recentlyPlayedTracks = [ItemModel]()
+        var featuredPlaylists = [ItemModel]()
+        var newReleases = [ItemModel]()
+        var recommendationTracks = [ItemModel]()
         
         let group = DispatchGroup()
         
@@ -49,12 +49,13 @@ final class HomeViewModel {
         APICaller.shared.searchRequest("Discover Weekly", type: .playlist, limit: 1) { [weak self] result in
             switch result {
             case .success(let response):
-                userPlaylists += response.playlists!.items.compactMap { playlist in
-                    PlaylistModel(
-                        name: playlist.name,
-                        imageURL: findClosestSizeImage(images: playlist.images, height: 70, width: 70),
-                        info: playlist.owner?.displayName,
-                        id: playlist.id)
+                userPlaylists += response.playlists!.items.compactMap {
+                    ItemModel(
+                        id: $0.id,
+                        name: $0.name,
+                        info: $0.owner?.displayName,
+                        imageURL: findClosestSizeImage(images: $0.images, height: 70, width: 70),
+                        itemType: .playlist)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -68,11 +69,12 @@ final class HomeViewModel {
             switch result {
             case .success(let response):
                 userPlaylists += response.playlists!.items.compactMap { playlist in
-                    PlaylistModel(
+                    ItemModel(
+                        id: playlist.id,
                         name: playlist.name,
-                        imageURL: findClosestSizeImage(images: playlist.images, height: 70, width: 70),
                         info: playlist.owner?.displayName ?? "",
-                        id: playlist.id)
+                        imageURL: findClosestSizeImage(images: playlist.images, height: 70, width: 70),
+                        itemType: .playlist)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -86,11 +88,12 @@ final class HomeViewModel {
             switch result {
             case .success(let tracksResponse):
                 recentlyPlayedTracks = tracksResponse.items.compactMap {
-                    TrackModel(
+                    ItemModel(
+                        id: $0.track.id,
                         name: $0.track.name,
-                        imageURL: findClosestSizeImage(images: $0.track.album!.images, height: 200, width: 200),
                         info: $0.track.artists.compactMap({$0.name}).joined(separator: ", "),
-                        id: $0.track.id)
+                        imageURL: findClosestSizeImage(images: $0.track.album!.images, height: 200, width: 200),
+                        itemType: .track)
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -103,11 +106,12 @@ final class HomeViewModel {
             switch result {
             case .success(let response):
                 newReleases = response.albums.items.compactMap { album in
-                    AlbumModel(
+                    ItemModel(
+                        id: album.id,
                         name: album.name,
-                        imageURL: findClosestSizeImage(images: album.images, height: 250, width: 250),
                         info: album.artists.compactMap({$0.name}).joined(separator: ", "),
-                        id: album.id)
+                        imageURL: findClosestSizeImage(images: album.images, height: 250, width: 250),
+                        itemType: .album)
                 }
                 print("Get NewReleases")
             case .failure(let error):
@@ -122,11 +126,12 @@ final class HomeViewModel {
             switch result {
             case .success(let response):
                 featuredPlaylists = response.playlists.items.compactMap { playlist in
-                    PlaylistModel(
+                    ItemModel(
+                        id: playlist.id,
                         name: playlist.name,
-                        imageURL: findClosestSizeImage(images: playlist.images, height: 300, width: 300),
                         info: playlist.owner?.displayName ?? "",
-                        id: playlist.id)
+                        imageURL: findClosestSizeImage(images: playlist.images, height: 300, width: 300),
+                        itemType: .playlist)
                 }
                 print("Get FeaturedPlaylists")
             case .failure(let error):
@@ -141,11 +146,12 @@ final class HomeViewModel {
             switch result {
             case .success(let response):
                 recommendationTracks = response.tracks.compactMap { track in
-                    TrackModel(
+                    ItemModel(
+                        id: track.id,
                         name: track.name,
-                        imageURL: findClosestSizeImage(images: track.album!.images, height: 250, width: 250),
                         info: track.artists.compactMap({$0.name}).joined(separator: ", "),
-                        id: track.id)
+                        imageURL: findClosestSizeImage(images: track.album!.images, height: 250, width: 250),
+                        itemType: .track)
                 }
             case .failure(let error):
                 print(error.localizedDescription)

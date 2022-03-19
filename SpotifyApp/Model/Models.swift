@@ -14,52 +14,11 @@ protocol CellModel {
     var imageURL: URL? { get }
 }
 
-protocol ImageInfoModel {
-    var name: String { get }
-    var imageURL: URL? { get }
-    var info: String? { get }
-}
-
 protocol TrackContainerModelProtocol {
     var id: String { get }
     var name: String { get }
     var imageURL: URL? { get }
-    var tracks: [TrackModel] { get }
-}
-
-struct AlbumModel: CellModel, ImageInfoModel {
-    let name: String
-    let imageURL: URL?
-    let info: String?
-    let id: String
-}
-
-struct PlaylistModel: CellModel, ImageInfoModel {
-    let name: String
-    let imageURL: URL?
-    let info: String?
-    let id: String
-}
-
-struct TrackModel: CellModel {
-    let name: String
-    let imageURL: URL?
-    let info: String?
-    let id: String
-}
-
-struct ArtistModel: CellModel {
-    let name: String
-    let id: String
-    let info: String?
-    let imageURL: URL?
-}
-
-struct CategoryCellModel: CellModel {
-    let name: String
-    let id: String
-    let imageURL: URL?
-    let info: String?
+    var tracks: [ItemModel] { get }
 }
 
 struct AlbumDetailModel: TrackContainerModelProtocol {
@@ -68,9 +27,9 @@ struct AlbumDetailModel: TrackContainerModelProtocol {
     let year: String
     let albumType: String
     let artistName: String
-    let tracks: [TrackModel]
+    let tracks: [ItemModel]
     let date: String
-    let artists: [ArtistModel]
+    let artists: [ItemModel]
     let copyright: String
     let id: String
 }
@@ -78,7 +37,7 @@ struct AlbumDetailModel: TrackContainerModelProtocol {
 struct PlaylistDetailModel: TrackContainerModelProtocol {
     let name: String
     let imageURL: URL?
-    let tracks: [TrackModel]
+    let tracks: [ItemModel]
     let id: String
 }
 
@@ -89,7 +48,7 @@ struct TrackContainerHeaderModel {
 }
 
 enum ItemType {
-    case track, album, playlist, artist, noResults
+    case track, album, playlist, artist, noResults, category, unknown
 }
 
 struct ItemModel: CellModel {

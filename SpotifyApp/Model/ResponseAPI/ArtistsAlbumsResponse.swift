@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+// MARK: - ArtistsAlbumsResponse
+struct ArtistsAlbumsResponse: Codable {
+    let href: String
+    let items: [AlbumResponse]
+    let limit: Int
+    let next: String?
+    let offset: Int
+    let previous: String?
+    let total: Int
+}

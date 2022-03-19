@@ -34,11 +34,12 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
                     name: response.name,
                     imageURL: findClosestSizeImage(images: response.images, height: 250, width: 250),
                     tracks: response.tracks.items.filter({$0.track != nil}).compactMap( {
-                        TrackModel(
+                        ItemModel(
+                            id: $0.track!.id,
                             name: $0.track!.name,
-                            imageURL: findClosestSizeImage(images: $0.track!.album!.images, height: 50, width: 50),
                             info: $0.track!.artists.compactMap({$0.name}).joined(separator: ", "),
-                            id: $0.track!.id)}),
+                            imageURL: findClosestSizeImage(images: $0.track!.album!.images, height: 50, width: 50),
+                            itemType: .track)}),
                     id: response.id)
                 
                 self?.headerModel = TrackContainerHeaderModel(

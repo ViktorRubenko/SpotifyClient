@@ -45,13 +45,20 @@ final class AlbumViewModel: TrackContainerViewModelProtocol {
                     albumType: albumDetails.type,
                     artistName: albumDetails.artists.compactMap({$0.name}).joined(separator: ", "),
                     tracks: albumDetails.tracks.items.compactMap {
-                        TrackModel(
+                        ItemModel(
+                            id: $0.id,
                             name: $0.name,
-                            imageURL: nil,
                             info: $0.artists.compactMap({$0.name}).joined(separator: ", "),
-                            id: $0.id) },
+                            imageURL: nil,
+                            itemType: .track)},
                     date: albumDetails.releaseDate,
-                    artists: albumDetails.artists.compactMap({ArtistModel(name: $0.name, id: $0.id, info: "Artist", imageURL: nil)}),
+                    artists: albumDetails.artists.compactMap({
+                        ItemModel(
+                            id: $0.id,
+                            name: $0.name,
+                            info: "Artist",
+                            imageURL: nil,
+                            itemType: .artist)}),
                     copyright: albumDetails.copyrights.compactMap({$0.text}).joined(separator: ",\n"),
                     id: albumDetails.id)
                 self?.detailTracks = albumDetails.tracks.items

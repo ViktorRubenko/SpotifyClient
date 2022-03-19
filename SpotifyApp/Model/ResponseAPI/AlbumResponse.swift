@@ -15,17 +15,17 @@ struct AlbumResponse: Codable {
     let id: String
     let images: [SpotifyImage]
     let name, releaseDate: String
-    let releaseDatePrecision: String
     let totalTracks: Int
-    let type: String
+    let type: String?
+    let albumType: String?
 
     enum CodingKeys: String, CodingKey {
         case artists
         case externalUrls = "external_urls"
         case id, images, name
         case releaseDate = "release_date"
-        case releaseDatePrecision = "release_date_precision"
         case totalTracks = "total_tracks"
         case type
+        case albumType = "album_type"
     }
 }

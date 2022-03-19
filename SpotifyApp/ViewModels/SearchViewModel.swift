@@ -18,7 +18,7 @@ struct searchResultSection {
 
 final class SearchViewModel {
     
-    let categories = Observable<[CategoryCellModel]>([])
+    let categories = Observable<[ItemModel]>([])
     let resultSections = Observable<[searchResultSection]>([])
     
     func performSearch(for searchText: String) {
@@ -109,11 +109,12 @@ final class SearchViewModel {
             switch response {
             case .success(let result):
                 self?.categories.value = result.categories.items.compactMap({ item in
-                    CategoryCellModel(
-                        name: item.name,
+                    ItemModel(
                         id: item.id,
+                        name: item.name,
+                        info: nil,
                         imageURL: URL(string: item.icons.first?.url ?? ""),
-                        info: nil)
+                        itemType: .unknown)
                 })
             case .failure(let error):
                 print(error.localizedDescription)

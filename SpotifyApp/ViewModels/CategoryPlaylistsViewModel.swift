@@ -10,7 +10,7 @@ import Foundation
 final class CategoryPlaylistsViewModel {
     let name: String
     let itemID: String
-    let playlists = Observable<[PlaylistModel]>([])
+    let playlists = Observable<[ItemModel]>([])
     
     init(name: String, itemID: String) {
         self.name = name
@@ -22,11 +22,12 @@ final class CategoryPlaylistsViewModel {
             switch response {
             case.success(let playlists):
                 self?.playlists.value = playlists.playlists.items.compactMap({
-                    PlaylistModel(
+                    ItemModel(
+                        id: $0.id,
                         name: $0.name,
-                        imageURL: findClosestSizeImage(images: $0.images, height: 180, width: 180),
                         info: $0.owner?.displayName ?? "",
-                        id: $0.id)
+                        imageURL: findClosestSizeImage(images: $0.images, height: 180, width: 180),
+                        itemType: .playlist)
                 })
             case .failure(let error):
                 print(error.localizedDescription)

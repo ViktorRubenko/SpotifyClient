@@ -98,7 +98,7 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
-            cell.configure(model, type: model.itemType, useDefaultImage: true)
+            cell.configure(model, useDefaultImage: true)
             return cell
         }
     }

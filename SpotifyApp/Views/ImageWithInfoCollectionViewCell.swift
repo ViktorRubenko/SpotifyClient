@@ -54,10 +54,6 @@ class ImageWithInfoCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(_ model: CellModel) {
-        guard let model = model as? ImageInfoModel else {
-            print("Failed to read AlbumModel")
-            return
-        }
         topLabel.text = model.name
         bottomLabel.text = model.info
         imageView.sd_setImage(with: model.imageURL, completed: nil)

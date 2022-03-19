@@ -73,12 +73,9 @@ class HomeTrackViewCell: UICollectionViewCell {
         }
     }
     
-    func configure(_ viewModel: CellModel) {
-        guard let viewModel = viewModel as? TrackModel else {
-            return
-        }
-        trackNameLabel.text = viewModel.name
-        trackInfoLabel.text = viewModel.info
-        albumImageView.sd_setImage(with: viewModel.imageURL, completed: nil)
+    func configure(_ model: ItemModel) {
+        trackNameLabel.text = model.name
+        trackInfoLabel.text = model.info
+        albumImageView.sd_setImage(with: model.imageURL, completed: nil)
     }
 }

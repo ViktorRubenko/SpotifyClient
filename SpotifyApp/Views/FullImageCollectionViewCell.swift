@@ -47,9 +47,6 @@ class FullImageCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(_ model: CellModel) {
-        guard let model = model as? ImageInfoModel else {
-            return
-        }
         imageView.sd_setImage(with: model.imageURL, completed: nil)
     }
 }

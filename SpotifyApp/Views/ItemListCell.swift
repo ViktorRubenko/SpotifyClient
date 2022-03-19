@@ -118,8 +118,8 @@ class ItemListCell: UICollectionViewListCell {
         }
     }
     
-    func configure(_ model: CellModel, type: ItemType = .track, index: String? = nil, useDefaultImage: Bool = false) {
-        switch type {
+    func configure(_ model: ItemModel, index: String? = nil, useDefaultImage: Bool = false) {
+        switch model.itemType {
         case .track:
             accessoryButton.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
         case .album, .playlist, .artist:
@@ -132,7 +132,7 @@ class ItemListCell: UICollectionViewListCell {
         indexLabel.text = index
         
         if useDefaultImage {
-            switch type {
+            switch model.itemType {
             case .track:
                 imageView.image = UIImage(systemName: "music.note")
             case .artist:
