@@ -186,6 +186,27 @@ extension ArtistViewController {
     private func createSection(_ sectionIndex: Int) -> NSCollectionLayoutSection {
         let sectionType = viewModel.sections.value[sectionIndex].sectionType
         switch sectionType {
+        case .releases:
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)))
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(70)),
+                subitems: [item])
+            let section = NSCollectionLayoutSection(group: group)
+            section.boundarySupplementaryItems = [
+                NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50)),
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top)]
+            section.interGroupSpacing = 5
+            
+            section.decorationItems = [
+                NSCollectionLayoutDecorationItem.background(elementKind: SectionBackgroundView.id)
+            ]
+            
+            return section
         default:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
@@ -221,16 +242,17 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         viewModel.sections.value.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.sections.value[section].items.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let model = viewModel.sections.value[indexPath.section].items[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
-        cell.configure(model, index: String(indexPath.row + 1))
-        if model.itemType == .track {
+        switch model.itemType {
+        case .track:
+            cell.configure(model, index: String(indexPath.row + 1))
             cell.accessoryHandler = { [weak self] in
                 let vc = TrackActionsViewController(
                     viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row),
@@ -238,6 +260,11 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 vc.modalPresentationStyle = .overFullScreen
                 self?.present(vc, animated: true)
             }
+        case .album:
+            cell.setFontSize(nameSize: 16, infoSize: 14)
+            fallthrough
+        default:
+            cell.configure(model, withAccessory: false)
         }
         return cell
     }
@@ -289,11 +316,11 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 backgroundBottomContraint = make.bottom.equalTo(view.snp.centerY).offset(fixedDownOffset - view.center.y).constraint
             }
         }
-
+        
         let normalizedTopOffset = yOffset + topContentOffset
         if normalizedTopOffset >= 0 {
             reverseGradientView.alpha = reverseGradientAlpha * (topContentOffset - normalizedTopOffset * 1.5) / topContentOffset
-            artistImageBackground.alpha = (topContentOffset - normalizedTopOffset * 1.85) / topContentOffset 
+            artistImageBackground.alpha = (topContentOffset - normalizedTopOffset * 1.85) / topContentOffset
         }
     }
 }

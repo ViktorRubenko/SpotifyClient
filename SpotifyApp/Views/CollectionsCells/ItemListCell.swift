@@ -53,7 +53,9 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
     var accessoryHandler: (() -> Void)?
     
     private lazy var customAccessory = UICellAccessory.CustomViewConfiguration(
-        customView: accessoryButton, placement: .trailing(displayed: .always))
+        customView: accessoryButton,
+        placement: .trailing(displayed: .always)
+    )
     
     private var imageLeadingContraint: Constraint!
     private var imageWidthContraint: Constraint!
@@ -62,7 +64,6 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         super.init(frame: frame)
         
         setupViews()
-        accessories = [.customView(configuration: customAccessory)]
         setupBackground()
         
     }
@@ -77,7 +78,9 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         infoLabel.text = nil
         imageView.image = UIImage(systemName: "photo")
     }
-    
+}
+//MARK: - Methods
+extension ItemListCell {
     private func setupBackground() {
         var bgConfig = UIBackgroundConfiguration.listGroupedCell()
         bgConfig.backgroundColor = UIColor(named: "SubBGColor")?.withAlphaComponent(0.5)
@@ -110,7 +113,7 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         
         nameLabel.snp.makeConstraints { make in
             make.bottom.equalTo(imageView.snp.centerY)
-            make.leading.equalTo(imageView.snp.trailing).offset(4)
+            make.leading.equalTo(imageView.snp.trailing).offset(12)
             make.trailing.equalToSuperview().offset(-2)
         }
         
@@ -122,14 +125,17 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         }
     }
     
-    func configure(_ model: ItemModel, index: String? = nil, useDefaultImage: Bool = false) {
-        switch model.itemType {
-        case .track:
-            accessoryButton.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
-        case .album, .playlist, .artist:
-            accessoryButton.setImage(UIImage(systemName: "chevron.forward.circle"), for: .normal)
-        default:
-            break
+    func configure(_ model: ItemModel, index: String? = nil, useDefaultImage: Bool = false, withAccessory: Bool = true) {
+        if withAccessory {
+            accessories = [.customView(configuration: customAccessory)]
+            switch model.itemType {
+            case .track:
+                accessoryButton.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
+            case .album, .playlist, .artist:
+                accessoryButton.setImage(UIImage(systemName: "chevron.forward.circle"), for: .normal)
+            default:
+                break
+            }
         }
         nameLabel.text = model.name
         infoLabel.text = model.info
@@ -168,6 +174,13 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         }
     }
     
+    func setFontSize(nameSize: CGFloat = 14, infoSize: CGFloat = 12) {
+        nameLabel.font = .systemFont(ofSize: nameSize, weight: .regular)
+        infoLabel.font = .systemFont(ofSize: infoSize, weight: .light)
+    }
+}
+//MARK: - Actions
+extension ItemListCell {
     @objc private func didTapAccessotyButton() {
         accessoryHandler?()
     }

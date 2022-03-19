@@ -96,7 +96,7 @@ final class ArtistViewModel {
                     ItemModel(
                         id: $0.id,
                         name: $0.name,
-                        info: nil,
+                        info: ($0.album != nil ? $0.album!.releaseDate.split(separator: "-")[0] : "") + ($0.album?.name != nil ? " • \($0.album!.name)" : ""),
                         imageURL: findClosestSizeImage(images: $0.album?.images, height: 80, width: 80),
                         itemType: .track)
                 }),
@@ -111,7 +111,7 @@ final class ArtistViewModel {
                     ItemModel(
                         id: $0.id,
                         name: $0.name,
-                        info: $0.releaseDate.split(separator: "-")[0] + ($0.albumType != nil ? "• \($0.albumType!.capitalized)" : ""),
+                        info: $0.releaseDate.split(separator: "-")[0] + ($0.albumType != nil ? " • \($0.albumType!.capitalized)" : ""),
                         imageURL: findClosestSizeImage(images: $0.images, height: 200, width: 200),
                         itemType: .album)
                 }),
