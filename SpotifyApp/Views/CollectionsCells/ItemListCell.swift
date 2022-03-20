@@ -42,7 +42,7 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         return label
     }()
     
-    private let accessoryButton: UIButton = {
+    private lazy var accessoryButton: UIButton = {
         let button = UIButton()
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         button.addTarget(self, action: #selector(didTapAccessotyButton), for: .touchUpInside)
@@ -79,7 +79,7 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         imageView.image = UIImage(systemName: "photo")
     }
 }
-//MARK: - Methods
+// MARK: - Methods
 extension ItemListCell {
     private func setupBackground() {
         var bgConfig = UIBackgroundConfiguration.listGroupedCell()
@@ -179,7 +179,7 @@ extension ItemListCell {
         infoLabel.font = .systemFont(ofSize: infoSize, weight: .light)
     }
 }
-//MARK: - Actions
+// MARK: - Actions
 extension ItemListCell {
     @objc private func didTapAccessotyButton() {
         accessoryHandler?()

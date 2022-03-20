@@ -64,7 +64,7 @@ class TrackActionsViewController: UIViewController {
         viewModel.getActions()
     }
 }
-//MARK: - Methods
+// MARK: - Methods
 extension TrackActionsViewController {
     private func setupViews() {
         
@@ -110,13 +110,13 @@ extension TrackActionsViewController {
         }
     }
 }
-//MARK: - Actions
+// MARK: - Actions
 extension TrackActionsViewController {
     @objc func didTapCloseButton() {
         dismiss(animated: true)
     }
 }
-//MARK: - TableView Delegate/DataSource
+// MARK: - TableView Delegate/DataSource
 extension TrackActionsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.trackActions.value.count

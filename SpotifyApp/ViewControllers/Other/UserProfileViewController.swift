@@ -34,7 +34,7 @@ class UserProfileViewController: UIViewController {
     }
 }
     
-//MARK: - Methods
+// MARK: - Methods
 extension UserProfileViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
@@ -52,7 +52,7 @@ extension UserProfileViewController {
             self?.tableView.reloadData()
         }
         
-        viewModel.error.bind { [weak self] error in
+        viewModel.error.bind { [weak self] _ in
             self?.showErrorAlert()
         }
     }

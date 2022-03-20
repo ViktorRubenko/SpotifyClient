@@ -37,7 +37,7 @@ class ReleasesViewController: UIViewController {
         viewModel.fetch()
     }
 }
-//MARK: - Methods
+// MARK: - Methods
 extension ReleasesViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
@@ -75,7 +75,7 @@ extension ReleasesViewController {
         return layout
     }
 }
-//MARK: - UICollectionView Delegate/DataSource
+// MARK: - UICollectionView Delegate/DataSource
 extension ReleasesViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         viewModel.sections.value.count

@@ -30,7 +30,7 @@ extension UIImage {
                 x: inputImage.extent.origin.x,
                 y: inputImage.extent.size.height - 3,
                 z: inputImage.extent.size.width,
-                w: inputImage.extent.size.height),
+                w: inputImage.extent.size.height)
         ]
         
         var red = 0

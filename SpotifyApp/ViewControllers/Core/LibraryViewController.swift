@@ -14,7 +14,6 @@ class LibraryViewController: UIViewController {
 
         setupViews()
     }
-    
 
     func setupViews() {
         view.backgroundColor = .systemBackground

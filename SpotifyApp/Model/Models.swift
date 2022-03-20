@@ -54,7 +54,7 @@ enum ItemType {
 struct ItemModel: CellModel {
     let id: String
     let name: String
-    let info : String?
+    let info: String?
     let imageURL: URL?
     let itemType: ItemType
 }

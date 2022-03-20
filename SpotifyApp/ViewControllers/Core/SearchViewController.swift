@@ -25,7 +25,7 @@ class SearchViewController: UIViewController {
         "Tracks",
         "Artists",
         "Albums",
-        "Playlists",
+        "Playlists"
     ]
     private lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: segmentedItems)
@@ -55,7 +55,7 @@ class SearchViewController: UIViewController {
         viewModel.fetchCategories()
     }
 }
-//MARK: - Methods
+// MARK: - Methods
 extension SearchViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
@@ -93,13 +93,13 @@ extension SearchViewController {
         viewModel.performSearch(for: searchController.searchBar.text!)
     }
 }
-//MARK: - UISearchBarDelegate
+// MARK: - UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         performSearch()
     }
 }
-//MARK: - CollectionView Delegate/DataSource
+// MARK: - CollectionView Delegate/DataSource
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.categories.value.count
@@ -119,7 +119,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         navigationController?.pushViewController(vc, animated: true)
     }
 }
-//MARK: - SearchResultsViewControllerDelegate
+// MARK: - SearchResultsViewControllerDelegate
 extension SearchViewController: SearchResultsViewControllerDelegate {
     func selectResultAt(indexPath: IndexPath, averageColor: UIColor?) {
         let model = viewModel.resultSections.value[indexPath.section].items[indexPath.row]

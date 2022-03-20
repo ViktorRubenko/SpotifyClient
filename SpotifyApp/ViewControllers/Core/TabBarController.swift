@@ -16,7 +16,6 @@ class TabBarController: UITabBarController {
         appearance.configureWithDefaultBackground()
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
-        
 
         let vc1 = HomeViewController()
         let vc2 = SearchViewController()

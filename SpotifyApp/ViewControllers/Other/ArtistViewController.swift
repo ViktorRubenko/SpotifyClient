@@ -246,13 +246,13 @@ extension ArtistViewController {
         }
     }
 }
-//MARK: - Actions
+// MARK: - Actions
 extension ArtistViewController {
     @objc func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
 }
-//MARK: UICollectionView Delegate/DataSource
+// MARK: UICollectionView Delegate/DataSource
 extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         viewModel.sections.value.count

@@ -77,7 +77,7 @@ class TrackContainerViewController: UIViewController {
         }
     }
 }
-//MARK: - Methods
+// MARK: - Methods
 extension TrackContainerViewController {
     private func setupViews() {
         
@@ -158,13 +158,13 @@ extension TrackContainerViewController {
         return UICollectionViewCompositionalLayout(section: section)
     }
 }
-//MARK: - Actions
+// MARK: - Actions
 extension TrackContainerViewController {
     @objc func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
 }
-//MARK: - CollectionView Delegate/DataSource
+// MARK: - CollectionView Delegate/DataSource
 extension TrackContainerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let model = viewModel.model else { return 0}

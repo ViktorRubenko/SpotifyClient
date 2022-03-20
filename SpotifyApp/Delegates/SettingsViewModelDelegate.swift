@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 protocol SettingsViewModelDelegate: AnyObject {
     func openUserProfile()
     func signOutTapped()

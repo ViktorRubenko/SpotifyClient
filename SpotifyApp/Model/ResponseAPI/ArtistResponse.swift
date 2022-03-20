@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct ArtistResponse: Codable {
     let externalUrls: ExternalUrls
     let id: String

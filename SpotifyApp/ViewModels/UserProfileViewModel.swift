@@ -8,7 +8,6 @@
 import Foundation
 import Alamofire
 
-
 final class UserProfileViewModel {
     var userImageURL = Observable<URL?>(nil)
     var userName = Observable<String?>(nil)

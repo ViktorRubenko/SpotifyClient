@@ -26,7 +26,7 @@ enum ColorPicker {
         UIColor(red: 176/255, green: 40/255, blue: 151/255, alpha: 1),
         UIColor(red: 237/255, green: 150/255, blue: 35/255, alpha: 1),
         UIColor(red: 79/255, green: 55/255, blue: 79/255, alpha: 1),
-        UIColor(red: 225/255, green: 51/255, blue: 0, alpha: 1),
+        UIColor(red: 225/255, green: 51/255, blue: 0, alpha: 1)
     ]
     
     static func getColor() -> UIColor {

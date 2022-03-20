@@ -24,7 +24,7 @@ class APICaller {
     
     private init() {}
     
-    private func createRequest(url: String, method: HTTPMethod ,parameters: [String: String] = [:], completion: @escaping (DataRequest) -> Void) {
+    private func createRequest(url: String, method: HTTPMethod, parameters: [String: String] = [:], completion: @escaping (DataRequest) -> Void) {
         AuthManager.shared.withValidToken { accessToken in
             let headers: HTTPHeaders = [
                 "Authorization": "Bearer \(accessToken)",
@@ -185,7 +185,7 @@ class APICaller {
         }
     }
     
-    func getCategories(limit: Int = 20, completion: @escaping (Result<CategoriesResponse,AFError>) -> Void) {
+    func getCategories(limit: Int = 20, completion: @escaping (Result<CategoriesResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/browse/categories?limit=\(limit)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: CategoriesResponse.self) { response in
                 completion(response.result)
@@ -193,7 +193,7 @@ class APICaller {
         }
     }
     
-    func getCategoryPlaylists(id: String, limit: Int = 20, completion: @escaping (Result<PlaylistsResponse,AFError>) -> Void) {
+    func getCategoryPlaylists(id: String, limit: Int = 20, completion: @escaping (Result<PlaylistsResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/browse/categories/\(id)/playlists?limit=\(limit)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: PlaylistsResponse.self) { response in
                 completion(response.result)
@@ -201,7 +201,7 @@ class APICaller {
         }
     }
     
-    func getArtist(id: String, completion: @escaping (Result<ArtistDetailResponse,AFError>) -> Void) {
+    func getArtist(id: String, completion: @escaping (Result<ArtistDetailResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/artists/\(id)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: ArtistDetailResponse.self) { response in
                 completion(response.result)
@@ -209,7 +209,7 @@ class APICaller {
         }
     }
     
-    func getArtistsTopTracks(id: String, completion: @escaping (Result<ArtistsTopTracksResponse,AFError>) -> Void) {
+    func getArtistsTopTracks(id: String, completion: @escaping (Result<ArtistsTopTracksResponse, AFError>) -> Void) {
         let market = Locale.current.regionCode ?? "US"
         createRequest(url: baseURL + "/artists/\(id)/top-tracks?market=\(market)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: ArtistsTopTracksResponse.self) { response in
@@ -223,7 +223,7 @@ class APICaller {
         limit: Int = 20,
         market: String? = nil,
         includeGroups: [String] = ["album", "single", "appears_on", "compilation"],
-        completion: @escaping (Result<ArtistsAlbumsResponse,AFError>) -> Void) {
+        completion: @escaping (Result<ArtistsAlbumsResponse, AFError>) -> Void) {
         let market = market != nil ? market! : (Locale.current.regionCode ?? "US")
             createRequest(url: baseURL + "/artists/\(id)/albums?limit=\(limit)&market=\(market)&include_groups=\(includeGroups.joined(separator: ","))", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: ArtistsAlbumsResponse.self) { response in

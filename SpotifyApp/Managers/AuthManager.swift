@@ -31,7 +31,7 @@ final class AuthManager {
             "playlist-read-collaborative",
             "user-read-private",
             "user-follow-read",
-            "user-read-email",
+            "user-read-email"
         ].joined(separator: "%20")
     }
     
@@ -82,7 +82,7 @@ final class AuthManager {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "client_id", value: Constants.cliendID),
             URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "scope", value: Constants.scopes),
+            URLQueryItem(name: "scope", value: Constants.scopes)
         ]
         return components.url!
     }
@@ -184,7 +184,7 @@ final class AuthManager {
     }
     
     func refreshIfNeeded(completion: ((Bool) -> Void)?) {
-        if shouldRefreshToken && !isRefreshingToken  {
+        if shouldRefreshToken && !isRefreshingToken {
             refreshAccessToken(completion: completion)
         }
     }

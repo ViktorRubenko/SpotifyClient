@@ -81,7 +81,6 @@ extension WelcomeViewController {
                 self.logoImageView.transform = CGAffineTransform.identity.scaledBy(x: 0.9, y: 0.9)
             })
     }
-        
     
     private func handleSignIn(success: Bool) {
         guard success else { return }
@@ -91,7 +90,7 @@ extension WelcomeViewController {
     }
 }
 
-//MARK: - Acitons
+// MARK: - Acitons
 extension WelcomeViewController {
     @objc func tapSignIn() {
         logoImageView.isHidden = true

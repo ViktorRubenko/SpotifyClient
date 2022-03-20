@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 // MARK: - Album
 struct AlbumResponse: Codable {
     let artists: [ArtistResponse]

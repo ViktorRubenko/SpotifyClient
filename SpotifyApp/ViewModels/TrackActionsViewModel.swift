@@ -43,7 +43,7 @@ class TrackActionsViewModel {
             TrackAction(name: "Add to Favorites", callback: { self.delegate?.addToFavorites() }),
             TrackAction(name: "Share", callback: {
                 self.delegate?.share(externalURL: self.trackResponse.externalUrls.spotify)
-            }),
+            })
         ])
         if trackResponse.album != nil {
             trackActions.append(TrackAction(name: "Album", callback: {
@@ -70,4 +70,3 @@ class TrackActionsViewModel {
         }
     }
 }
-

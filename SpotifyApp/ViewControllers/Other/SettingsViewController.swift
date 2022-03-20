@@ -30,7 +30,7 @@ class SettingsViewController: UIViewController {
     }
 
 }
-//MARK: - Methods
+// MARK: - Methods
 extension SettingsViewController {
     private func setupViews() {
         view.backgroundColor = .systemBackground
@@ -51,7 +51,7 @@ extension SettingsViewController {
         
     }
 }
-//MARK: - SettingsViewModel delegate
+// MARK: - SettingsViewModel delegate
 extension SettingsViewController: SettingsViewModelDelegate {
     func openUserProfile() {
         let profileVC = UserProfileViewController()
@@ -77,7 +77,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeRootViewController(vc)
     }
 }
-//MARK: - TableView Delegate/DataSource
+// MARK: - TableView Delegate/DataSource
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         viewModel.sections.count

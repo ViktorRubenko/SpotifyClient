@@ -33,7 +33,7 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
                 self?.model = PlaylistDetailModel(
                     name: response.name,
                     imageURL: findClosestSizeImage(images: response.images, height: 250, width: 250),
-                    tracks: response.tracks.items.filter({$0.track != nil}).compactMap( {
+                    tracks: response.tracks.items.filter({$0.track != nil}).compactMap({
                         ItemModel(
                             id: $0.track!.id,
                             name: $0.track!.name,
@@ -54,6 +54,5 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
             self?.fetched.value = true
         }
     }
-    
     
 }
