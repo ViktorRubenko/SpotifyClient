@@ -312,7 +312,8 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 for: indexPath) as! ButtonFooterView
             footerView.setButtonTitle("Discography")
             footerView.callback = { [weak self] in
-                print("open discography")
+                let vc = ReleasesViewController(id: self!.viewModel.itemID)
+                self?.navigationController?.pushViewController(vc, animated: true)
             }
             return footerView
         case .textHeader:

@@ -20,7 +20,7 @@ struct ArtistSection {
 }
 
 final class ArtistViewModel {
-    private let itemID: String
+    let itemID: String
     private var artistResponse: ArtistDetailResponse? {
         didSet {
             fetchImage()
@@ -70,7 +70,7 @@ final class ArtistViewModel {
         }
         
         group.enter()
-        APICaller.shared.getArtistAlbums(id: itemID, limit: 50) { [weak self] response in
+        APICaller.shared.getArtistAlbums(id: itemID, limit: 50, includeGroups: ["album", "single"]) { [weak self] response in
             switch response {
             case .success(let response):
                 self?.artistsAlbumsResponse = response

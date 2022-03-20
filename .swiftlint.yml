@@ -1,0 +1,12 @@
+line_length:
+- 300 # error
+
+disabled_rules:
+- trailing_whitespace
+- force_cast
+- identifier_name
+- file_length
+- function_body_length
+- type_body_length
+- cyclomatic_complexity
+- type_name

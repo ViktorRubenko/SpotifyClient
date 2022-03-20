@@ -218,9 +218,14 @@ class APICaller {
         }
     }
     
-    func getArtistAlbums(id: String, limit: Int = 20, market: String? = nil, completion: @escaping (Result<ArtistsAlbumsResponse,AFError>) -> Void) {
+    func getArtistAlbums(
+        id: String,
+        limit: Int = 20,
+        market: String? = nil,
+        includeGroups: [String] = ["album", "single", "appears_on", "compilation"],
+        completion: @escaping (Result<ArtistsAlbumsResponse,AFError>) -> Void) {
         let market = market != nil ? market! : (Locale.current.regionCode ?? "US")
-        createRequest(url: baseURL + "/artists/\(id)/albums?limit=\(limit)&market=\(market)", method: .get) { dataRequest in
+            createRequest(url: baseURL + "/artists/\(id)/albums?limit=\(limit)&market=\(market)&include_groups=\(includeGroups.joined(separator: ","))", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: ArtistsAlbumsResponse.self) { response in
                 completion(response.result)
             }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct searchResultSection {
+struct SearchResultSection {
     let title: String
     private(set) var items: [ItemModel]
     
@@ -19,7 +19,7 @@ struct searchResultSection {
 final class SearchViewModel {
     
     let categories = Observable<[ItemModel]>([])
-    let resultSections = Observable<[searchResultSection]>([])
+    let resultSections = Observable<[SearchResultSection]>([])
     
     func performSearch(for searchText: String) {
         print("perform search")
@@ -30,11 +30,11 @@ final class SearchViewModel {
         APICaller.shared.searchRequest(searchText) { [weak self] response in
             switch response {
             case .success(let result):
-                var sections = [searchResultSection]()
+                var sections = [SearchResultSection]()
                 
                 if let arists = result.artists {
                     sections.append(
-                        searchResultSection(
+                        SearchResultSection(
                             title: "Artists",
                             items: arists.items.compactMap {
                                 ItemModel(
@@ -49,7 +49,7 @@ final class SearchViewModel {
                 
                 if let tracks = result.tracks, let items = tracks.items {
                     sections.append(
-                        searchResultSection(
+                        SearchResultSection(
                             title: "Tracks",
                             items: items.compactMap {
                                 ItemModel(
@@ -64,7 +64,7 @@ final class SearchViewModel {
                 
                 if let albums = result.albums {
                     sections.append(
-                        searchResultSection(
+                        SearchResultSection(
                             title: "Album",
                             items: albums.items.compactMap {
                                 ItemModel(
@@ -80,7 +80,7 @@ final class SearchViewModel {
                 if let playlists = result.playlists {
                     let items = playlists.items
                     sections.append(
-                        searchResultSection(
+                        SearchResultSection(
                             title: "Playlist",
                             items: items.compactMap {
                                 ItemModel(
