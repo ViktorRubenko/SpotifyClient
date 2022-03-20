@@ -10,7 +10,7 @@ import UIKit
 import SDWebImage
 
 enum ArtistSectionType: Int {
-    case popularTracks, releases, appearsOn, reletedArtists
+    case popularTracks, releases, appearsOn, reletedArtists, discography
 }
 
 struct ArtistSection {
@@ -111,7 +111,7 @@ final class ArtistViewModel {
                     ItemModel(
                         id: $0.id,
                         name: $0.name,
-                        info: $0.releaseDate.split(separator: "-")[0] + ($0.albumType != nil ? " • \($0.albumType!.capitalized)" : ""),
+                        info: $0.releaseDate.split(separator: "-")[0] + ($0.albumType != nil ? "  • \($0.albumType!.capitalized)" : ""),
                         imageURL: findClosestSizeImage(images: $0.images, height: 200, width: 200),
                         itemType: .album)
                 }),

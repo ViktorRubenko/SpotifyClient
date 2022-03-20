@@ -10,6 +10,12 @@ import SnapKit
 
 class ArtistViewController: UIViewController {
     
+    private struct Constants {
+        enum ElementKind: String {
+            case releasesFooter, textHeader
+        }
+    }
+    
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -19,8 +25,12 @@ class ArtistViewController: UIViewController {
             forCellWithReuseIdentifier: ItemListCell.id)
         collectionView.register(
             TextHeader.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            forSupplementaryViewOfKind: Constants.ElementKind.textHeader.rawValue,
             withReuseIdentifier: TextHeader.id)
+        collectionView.register(
+            ButtonFooterView.self,
+            forSupplementaryViewOfKind: Constants.ElementKind.releasesFooter.rawValue,
+            withReuseIdentifier: ButtonFooterView.id)
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
@@ -198,8 +208,13 @@ extension ArtistViewController {
             section.boundarySupplementaryItems = [
                 NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50)),
-                    elementKind: UICollectionView.elementKindSectionHeader,
-                    alignment: .top)]
+                    elementKind: Constants.ElementKind.textHeader.rawValue,
+                    alignment: .top),
+                NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(60)),
+                    elementKind: Constants.ElementKind.releasesFooter.rawValue,
+                    alignment: .bottom)
+            ]
             section.interGroupSpacing = 5
             
             section.decorationItems = [
@@ -219,7 +234,7 @@ extension ArtistViewController {
             section.boundarySupplementaryItems = [
                 NSCollectionLayoutBoundarySupplementaryItem(
                     layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50)),
-                    elementKind: UICollectionView.elementKindSectionHeader,
+                    elementKind: Constants.ElementKind.textHeader.rawValue,
                     alignment: .top)]
             section.interGroupSpacing = 2
             
@@ -286,13 +301,28 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let kind = Constants.ElementKind(rawValue: kind) ?? Constants.ElementKind.textHeader
         let section = viewModel.sections.value[indexPath.section]
-        let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TextHeader.id,
-            for: indexPath) as! TextHeader
-        headerView.setTitle(section.title)
-        return headerView
+        
+        switch kind {
+        case .releasesFooter:
+            let footerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind.rawValue,
+                withReuseIdentifier: ButtonFooterView.id,
+                for: indexPath) as! ButtonFooterView
+            footerView.setButtonTitle("Discography")
+            footerView.callback = { [weak self] in
+                print("open discography")
+            }
+            return footerView
+        case .textHeader:
+            let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind.rawValue,
+                withReuseIdentifier: TextHeader.id,
+                for: indexPath) as! TextHeader
+            headerView.setTitle(section.title)
+            return headerView
+        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
