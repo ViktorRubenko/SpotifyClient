@@ -70,7 +70,7 @@ final class ArtistViewModel {
         }
         
         group.enter()
-        APICaller.shared.getArtistAlbums(id: itemID) { [weak self] response in
+        APICaller.shared.getArtistAlbums(id: itemID, limit: 50) { [weak self] response in
             switch response {
             case .success(let response):
                 self?.artistsAlbumsResponse = response
@@ -104,17 +104,24 @@ final class ArtistViewModel {
         }
         
         if let albums = artistsAlbumsResponse {
-            let count = albums.items.count >= 4 ? 4 : albums.items.count
+            var namesSet = Set<String>()
+            var items = [ItemModel]()
+            for release in albums.items {
+                if namesSet.contains(release.name) {
+                    continue
+                }
+                namesSet.insert(release.name)
+                items.append(ItemModel(
+                    id: release.id,
+                    name: release.name,
+                    info: release.releaseDate.split(separator: "-")[0] + (release.albumType != nil ? "  • \(release.albumType!.capitalized)" : ""),
+                    imageURL: findClosestSizeImage(images: release.images, height: 200, width: 200),
+                    itemType: .album))
+            }
+            let count = items.count >= 4 ? 4 : items.count
             sections.append(ArtistSection(
                 title: "Releases",
-                items: albums.items[0..<count].compactMap({
-                    ItemModel(
-                        id: $0.id,
-                        name: $0.name,
-                        info: $0.releaseDate.split(separator: "-")[0] + ($0.albumType != nil ? "  • \($0.albumType!.capitalized)" : ""),
-                        imageURL: findClosestSizeImage(images: $0.images, height: 200, width: 200),
-                        itemType: .album)
-                }),
+                items: Array(items[0..<count]),
                 sectionType: .releases))
         }
         
