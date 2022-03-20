@@ -78,6 +78,11 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         infoLabel.text = nil
         imageView.image = UIImage(systemName: "photo")
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        accessoryButton.isUserInteractionEnabled = accessoryHandler != nil
+    }
 }
 // MARK: - Methods
 extension ItemListCell {
