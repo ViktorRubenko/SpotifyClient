@@ -142,16 +142,23 @@ final class ArtistViewModel {
         }
         
         if let appearsOn = appearsOnResponse {
+            var namesSet = Set<String>()
+            var items = [ItemModel]()
+            for release in appearsOn.items {
+                if namesSet.contains(release.name) {
+                    continue
+                }
+                namesSet.insert(release.name)
+                items.append(ItemModel(
+                    id: release.id,
+                    name: release.name,
+                    info: nil,
+                    imageURL: findClosestSizeImage(images: release.images, height: 400, width: 400),
+                    itemType: .album))
+            }
             sections.append(ArtistSection(
                 title: "Appears On",
-                items: appearsOn.items.compactMap({
-                    ItemModel(
-                        id: $0.id,
-                        name: $0.name,
-                        info: nil,
-                        imageURL: findClosestSizeImage(images: $0.images, height: 400, width: 400),
-                        itemType: .album)
-                }),
+                items: items,
                 sectionType: .appearsOn))
         }
         
