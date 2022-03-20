@@ -71,6 +71,8 @@ extension ReleasesViewController {
                 heightDimension: .absolute(100)),
             subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 10
+        
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }

@@ -22,19 +22,27 @@ final class ReleasesViewModel {
     
     func fetch() {
         var sections = [ReleasesSection]()
-        APICaller.shared.getArtistAlbums(id: itemID, limit: 50, includeGroups: ["Single", "Album"]) { response in
+        APICaller.shared.getArtistAlbums(id: itemID, limit: 50, includeGroups: ["Single", "Album"]) { [weak self] response in
             switch response {
             case .success(let albums):
+                var namesSet = Set<String>()
+                var items = [ItemModel]()
+                for release in albums.items {
+                    if namesSet.contains(release.name) {
+                        continue
+                    }
+                    namesSet.insert(release.name)
+                    items.append(ItemModel(
+                        id: release.id,
+                        name: release.name,
+                        info: release.releaseDate.split(separator: "-")[0] + (release.albumType != nil ? "  • \(release.albumType!.capitalized)" : ""),
+                        imageURL: findClosestSizeImage(images: release.images, height: 300, width: 300),
+                        itemType: .album))
+                }
                 sections.append(ReleasesSection(
                     title: "Releases",
-                    items: albums.items.compactMap({
-                        ItemModel(
-                            id: $0.id,
-                            name: $0.name,
-                            info: $0.albumType,
-                            imageURL: findClosestSizeImage(images: $0.images, height: 150, width: 150),
-                            itemType: .album)
-                    })))
+                    items: items))
+                self?.sections.value = sections
             case .failure(let error):
                 print("failed to get ArtistAlbums response with: \(error.localizedDescription)")
             }
