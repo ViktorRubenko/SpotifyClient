@@ -35,7 +35,7 @@ final class ReleasesViewModel {
                     items.append(ItemModel(
                         id: release.id,
                         name: release.name,
-                        info: release.releaseDate.split(separator: "-")[0] + (release.albumType != nil ? "  • \(release.albumType!.capitalized)" : ""),
+                        info: release.releaseDate.split(separator: "-")[0] + (release.albumGroup != nil ? "  • \(release.albumGroup!.capitalized)" : ""),
                         imageURL: findClosestSizeImage(images: release.images, height: 300, width: 300),
                         itemType: .album))
                 }

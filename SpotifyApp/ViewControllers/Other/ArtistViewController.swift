@@ -24,6 +24,9 @@ class ArtistViewController: UIViewController {
             ItemListCell.self,
             forCellWithReuseIdentifier: ItemListCell.id)
         collectionView.register(
+            ImageWithInfoCollectionViewCell.self,
+            forCellWithReuseIdentifier: ImageWithInfoCollectionViewCell.identifier)
+        collectionView.register(
             TextHeader.self,
             forSupplementaryViewOfKind: Constants.ElementKind.textHeader.rawValue,
             withReuseIdentifier: TextHeader.id)
@@ -222,6 +225,28 @@ extension ArtistViewController {
             ]
             
             return section
+        case .appearsOn:
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .fractionalHeight(1)))
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(120), heightDimension: .absolute(150)),
+                subitems: [item])
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .continuous
+            section.boundarySupplementaryItems = [
+                NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50)),
+                    elementKind: Constants.ElementKind.textHeader.rawValue,
+                    alignment: .top)
+            ]
+            section.interGroupSpacing = 10
+            
+            section.decorationItems = [
+                NSCollectionLayoutDecorationItem.background(elementKind: SectionBackgroundView.id)
+            ]
+            return section
         default:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
@@ -263,35 +288,44 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let sectionType = viewModel.sections.value[indexPath.section].sectionType
         let model = viewModel.sections.value[indexPath.section].items[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
-        switch model.itemType {
-        case .track:
-            cell.configure(model, index: String(indexPath.row + 1))
-            cell.accessoryHandler = { [weak self] in
-                let vc = TrackActionsViewController(
-                    viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row),
-                    averageColor: cell.averageColor)
-                vc.modalPresentationStyle = .overFullScreen
-                self?.present(vc, animated: true)
-            }
-        case .album:
-            cell.setFontSize(nameSize: 16, infoSize: 14)
-            fallthrough
+        
+        switch sectionType {
+        case .appearsOn:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageWithInfoCollectionViewCell.identifier, for: indexPath) as! ImageWithInfoCollectionViewCell
+            cell.configure(model)
+            return cell
         default:
-            cell.configure(model, withAccessory: false)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
+            switch model.itemType {
+            case .track:
+                cell.configure(model, index: String(indexPath.row + 1))
+                cell.accessoryHandler = { [weak self] in
+                    let vc = TrackActionsViewController(
+                        viewModel: self!.viewModel.createTrackActionsViewModel(index: indexPath.row),
+                        averageColor: cell.averageColor)
+                    vc.modalPresentationStyle = .overFullScreen
+                    self?.present(vc, animated: true)
+                }
+            case .album:
+                cell.setFontSize(nameSize: 16, infoSize: 14)
+                fallthrough
+            default:
+                cell.configure(model, withAccessory: false)
+            }
+            return cell
         }
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
         let model = viewModel.sections.value[indexPath.section].items[indexPath.row]
         switch model.itemType {
-        case .album:
+        case .album, .playlist:
             let averageColor = (collectionView.cellForItem(at: indexPath) as? AverageColorProtocol)?.averageColor
             let vc = TrackContainerViewController(
-                viewModel: AlbumViewModel(id: model.id),
+                viewModel: model.itemType == .album ? AlbumViewModel(id: model.id) : PlaylistViewModel(id: model.id),
                 containerType: .album,
                 imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)

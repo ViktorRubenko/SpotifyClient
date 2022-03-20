@@ -28,6 +28,7 @@ final class ArtistViewModel {
     }
     private var artistsTopTracksResposne: ArtistsTopTracksResponse?
     private var artistsAlbumsResponse: ArtistsAlbumsResponse?
+    private var appearsOnResponse: ArtistsAlbumsResponse?
     
     var sections = Observable<[ArtistSection]>([])
     var name = Observable<String>("")
@@ -83,6 +84,21 @@ final class ArtistViewModel {
         group.notify(queue: .main) { [weak self] in
             self?.extractSections()
         }
+        
+        group.enter()
+        APICaller.shared.getArtistAlbums(id: itemID, limit: 20, includeGroups: ["appears_on"]) { [weak self] response in
+            switch response {
+            case .success(let response):
+                self?.appearsOnResponse = response
+            case .failure(let error):
+                print("Failing get ArtistsAlbums AppearsOn, \(error.localizedDescription)")
+            }
+            group.leave()
+        }
+        
+        group.notify(queue: .main) { [weak self] in
+            self?.extractSections()
+        }
     }
     
     private func extractSections() {
@@ -114,7 +130,7 @@ final class ArtistViewModel {
                 items.append(ItemModel(
                     id: release.id,
                     name: release.name,
-                    info: release.releaseDate.split(separator: "-")[0] + (release.albumType != nil ? "  • \(release.albumType!.capitalized)" : ""),
+                    info: release.releaseDate.split(separator: "-")[0] + (release.albumGroup != nil ? "  • \(release.albumGroup!.capitalized)" : ""),
                     imageURL: findClosestSizeImage(images: release.images, height: 200, width: 200),
                     itemType: .album))
             }
@@ -123,6 +139,20 @@ final class ArtistViewModel {
                 title: "Releases",
                 items: Array(items[0..<count]),
                 sectionType: .releases))
+        }
+        
+        if let appearsOn = appearsOnResponse {
+            sections.append(ArtistSection(
+                title: "Appears On",
+                items: appearsOn.items.compactMap({
+                    ItemModel(
+                        id: $0.id,
+                        name: $0.name,
+                        info: nil,
+                        imageURL: findClosestSizeImage(images: $0.images, height: 400, width: 400),
+                        itemType: .album)
+                }),
+                sectionType: .appearsOn))
         }
         
         self.sections.value = sections
