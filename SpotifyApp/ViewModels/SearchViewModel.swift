@@ -22,9 +22,9 @@ final class SearchViewModel {
     let resultSections = Observable<[SearchResultSection]>([])
     
     func performSearch(for searchText: String) {
-        print("perform search")
         let searchText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if searchText.isEmpty {
+            resultSections.value.removeAll()
             return
         }
         APICaller.shared.searchRequest(searchText) { [weak self] response in

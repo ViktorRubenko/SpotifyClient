@@ -95,9 +95,10 @@ extension SearchViewController {
 }
 // MARK: - UISearchBarDelegate
 extension SearchViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         performSearch()
     }
+
 }
 // MARK: - CollectionView Delegate/DataSource
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {

@@ -12,7 +12,8 @@ protocol SearchResultsViewControllerDelegate: AnyObject {
 }
 
 class SearchResultsViewController: UIViewController {
-
+    
+    private let viewModel: SearchViewModel!
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.register(ItemListCell.self, forCellWithReuseIdentifier: ItemListCell.id)
@@ -25,8 +26,11 @@ class SearchResultsViewController: UIViewController {
         collectionView.dataSource = self
         return collectionView
     }()
-    
-    private let viewModel: SearchViewModel!
+    private var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
+    }()
     weak var delegate: SearchResultsViewControllerDelegate?
     
     init(viewModel: SearchViewModel) {
@@ -56,6 +60,11 @@ extension SearchResultsViewController {
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalTo(collectionView)
+        }
     }
     
     private func createLayout() -> UICollectionViewCompositionalLayout {
@@ -80,8 +89,13 @@ extension SearchResultsViewController {
 // MARK: - UICollectionView Delegate/DataSource
 extension SearchResultsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        print(viewModel.resultSections.value.count)
-        return viewModel.resultSections.value.count
+        let numberOfSection = viewModel.resultSections.value.count
+        if numberOfSection > 0 {
+            activityIndicator.stopAnimating()
+        } else {
+            activityIndicator.startAnimating()
+        }
+        return numberOfSection
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
