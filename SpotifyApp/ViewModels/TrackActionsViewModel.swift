@@ -29,9 +29,9 @@ class TrackActionsViewModel {
     let bottomText: String
     private let fromArtist: Bool
     
-    init(trackResponse: TrackResponse, albumImages: [SpotifyImage]?, fromArtist: Bool = false) {
+    init(trackResponse: TrackResponse, fromArtist: Bool = false) {
         self.trackResponse = trackResponse
-        self.albumImageURL = findClosestSizeImage(images: albumImages, height: 200, width: 200)
+        self.albumImageURL = findClosestSizeImage(images: trackResponse.album?.images, height: 200, width: 200)
         self.topText = trackResponse.name
         self.bottomText = trackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
         self.fromArtist = fromArtist

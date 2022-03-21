@@ -13,27 +13,23 @@ final class AlbumViewModel: TrackContainerViewModelProtocol {
 
     let itemID: String
 
-    private var detailTracks: [TrackResponse] = []
+    private(set) var trackResponses: [TrackResponse] = []
     var model: TrackContainerModelProtocol?
     var headerModel: TrackContainerHeaderModel?
     let fetched = Observable<Bool>(false)
-    private var albumImages = [SpotifyImage]()
     
     init(id: String) {
         itemID = id
     }
     
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
-        TrackActionsViewModel(
-            trackResponse: detailTracks[index],
-            albumImages: albumImages)
+        TrackActionsViewModel(trackResponse: trackResponses[index])
     }
     
     func fetch() {
         APICaller.shared.getAlbum(id: itemID) { [weak self] result in
             switch result {
             case .success(let albumDetails):
-                self?.albumImages = albumDetails.images
                 self?.headerModel = TrackContainerHeaderModel(
                     topText: albumDetails.name,
                     middleText: albumDetails.artists.compactMap({$0.name}).joined(separator: "•"),
@@ -42,9 +38,9 @@ final class AlbumViewModel: TrackContainerViewModelProtocol {
                     name: albumDetails.name,
                     imageURL: findClosestSizeImage(images: albumDetails.images, height: 250, width: 250),
                     year: String(albumDetails.releaseDate.split(separator: "-")[0]),
-                    albumType: albumDetails.type,
+                    albumType: albumDetails.type!,
                     artistName: albumDetails.artists.compactMap({$0.name}).joined(separator: ", "),
-                    tracks: albumDetails.tracks.items.compactMap {
+                    tracks: albumDetails.tracks!.items.compactMap {
                         ItemModel(
                             id: $0.id,
                             name: $0.name,
@@ -59,9 +55,13 @@ final class AlbumViewModel: TrackContainerViewModelProtocol {
                             info: "Artist",
                             imageURL: nil,
                             itemType: .artist)}),
-                    copyright: albumDetails.copyrights.compactMap({$0.text}).joined(separator: ",\n"),
+                    copyright: albumDetails.copyrights!.compactMap({$0.text}).joined(separator: ",\n"),
                     id: albumDetails.id)
-                self?.detailTracks = albumDetails.tracks.items
+                for index in 0..<albumDetails.tracks!.items.count {
+                    var trackResponse = albumDetails.tracks!.items[index]
+                    trackResponse.album = albumDetails
+                    self?.trackResponses.append(trackResponse)
+                }
                 self?.fetched.value = true
             case .failure(let error):
                 print(error.localizedDescription)

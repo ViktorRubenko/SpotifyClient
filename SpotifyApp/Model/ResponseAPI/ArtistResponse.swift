@@ -12,10 +12,14 @@ struct ArtistResponse: Codable {
     let id: String
     let name: String
     let images: [SpotifyImage]?
+    let type: String
+    let followers: Followers?
+    let popularity: Int?
 
     enum CodingKeys: String, CodingKey {
         case externalUrls = "external_urls"
-        case id, name, images
+        case id, name, images, type
+        case followers, popularity
     }
 }
 

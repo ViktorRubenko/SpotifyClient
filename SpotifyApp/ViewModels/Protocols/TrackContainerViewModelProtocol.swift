@@ -12,6 +12,7 @@ protocol TrackContainerViewModelProtocol {
     var model: TrackContainerModelProtocol? { get }
     var headerModel: TrackContainerHeaderModel? { get }
     var fetched: Observable<Bool> { get }
+    var trackResponses: [TrackResponse] { get }
     
     func fetch()
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel

@@ -21,7 +21,7 @@ struct ArtistSection {
 
 final class ArtistViewModel {
     let itemID: String
-    private var artistResponse: ArtistDetailResponse? {
+    private var artistResponse: ArtistResponse? {
         didSet {
             fetchImage()
         }
@@ -180,6 +180,6 @@ final class ArtistViewModel {
     
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
         let trackResponse = artistsTopTracksResposne!.tracks[index]
-        return TrackActionsViewModel(trackResponse: trackResponse, albumImages: trackResponse.album?.images, fromArtist: true)
+        return TrackActionsViewModel(trackResponse: trackResponse, fromArtist: true)
     }
 }

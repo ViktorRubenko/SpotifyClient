@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import LNPopupController
 
 enum TrackContainerType {
     case album, playlist
@@ -201,6 +202,12 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: false)
+        let coordinator = PlayerViewControllerCoordinator(
+            trackIndex: indexPath.row,
+            trackResponses: viewModel.trackResponses,
+            container: tabBarController!,
+            averageColor: imageAverageColor)
+        coordinator.start()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

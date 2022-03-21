@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		1321A0FEBDD04CB688B678C9 /* Pods_SpotifyApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F0F78C231B5BB8A364798F /* Pods_SpotifyApp.framework */; };
 		E337F77227DD4B2200689A7A /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F77127DD4B2200689A7A /* AlbumViewModel.swift */; };
-		E337F77A27DD55AC00689A7A /* AlbumDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F77927DD55AC00689A7A /* AlbumDetailResponse.swift */; };
-		E337F77C27DD561500689A7A /* ArtistDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F77B27DD561500689A7A /* ArtistDetailResponse.swift */; };
 		E337F78227DDF8BE00689A7A /* ImageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */; };
 		E337F78627DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78527DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift */; };
 		E337F78827DE293900689A7A /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78727DE293900689A7A /* SearchResponse.swift */; };
@@ -80,6 +78,11 @@
 		E3AA50AB27DCDCB500575C7F /* FullImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AA50AA27DCDCB500575C7F /* FullImageCollectionViewCell.swift */; };
 		E3AA50AD27DCDCC200575C7F /* HomeTrackViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AA50AC27DCDCC200575C7F /* HomeTrackViewCell.swift */; };
 		E3AA50B027DCE04900575C7F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AA50AF27DCE04900575C7F /* Models.swift */; };
+		E3F106F127E8DD08008F1E5D /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F106F027E8DD08008F1E5D /* PlayerViewController.swift */; };
+		E3F106F927E8EC2D008F1E5D /* LNPopupController-Static in Frameworks */ = {isa = PBXBuildFile; productRef = E3F106F827E8EC2D008F1E5D /* LNPopupController-Static */; };
+		E3F1070127E8F936008F1E5D /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1070027E8F936008F1E5D /* CoordinatorProtocol.swift */; };
+		E3F1070327E8F95B008F1E5D /* PlayerViewControllerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1070227E8F95B008F1E5D /* PlayerViewControllerCoordinator.swift */; };
+		E3F1070527E90021008F1E5D /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1070427E90021008F1E5D /* PlayerViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,8 +90,6 @@
 		78121FC950771641BB941454 /* Pods-SpotifyApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.release.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.release.xcconfig"; sourceTree = "<group>"; };
 		A333DFBC3153C4604FF74822 /* Pods-SpotifyApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.debug.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E337F77127DD4B2200689A7A /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
-		E337F77927DD55AC00689A7A /* AlbumDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailResponse.swift; sourceTree = "<group>"; };
-		E337F77B27DD561500689A7A /* ArtistDetailResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistDetailResponse.swift; sourceTree = "<group>"; };
 		E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeaderView.swift; sourceTree = "<group>"; };
 		E337F78527DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserPlaylistsResponse.swift; sourceTree = "<group>"; };
 		E337F78727DE293900689A7A /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
@@ -160,6 +161,10 @@
 		E3AA50AA27DCDCB500575C7F /* FullImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		E3AA50AC27DCDCC200575C7F /* HomeTrackViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTrackViewCell.swift; sourceTree = "<group>"; };
 		E3AA50AF27DCE04900575C7F /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		E3F106F027E8DD08008F1E5D /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		E3F1070027E8F936008F1E5D /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
+		E3F1070227E8F95B008F1E5D /* PlayerViewControllerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewControllerCoordinator.swift; sourceTree = "<group>"; };
+		E3F1070427E90021008F1E5D /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1321A0FEBDD04CB688B678C9 /* Pods_SpotifyApp.framework in Frameworks */,
+				E3F106F927E8EC2D008F1E5D /* LNPopupController-Static in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +222,7 @@
 				E3A7BC8A27D962D30046154C /* WelcomeViewController.swift */,
 				E39AAA8627E50C190033877A /* ArtistViewController.swift */,
 				E39AAA5B27E0CD170033877A /* TrackContainerViewController.swift */,
+				E3F106F027E8DD08008F1E5D /* PlayerViewController.swift */,
 				E341042727DA65D4006BCAB6 /* UserProfileViewController.swift */,
 				E341043427DA7354006BCAB6 /* SettingsViewController.swift */,
 				E369E1C127DF726D00B6DCE8 /* TrackActionsViewController.swift */,
@@ -234,6 +241,7 @@
 				E341043C27DA8B27006BCAB6 /* SettingsViewModel.swift */,
 				E341044427DBF39C006BCAB6 /* HomeViewModel.swift */,
 				E337F77127DD4B2200689A7A /* AlbumViewModel.swift */,
+				E3F1070427E90021008F1E5D /* PlayerViewModel.swift */,
 				E39AAA9F27E7CB7B0033877A /* ReleasesViewModel.swift */,
 				E39AAA8827E50CE40033877A /* ArtistViewModel.swift */,
 				E39AAA5F27E0D7F20033877A /* PlaylistViewModel.swift */,
@@ -293,8 +301,6 @@
 			isa = PBXGroup;
 			children = (
 				E39AAA6127E0D8CF0033877A /* PlaylistDetailResponse.swift */,
-				E337F77927DD55AC00689A7A /* AlbumDetailResponse.swift */,
-				E337F77B27DD561500689A7A /* ArtistDetailResponse.swift */,
 			);
 			path = DetailResponse;
 			sourceTree = "<group>";
@@ -348,6 +354,7 @@
 		E3A7BC6627D95D600046154C /* SpotifyApp */ = {
 			isa = PBXGroup;
 			children = (
+				E3F106FF27E8F928008F1E5D /* Coordinators */,
 				E341044127DA9E0F006BCAB6 /* Delegates */,
 				E341043327DA70A9006BCAB6 /* Application */,
 				E341042C27DA66F4006BCAB6 /* Helper */,
@@ -425,6 +432,15 @@
 			path = ResponseAPI;
 			sourceTree = "<group>";
 		};
+		E3F106FF27E8F928008F1E5D /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				E3F1070027E8F936008F1E5D /* CoordinatorProtocol.swift */,
+				E3F1070227E8F95B008F1E5D /* PlayerViewControllerCoordinator.swift */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -444,6 +460,9 @@
 			dependencies = (
 			);
 			name = SpotifyApp;
+			packageProductDependencies = (
+				E3F106F827E8EC2D008F1E5D /* LNPopupController-Static */,
+			);
 			productName = SpotifyApp;
 			productReference = E3A7BC6427D95D600046154C /* SpotifyApp.app */;
 			productType = "com.apple.product-type.application";
@@ -472,6 +491,9 @@
 				Base,
 			);
 			mainGroup = E3A7BC5B27D95D5F0046154C;
+			packageReferences = (
+				E3F106F727E8EC2D008F1E5D /* XCRemoteSwiftPackageReference "LNPopupController" */,
+			);
 			productRefGroup = E3A7BC6527D95D600046154C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -565,13 +587,14 @@
 				E39AAA6527E10D940033877A /* SearchResultsViewController.swift in Sources */,
 				E3AA50A027DC0A9100575C7F /* ArtistResponse.swift in Sources */,
 				E337F77227DD4B2200689A7A /* AlbumViewModel.swift in Sources */,
+				E3F1070327E8F95B008F1E5D /* PlayerViewControllerCoordinator.swift in Sources */,
 				E3A7BC8727D9609F0046154C /* AuthManager.swift in Sources */,
 				E39AAA9527E626620033877A /* SectionBackgroundView.swift in Sources */,
 				E341042B27DA662D006BCAB6 /* UserProfileViewModel.swift in Sources */,
 				E39AAA6227E0D8CF0033877A /* PlaylistDetailResponse.swift in Sources */,
 				E341044927DBF46E006BCAB6 /* SpotifyImage.swift in Sources */,
 				E39AAA6727E10F190033877A /* SearchViewModel.swift in Sources */,
-				E337F77C27DD561500689A7A /* ArtistDetailResponse.swift in Sources */,
+				E3F1070527E90021008F1E5D /* PlayerViewModel.swift in Sources */,
 				E337F78C27DE4AA800689A7A /* RecentlyPlayedResponse.swift in Sources */,
 				E3A7BC8127D95E3F0046154C /* HomeViewController.swift in Sources */,
 				E39AAA7C27E35E9A0033877A /* ColorPicker.swift in Sources */,
@@ -584,6 +607,7 @@
 				E3AA50A927DCDCA700575C7F /* ImageWithInfoCollectionViewCell.swift in Sources */,
 				E337F78627DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift in Sources */,
 				E39AAA5C27E0CD170033877A /* TrackContainerViewController.swift in Sources */,
+				E3F106F127E8DD08008F1E5D /* PlayerViewController.swift in Sources */,
 				E3AA50AD27DCDCC200575C7F /* HomeTrackViewCell.swift in Sources */,
 				E3AA509A27DC016700575C7F /* NewReleasesResponse.swift in Sources */,
 				E3AA50AB27DCDCB500575C7F /* FullImageCollectionViewCell.swift in Sources */,
@@ -595,7 +619,6 @@
 				E3A7BC8527D95E500046154C /* LibraryViewController.swift in Sources */,
 				E341043527DA7354006BCAB6 /* SettingsViewController.swift in Sources */,
 				E3A7BC6827D95D600046154C /* AppDelegate.swift in Sources */,
-				E337F77A27DD55AC00689A7A /* AlbumDetailResponse.swift in Sources */,
 				E337F78827DE293900689A7A /* SearchResponse.swift in Sources */,
 				E39AAA5E27E0CE690033877A /* TrackContainerViewModelProtocol.swift in Sources */,
 				E337F79127DE772D00689A7A /* ItemListCell.swift in Sources */,
@@ -606,6 +629,7 @@
 				E39AAA8927E50CE40033877A /* ArtistViewModel.swift in Sources */,
 				E3AA50A227DC0B0E00575C7F /* AlbumResponse.swift in Sources */,
 				E341042327DA556E006BCAB6 /* APICaller.swift in Sources */,
+				E3F1070127E8F936008F1E5D /* CoordinatorProtocol.swift in Sources */,
 				E39AAA9C27E732070033877A /* ButtonFooterView.swift in Sources */,
 				E3AA509C27DC083B00575C7F /* UsersTopArtistsResponse.swift in Sources */,
 				E341042027D9793C006BCAB6 /* AuthResponse.swift in Sources */,
@@ -840,6 +864,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E3F106F727E8EC2D008F1E5D /* XCRemoteSwiftPackageReference "LNPopupController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LeoNatan/LNPopupController";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E3F106F827E8EC2D008F1E5D /* LNPopupController-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3F106F727E8EC2D008F1E5D /* XCRemoteSwiftPackageReference "LNPopupController" */;
+			productName = "LNPopupController-Static";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E3A7BC5C27D95D5F0046154C /* Project object */;
 }

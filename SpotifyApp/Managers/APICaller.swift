@@ -138,9 +138,9 @@ class APICaller {
         }
     }
     
-    func getAlbum(id: String, completion: @escaping (Result<AlbumDetailResponse, AFError>) -> Void) {
+    func getAlbum(id: String, completion: @escaping (Result<AlbumResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/albums/\(id)", method: .get) { dataRequest in
-            dataRequest.responseDecodable(of: AlbumDetailResponse.self) { response in
+            dataRequest.responseDecodable(of: AlbumResponse.self) { response in
                 completion(response.result)
             }
         }
@@ -201,9 +201,9 @@ class APICaller {
         }
     }
     
-    func getArtist(id: String, completion: @escaping (Result<ArtistDetailResponse, AFError>) -> Void) {
+    func getArtist(id: String, completion: @escaping (Result<ArtistResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/artists/\(id)", method: .get) { dataRequest in
-            dataRequest.responseDecodable(of: ArtistDetailResponse.self) { response in
+            dataRequest.responseDecodable(of: ArtistResponse.self) { response in
                 completion(response.result)
             }
         }

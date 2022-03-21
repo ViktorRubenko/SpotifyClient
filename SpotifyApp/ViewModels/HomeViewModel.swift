@@ -115,6 +115,7 @@ final class HomeViewModel {
                 }
                 print("Get NewReleases")
             case .failure(let error):
+                print(error)
                 print(error.localizedDescription)
                 self?.error = error
             }
@@ -136,6 +137,7 @@ final class HomeViewModel {
                 print("Get FeaturedPlaylists")
             case .failure(let error):
                 self?.error = error
+                print(error)
                 print(error.localizedDescription)
             }
             group.leave()

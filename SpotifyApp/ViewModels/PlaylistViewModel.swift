@@ -10,7 +10,7 @@ import Foundation
 final class PlaylistViewModel: TrackContainerViewModelProtocol {
     var itemID: String
     
-    var detailTracks: [TrackResponse] = []
+    private(set) var trackResponses: [TrackResponse] = []
     var model: TrackContainerModelProtocol?
     var headerModel: TrackContainerHeaderModel?
     var fetched = Observable<Bool>(false)
@@ -20,10 +20,7 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
     }
     
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
-        TrackActionsViewModel(
-            trackResponse: detailTracks[index],
-            albumImages: detailTracks[index].album!.images
-        )
+        TrackActionsViewModel(trackResponse: trackResponses[index])
     }
     
     func fetch() {
@@ -33,7 +30,7 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
                 self?.model = PlaylistDetailModel(
                     name: response.name,
                     imageURL: findClosestSizeImage(images: response.images, height: 250, width: 250),
-                    tracks: response.tracks.items.filter({$0.track != nil}).compactMap({
+                    tracks: response.tracks.items.filter({$0.track?.previewUrl != nil}).compactMap({
                         ItemModel(
                             id: $0.track!.id,
                             name: $0.track!.name,
@@ -46,9 +43,8 @@ final class PlaylistViewModel: TrackContainerViewModelProtocol {
                     topText: response.welcomeDescription,
                     middleText: response.owner.displayName ?? "Spotify",
                     bottomText: response.followers.total > 0 ? "Followers: \(response.followers.total)" : "")
-                self?.detailTracks = response.tracks.items.filter({$0.track != nil}).compactMap({$0.track})
+                self?.trackResponses = response.tracks.items.filter({$0.track?.previewUrl != nil}).compactMap({$0.track})
             case .failure(let error):
-                print(error)
                 print(error.localizedDescription)
             }
             self?.fetched.value = true
