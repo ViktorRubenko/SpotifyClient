@@ -15,7 +15,7 @@ final class PlayerViewControllerCoordinator: CoordinatorProtocol {
     private var trackResponses: [TrackResponse]
     private var trackIndex: Int
     
-    init(trackIndex: Int, trackResponses: [TrackResponse] = [], container: UIViewController, averageColor: UIColor? = nil) {
+    init(trackIndex: Int, trackResponses: [TrackResponse], container: UIViewController, averageColor: UIColor? = nil) {
         self.containerViewController = container
         self.averageColor = averageColor
         self.trackResponses = trackResponses

@@ -19,7 +19,7 @@ struct ArtistSection {
     let sectionType: ArtistSectionType
 }
 
-final class ArtistViewModel {
+final class ArtistViewModel: PlayingTrackViewModel {
     let itemID: String
     private var artistResponse: ArtistResponse? {
         didSet {
@@ -29,6 +29,7 @@ final class ArtistViewModel {
     private var artistsTopTracksResposne: ArtistsTopTracksResponse?
     private var artistsAlbumsResponse: ArtistsAlbumsResponse?
     private var appearsOnResponse: ArtistsAlbumsResponse?
+    private(set) var trackResponses = [TrackResponse]()
     
     var sections = Observable<[ArtistSection]>([])
     var name = Observable<String>("")
@@ -117,6 +118,7 @@ final class ArtistViewModel {
                         itemType: .track)
                 }),
                 sectionType: .popularTracks))
+            trackResponses = topTracks.tracks
         }
         
         if let albums = artistsAlbumsResponse {

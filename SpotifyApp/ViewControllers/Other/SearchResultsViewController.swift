@@ -46,13 +46,21 @@ class SearchResultsViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
-        viewModel.resultSections.bind { [weak self] _ in
-            self?.collectionView.reloadData()
-        }
+        setupBinders()
     }
 }
 // MARK: - Methods
 extension SearchResultsViewController {
+    private func setupBinders() {
+        viewModel.resultSections.bind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
+        
+        viewModel.playingTrackID.bind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
+    }
+    
     private func setupViews() {
         view.backgroundColor = .red
         
@@ -113,6 +121,9 @@ extension SearchResultsViewController: UICollectionViewDelegate, UICollectionVie
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
             cell.configure(model, useDefaultImage: true)
+            if let playingID = viewModel.playingTrackID.value, model.itemType == .track, playingID == model.id {
+                cell.isPlaying = true
+            }
             return cell
         }
     }

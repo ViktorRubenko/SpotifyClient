@@ -60,6 +60,13 @@ extension PlayerViewController {
         viewModel.trackTitle.bind { [weak self] trackTitle in
             self?.popupItem.title = trackTitle
         }
+        
+        viewModel.error.bind { [weak self] errorMessageModel in
+            guard let errorMessageModel = errorMessageModel else { return }
+            let alert = UIAlertController(title: errorMessageModel.title, message: errorMessageModel.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self?.present(alert, animated: true, completion: nil)
+        }
     }
 }
 // MARK: - Actions

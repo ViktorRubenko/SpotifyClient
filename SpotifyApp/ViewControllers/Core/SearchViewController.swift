@@ -140,6 +140,12 @@ extension SearchViewController: SearchResultsViewControllerDelegate {
         case .artist:
             let vc = ArtistViewController(id: model.id)
             navigationController?.pushViewController(vc, animated: true)
+        case .track:
+            let coordinator = PlayerViewControllerCoordinator(
+                trackIndex: 0,
+                trackResponses: [viewModel.trackResponses[indexPath.row]],
+                container: tabBarController!)
+            coordinator.start()
         default:
             break
         }

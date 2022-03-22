@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct ErrorMessageModel {
+    let title: String
+    let message: String
+}

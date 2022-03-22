@@ -32,8 +32,8 @@ final class HomeViewModel {
     
     private(set) var sections = Observable<[HomeSection]>([])
     private(set) var error: AFError?
-    
-    init() {}
+    private(set) var recentlyTrackResponses = [TrackResponse]()
+    private(set) var recommendationTrackResponses = [TrackResponse]()
     
     func fetchData() {
         
@@ -84,7 +84,7 @@ final class HomeViewModel {
         }
         
         group.enter()
-        APICaller.shared.getRecentlyPlayedTracks { result in
+        APICaller.shared.getRecentlyPlayedTracks { [weak self] result in
             switch result {
             case .success(let tracksResponse):
                 recentlyPlayedTracks = tracksResponse.items.compactMap {
@@ -95,6 +95,7 @@ final class HomeViewModel {
                         imageURL: findClosestSizeImage(images: $0.track.album!.images, height: 200, width: 200),
                         itemType: .track)
                 }
+                self?.recentlyTrackResponses = tracksResponse.items.compactMap { $0.track }
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -155,6 +156,7 @@ final class HomeViewModel {
                         imageURL: findClosestSizeImage(images: track.album!.images, height: 250, width: 250),
                         itemType: .track)
                 }
+                self?.recommendationTrackResponses = response.tracks
             case .failure(let error):
                 print(error.localizedDescription)
                 self?.error = error

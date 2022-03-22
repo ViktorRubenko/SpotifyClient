@@ -186,6 +186,9 @@ extension ArtistViewController {
         viewModel.name.bind { [weak self] name in
             self?.nameLabel.text = name
         }
+        viewModel.playingTrackID.bind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
     }
     
     private func createLayout() -> UICollectionViewCompositionalLayout {
@@ -308,6 +311,9 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
                     vc.modalPresentationStyle = .overFullScreen
                     self?.present(vc, animated: true)
                 }
+                if let playingID = viewModel.playingTrackID.value, playingID == model.id {
+                    cell.isPlaying = true
+                }
             case .album:
                 cell.setFontSize(nameSize: 16, infoSize: 14)
                 fallthrough
@@ -329,6 +335,12 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 containerType: .album,
                 imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
+        case .track:
+            let coordinator = PlayerViewControllerCoordinator(
+                trackIndex: indexPath.row,
+                trackResponses: viewModel.trackResponses,
+                container: tabBarController!)
+            coordinator.start()
         default:
             break
         }

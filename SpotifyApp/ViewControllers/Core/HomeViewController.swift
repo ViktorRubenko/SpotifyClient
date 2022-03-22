@@ -241,6 +241,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let section = HomeSectionType(fromRawValue: indexPath.section)
         let item = viewModel.sections.value[indexPath.section].items[indexPath.row]
         let averageColor = (collectionView.cellForItem(at: indexPath) as? AverageColorProtocol)?.averageColor
+        print(averageColor)
         switch section {
         case .userPlaylists:
             let vc = TrackContainerViewController(
@@ -261,7 +262,19 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)
         case .recommendations:
-            let track = viewModel.sections.value[indexPath.section].items[indexPath.row]
+            let coordinator = PlayerViewControllerCoordinator(
+                trackIndex: indexPath.row,
+                trackResponses: viewModel.recommendationTrackResponses,
+                container: tabBarController!,
+                averageColor: averageColor)
+            coordinator.start()
+        case .recentlyPlayed:
+            let coordinator = PlayerViewControllerCoordinator(
+                trackIndex: indexPath.row,
+                trackResponses: viewModel.recentlyTrackResponses,
+                container: tabBarController!,
+                averageColor: averageColor)
+            coordinator.start()
         default:
             break
         }

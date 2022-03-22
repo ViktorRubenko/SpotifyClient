@@ -26,6 +26,7 @@ final class PlayerViewModel: NSObject {
     let trackArtist = Observable<String>("")
     let trackImage = Observable<UIImage?>(nil)
     let playerProgress = Observable<Float>(0.0)
+    let error = Observable<ErrorMessageModel?>(nil)
     
     init(trackIndex: Int, trackResponses: [TrackResponse]) {
         super.init()
@@ -52,7 +53,10 @@ final class PlayerViewModel: NSObject {
     }
     
     private func setPlayerItem() {
-        guard let previewUrl = currentTrackResponse.previewUrl, let url = URL(string: previewUrl) else { return }
+        guard let previewUrl = currentTrackResponse.previewUrl, let url = URL(string: previewUrl) else {
+            error.value = ErrorMessageModel(title: "Woops...", message: "Preview is not available for this track.")
+            return
+        }
         PlayerManager.shared.currentTrackID.value = currentTrackResponse.id
         PlayerManager.shared.playNewTrack(item: AVPlayerItem(url: url))
     }

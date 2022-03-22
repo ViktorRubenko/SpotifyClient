@@ -79,3 +79,9 @@ class HomeTrackViewCell: UICollectionViewCell {
         albumImageView.sd_setImage(with: model.imageURL, completed: nil)
     }
 }
+
+extension HomeTrackViewCell: AverageColorProtocol {
+    var averageColor: UIColor? {
+        albumImageView.image?.averageColor
+    }
+}

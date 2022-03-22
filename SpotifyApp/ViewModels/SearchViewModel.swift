@@ -16,15 +16,17 @@ struct SearchResultSection {
     }
 }
 
-final class SearchViewModel {
+final class SearchViewModel: PlayingTrackViewModel {
     
     let categories = Observable<[ItemModel]>([])
     let resultSections = Observable<[SearchResultSection]>([])
+    private(set) var trackResponses = [TrackResponse]()
     
     func performSearch(for searchText: String) {
         let searchText = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if searchText.isEmpty {
             resultSections.value.removeAll()
+            trackResponses = []
             return
         }
         APICaller.shared.searchRequest(searchText) { [weak self] response in
@@ -47,7 +49,7 @@ final class SearchViewModel {
                     )
                 }
                 
-                if let tracks = result.tracks, let items = tracks.items {
+                if let items = result.tracks?.items {
                     sections.append(
                         SearchResultSection(
                             title: "Tracks",
@@ -60,6 +62,7 @@ final class SearchViewModel {
                                     itemType: .track)
                             })
                     )
+                    self?.trackResponses = items
                 }
                 
                 if let albums = result.albums {
@@ -92,10 +95,8 @@ final class SearchViewModel {
                             })
                     )
                 }
-                for (index, section) in sections.enumerated() {
-                    if section.items.isEmpty {
-                        sections[index].addNoResultItem()
-                    }
+                for (index, section) in sections.enumerated() where section.items.isEmpty {
+                    sections[index].addNoResultItem()
                 }
                 self?.resultSections.value = sections
             case .failure(let error):
