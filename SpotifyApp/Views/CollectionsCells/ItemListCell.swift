@@ -84,9 +84,20 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         super.prepareForReuse()
         nameLabel.text = nil
         infoLabel.text = nil
+        indexLabel.text = nil
         imageView.image = UIImage(systemName: "photo")
         isPlaying = false
         setupBackground()
+        
+        imageLeadingContraint.deactivate()
+        imageView.snp.makeConstraints { make in
+            imageLeadingContraint = make.leading.equalToSuperview().constraint
+        }
+        
+        imageWidthContraint.deactivate()
+        imageView.snp.makeConstraints { make in
+            imageWidthContraint = make.width.equalTo(imageView.snp.height).constraint
+        }
     }
     
     override func layoutSubviews() {
@@ -122,7 +133,7 @@ extension ItemListCell {
         imageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
-            imageLeadingContraint = make.leading.equalTo(indexLabel.snp.trailing).offset(4).constraint
+            imageLeadingContraint = make.leading.equalToSuperview().constraint
             imageWidthContraint = make.width.equalTo(imageView.snp.height).constraint
         }
         
@@ -177,10 +188,10 @@ extension ItemListCell {
             imageView.sd_setImage(with: model.imageURL, completed: nil)
         }
         
-        if index == nil {
+        if index != nil {
             imageLeadingContraint.deactivate()
             imageView.snp.makeConstraints { make in
-                imageLeadingContraint = make.leading.equalToSuperview().constraint
+                imageLeadingContraint = make.leading.equalTo(indexLabel.snp.trailing).offset(4).constraint
             }
         }
         if !useDefaultImage && model.imageURL == nil {
