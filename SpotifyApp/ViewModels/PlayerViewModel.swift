@@ -53,6 +53,7 @@ final class PlayerViewModel: NSObject {
     
     private func setPlayerItem() {
         guard let previewUrl = currentTrackResponse.previewUrl, let url = URL(string: previewUrl) else { return }
+        PlayerManager.shared.currentTrackID.value = currentTrackResponse.id
         PlayerManager.shared.playNewTrack(item: AVPlayerItem(url: url))
     }
     

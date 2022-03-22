@@ -11,10 +11,12 @@ final class Observable<T> {
     
     typealias Listener = (T) -> Void
     
-    private var listener: Listener?
+    private var listeners: [UUID: Listener] = [:]
     var value: T {
         didSet {
-            listener?(value)
+            listeners.values.forEach {
+                $0(value)
+            }
         }
     }
     
@@ -22,7 +24,14 @@ final class Observable<T> {
         self.value = value
     }
     
-    func bind(_ listener: @escaping Listener) {
-        self.listener = listener
+    @discardableResult
+    func bind(_ listener: @escaping Listener) -> UUID {
+        let uuid = UUID()
+        listeners[uuid] = listener
+        return uuid
+    }
+    
+    func removeBind(uuid: UUID) {
+        listeners[uuid] = nil
     }
 }

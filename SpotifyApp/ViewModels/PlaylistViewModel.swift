@@ -8,15 +8,28 @@
 import Foundation
 
 final class PlaylistViewModel: TrackContainerViewModelProtocol {
+    
     var itemID: String
     
     private(set) var trackResponses: [TrackResponse] = []
     var model: TrackContainerModelProtocol?
     var headerModel: TrackContainerHeaderModel?
     var fetched = Observable<Bool>(false)
+    let playingTrackID = Observable<String?>(nil)
+    private var binderID: UUID?
     
     init(id: String) {
         self.itemID = id
+        playingTrackID.value = PlayerManager.shared.currentTrackID.value
+        binderID = PlayerManager.shared.currentTrackID.bind { [weak self] value in
+            self?.playingTrackID.value = value
+        }
+    }
+    
+    deinit {
+        if let uuid = binderID {
+            PlayerManager.shared.currentTrackID.removeBind(uuid: uuid)
+        }
     }
     
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {

@@ -15,6 +15,14 @@ protocol AverageColorProtocol: AnyObject {
 class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
     static let id = "TrackListCell"
     
+    var isPlaying = false {
+        didSet {
+            if isPlaying {
+                setupBackground()
+            }
+        }
+    }
+    
     private let indexLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
@@ -77,6 +85,8 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
         nameLabel.text = nil
         infoLabel.text = nil
         imageView.image = UIImage(systemName: "photo")
+        isPlaying = false
+        setupBackground()
     }
     
     override func layoutSubviews() {
@@ -88,7 +98,7 @@ class ItemListCell: UICollectionViewListCell, AverageColorProtocol {
 extension ItemListCell {
     private func setupBackground() {
         var bgConfig = UIBackgroundConfiguration.listGroupedCell()
-        bgConfig.backgroundColor = UIColor(named: "SubBGColor")?.withAlphaComponent(0.5)
+        bgConfig.backgroundColor = isPlaying ? .systemGreen.withAlphaComponent(0.5) : UIColor(named: "SubBGColor")?.withAlphaComponent(0.5)
         backgroundConfiguration = bgConfig
     }
     
@@ -131,6 +141,8 @@ extension ItemListCell {
     }
     
     func configure(_ model: ItemModel, index: String? = nil, useDefaultImage: Bool = false, withAccessory: Bool = true) {
+        isPlaying = false
+        
         if withAccessory {
             accessories = [.customView(configuration: customAccessory)]
             switch model.itemType {

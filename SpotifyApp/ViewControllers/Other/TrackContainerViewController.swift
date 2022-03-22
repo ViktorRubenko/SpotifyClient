@@ -136,6 +136,10 @@ extension TrackContainerViewController {
             self?.collectionView.reloadData()
             self?.headerView.setImage(self?.viewModel.model?.imageURL)
         }
+        
+        viewModel.playingTrackID.bind { [weak self] _ in
+            self?.collectionView.reloadData()
+        }
     }
     
     func createLayout() -> UICollectionViewCompositionalLayout {
@@ -182,6 +186,9 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
                 averageColor: cell.averageColor)
             vc.modalPresentationStyle = .overFullScreen
             self?.present(vc, animated: true)
+        }
+        if let playingTrackID = viewModel.playingTrackID.value, playingTrackID == model.id {
+            cell.isPlaying = true
         }
         return cell
     }
