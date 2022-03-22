@@ -10,35 +10,37 @@ import UIKit
 import AVKit
 
 enum PlayerState {
-    case playing, paused
+    case playing, paused, stopped
 }
 
-final class PlayerViewModel {
+final class PlayerViewModel: NSObject {
     
-    private var player = AVPlayer()
     private var trackResponses: [TrackResponse] = []
     private var currentIndex: Int = -1
     private var currentTrackResponse: TrackResponse {
         trackResponses[currentIndex]
     }
     
-    let playerState = Observable<PlayerState>(.playing)
+    let playerState = Observable<PlayerState>(.stopped)
     let trackTitle = Observable<String>("")
     let trackArtist = Observable<String>("")
     let trackImage = Observable<UIImage?>(nil)
     let playerProgress = Observable<Float>(0.0)
     
     init(trackIndex: Int, trackResponses: [TrackResponse]) {
+        super.init()
         update(trackIndex: trackIndex, trackResponses: trackResponses)
         
-        player.addPeriodicTimeObserver(
-            forInterval: CMTime(value: 1, timescale: 1),
-            queue: .main) { time in
-                if let duration = self.player.currentItem?.duration {
-                    let duration = CMTimeGetSeconds(duration), time = CMTimeGetSeconds(time)
-                    self.playerProgress.value = Float(time / duration)
-                }
-            }
+        PlayerManager.shared.didFinishCompletion = { [weak self] in
+            self?.playNext()
+        }
+        PlayerManager.shared.progression.bind { [weak self] value in
+            self?.playerProgress.value = value
+        }
+    }
+    
+    deinit {
+        PlayerManager.shared.didFinishCompletion = nil
     }
 
     func update(trackIndex: Int, trackResponses: [TrackResponse]) {
@@ -50,39 +52,56 @@ final class PlayerViewModel {
     }
     
     private func setPlayerItem() {
-        player.replaceCurrentItem(with: AVPlayerItem(url: URL(string: currentTrackResponse.previewUrl!)!))
-        playerProgress.value = 0.0
+        guard let previewUrl = currentTrackResponse.previewUrl, let url = URL(string: previewUrl) else { return }
+        PlayerManager.shared.playNewTrack(item: AVPlayerItem(url: url))
     }
     
     func fetch() {
         trackTitle.value = currentTrackResponse.name
         trackArtist.value = currentTrackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
     }
-    
+}
+// MARK: - Player Methods
+extension PlayerViewModel {
     func startPlaying() {
-        print("start")
-        playerState.value = .playing
-        player.play()
+        switch playerState.value {
+        case .playing:
+            break
+        case .paused:
+            PlayerManager.shared.play()
+            playerState.value = .playing
+        case .stopped:
+            setPlayerItem()
+            PlayerManager.shared.play()
+            playerState.value = .playing
+        }
     }
     
     func pausePlaying() {
         print("pause")
         playerState.value = .paused
-        player.pause()
+        PlayerManager.shared.pause()
+    }
+    
+    func stopPlaying() {
+        print("stop")
+        playerState.value = .stopped
     }
     
     func playNext() {
-        print("play next")
-        player.pause()
         if currentIndex < trackResponses.count - 1 {
             currentIndex += 1
+            fetch()
+            
             setPlayerItem()
-            player.play()
+            startPlaying()
+        } else {
+            stopPlaying()
         }
     }
     
     func playPrevious() {
         print("play previous")
-        player.pause()
+        PlayerManager.shared.pause()
     }
 }

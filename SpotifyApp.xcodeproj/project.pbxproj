@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1321A0FEBDD04CB688B678C9 /* Pods_SpotifyApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F0F78C231B5BB8A364798F /* Pods_SpotifyApp.framework */; };
+		E30ED87C27E9F56200542D2A /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED87B27E9F56200542D2A /* PlayerManager.swift */; };
 		E337F77227DD4B2200689A7A /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F77127DD4B2200689A7A /* AlbumViewModel.swift */; };
 		E337F78227DDF8BE00689A7A /* ImageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */; };
 		E337F78627DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78527DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift */; };
@@ -89,6 +90,7 @@
 		62F0F78C231B5BB8A364798F /* Pods_SpotifyApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpotifyApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78121FC950771641BB941454 /* Pods-SpotifyApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.release.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.release.xcconfig"; sourceTree = "<group>"; };
 		A333DFBC3153C4604FF74822 /* Pods-SpotifyApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.debug.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.debug.xcconfig"; sourceTree = "<group>"; };
+		E30ED87B27E9F56200542D2A /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
 		E337F77127DD4B2200689A7A /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
 		E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeaderView.swift; sourceTree = "<group>"; };
 		E337F78527DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserPlaylistsResponse.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 			children = (
 				E3A7BC8627D9609F0046154C /* AuthManager.swift */,
 				E341042227DA556E006BCAB6 /* APICaller.swift */,
+				E30ED87B27E9F56200542D2A /* PlayerManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -596,6 +599,7 @@
 				E39AAA6727E10F190033877A /* SearchViewModel.swift in Sources */,
 				E3F1070527E90021008F1E5D /* PlayerViewModel.swift in Sources */,
 				E337F78C27DE4AA800689A7A /* RecentlyPlayedResponse.swift in Sources */,
+				E30ED87C27E9F56200542D2A /* PlayerManager.swift in Sources */,
 				E3A7BC8127D95E3F0046154C /* HomeViewController.swift in Sources */,
 				E39AAA7C27E35E9A0033877A /* ColorPicker.swift in Sources */,
 				E39AAA6A27E1146E0033877A /* CategoryViewCell.swift in Sources */,

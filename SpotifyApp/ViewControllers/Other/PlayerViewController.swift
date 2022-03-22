@@ -42,7 +42,7 @@ extension PlayerViewController {
                 self?.popupItem.trailingBarButtonItems = [
                     self!.pausePopItemButton
                 ]
-            case .paused:
+            case .paused, .stopped:
                 self?.popupItem.trailingBarButtonItems = [
                     self!.playPopItemButton
                 ]
