@@ -250,7 +250,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             navigationController?.pushViewController(vc, animated: true)
         case .newReleases:
             let vc = TrackContainerViewController(
-                viewModel: AlbumViewModel(id: item.id),
+                viewModel: AlbumViewModel(itemID: item.id),
                 containerType: .album,
                 imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1321A0FEBDD04CB688B678C9 /* Pods_SpotifyApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F0F78C231B5BB8A364798F /* Pods_SpotifyApp.framework */; };
 		E30ED87C27E9F56200542D2A /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED87B27E9F56200542D2A /* PlayerManager.swift */; };
+		E30ED87E27EA1AF400542D2A /* PlayingTrackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED87D27EA1AF400542D2A /* PlayingTrackViewModel.swift */; };
+		E30ED88227EA209400542D2A /* PlayingViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED88127EA209400542D2A /* PlayingViewModelProtocol.swift */; };
 		E337F77227DD4B2200689A7A /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F77127DD4B2200689A7A /* AlbumViewModel.swift */; };
 		E337F78227DDF8BE00689A7A /* ImageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */; };
 		E337F78627DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78527DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift */; };
@@ -91,6 +93,8 @@
 		78121FC950771641BB941454 /* Pods-SpotifyApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.release.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.release.xcconfig"; sourceTree = "<group>"; };
 		A333DFBC3153C4604FF74822 /* Pods-SpotifyApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.debug.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E30ED87B27E9F56200542D2A /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
+		E30ED87D27EA1AF400542D2A /* PlayingTrackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingTrackViewModel.swift; sourceTree = "<group>"; };
+		E30ED88127EA209400542D2A /* PlayingViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingViewModelProtocol.swift; sourceTree = "<group>"; };
 		E337F77127DD4B2200689A7A /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
 		E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeaderView.swift; sourceTree = "<group>"; };
 		E337F78527DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserPlaylistsResponse.swift; sourceTree = "<group>"; };
@@ -241,6 +245,7 @@
 			children = (
 				E39AAA8127E47BF00033877A /* Protocols */,
 				E341042A27DA662D006BCAB6 /* UserProfileViewModel.swift */,
+				E30ED87D27EA1AF400542D2A /* PlayingTrackViewModel.swift */,
 				E341043C27DA8B27006BCAB6 /* SettingsViewModel.swift */,
 				E341044427DBF39C006BCAB6 /* HomeViewModel.swift */,
 				E337F77127DD4B2200689A7A /* AlbumViewModel.swift */,
@@ -320,6 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				E39AAA5D27E0CE690033877A /* TrackContainerViewModelProtocol.swift */,
+				E30ED88127EA209400542D2A /* PlayingViewModelProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -634,9 +640,11 @@
 				E3AA50A227DC0B0E00575C7F /* AlbumResponse.swift in Sources */,
 				E341042327DA556E006BCAB6 /* APICaller.swift in Sources */,
 				E3F1070127E8F936008F1E5D /* CoordinatorProtocol.swift in Sources */,
+				E30ED87E27EA1AF400542D2A /* PlayingTrackViewModel.swift in Sources */,
 				E39AAA9C27E732070033877A /* ButtonFooterView.swift in Sources */,
 				E3AA509C27DC083B00575C7F /* UsersTopArtistsResponse.swift in Sources */,
 				E341042027D9793C006BCAB6 /* AuthResponse.swift in Sources */,
+				E30ED88227EA209400542D2A /* PlayingViewModelProtocol.swift in Sources */,
 				E39AAA6027E0D7F20033877A /* PlaylistViewModel.swift in Sources */,
 				E39AAA8727E50C190033877A /* ArtistViewController.swift in Sources */,
 				E341045527DC003A006BCAB6 /* PlaylistsResponse.swift in Sources */,

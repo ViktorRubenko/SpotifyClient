@@ -325,7 +325,7 @@ extension ArtistViewController: UICollectionViewDelegate, UICollectionViewDataSo
         case .album, .playlist:
             let averageColor = (collectionView.cellForItem(at: indexPath) as? AverageColorProtocol)?.averageColor
             let vc = TrackContainerViewController(
-                viewModel: model.itemType == .album ? AlbumViewModel(id: model.id) : PlaylistViewModel(id: model.id),
+                viewModel: model.itemType == .album ? AlbumViewModel(itemID: model.id) : PlaylistViewModel(id: model.id),
                 containerType: .album,
                 imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)

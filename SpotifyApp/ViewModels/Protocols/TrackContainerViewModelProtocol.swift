@@ -7,14 +7,20 @@
 
 import Foundation
 
-protocol TrackContainerViewModelProtocol {
+protocol TrackContainerViewModelProtocol: PlayingViewModelProtocol {
+    
     var itemID: String { get }
     var model: TrackContainerModelProtocol? { get }
     var headerModel: TrackContainerHeaderModel? { get }
     var fetched: Observable<Bool> { get }
     var trackResponses: [TrackResponse] { get }
-    var playingTrackID: Observable<String?> { get }
     
     func fetch()
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel
+}
+
+extension TrackContainerViewModelProtocol {
+    func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
+        TrackActionsViewModel(trackResponse: trackResponses[index])
+    }
 }

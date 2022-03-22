@@ -127,7 +127,7 @@ extension SearchViewController: SearchResultsViewControllerDelegate {
         switch model.itemType {
         case .album:
             let vc = TrackContainerViewController(
-                viewModel: AlbumViewModel(id: model.id),
+                viewModel: AlbumViewModel(itemID: model.id),
                 containerType: .album,
                 imageAverageColor: averageColor)
             navigationController?.pushViewController(vc, animated: true)

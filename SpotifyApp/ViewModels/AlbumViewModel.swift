@@ -9,32 +9,17 @@ import Foundation
 import UIKit
 import SDWebImage
 
-final class AlbumViewModel: TrackContainerViewModelProtocol {
-    let itemID: String
-    private(set) var trackResponses: [TrackResponse] = []
+final class AlbumViewModel: PlayingTrackViewModel, TrackContainerViewModelProtocol {
+    
+    var itemID: String
     var model: TrackContainerModelProtocol?
     var headerModel: TrackContainerHeaderModel?
-    let fetched = Observable<Bool>(false)
-    let playingTrackID = Observable<String?>(nil)
-    private var binderID: UUID?
+    var fetched = Observable<Bool>(false)
+    var trackResponses = [TrackResponse]()
     
-    init(id: String) {
-        itemID = id
-        
-        playingTrackID.value = PlayerManager.shared.currentTrackID.value
-        binderID = PlayerManager.shared.currentTrackID.bind { [weak self] value in
-            self?.playingTrackID.value = value
-        }
-    }
-    
-    deinit {
-        if let uuid = binderID {
-            PlayerManager.shared.currentTrackID.removeBind(uuid: uuid)
-        }
-    }
-    
-    func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
-        TrackActionsViewModel(trackResponse: trackResponses[index])
+    init(itemID: String) {
+        self.itemID = itemID
+        super.init()
     }
     
     func fetch() {

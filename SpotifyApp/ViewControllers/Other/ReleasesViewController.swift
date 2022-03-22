@@ -98,7 +98,10 @@ extension ReleasesViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let averageColor = (collectionView.cellForItem(at: indexPath) as? AverageColorProtocol)?.averageColor
         let model = viewModel.sections.value[indexPath.section].items[indexPath.row]
-        let vc = TrackContainerViewController(viewModel: AlbumViewModel(id: model.id), containerType: .album, imageAverageColor: averageColor)
+        let vc = TrackContainerViewController(
+            viewModel: AlbumViewModel(itemID: model.id),
+            containerType: .album,
+            imageAverageColor: averageColor)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -47,7 +47,8 @@ class TrackActionsViewModel {
         ])
         if trackResponse.album != nil {
             trackActions.append(TrackAction(name: "Album", callback: {
-                self.delegate?.openAlbum(viewModel: AlbumViewModel(id: self.trackResponse.album!.id))
+                self.delegate?.openAlbum(
+                    viewModel: AlbumViewModel(itemID: self.trackResponse.album!.id))
             }))
         }
         if !fromArtist {
