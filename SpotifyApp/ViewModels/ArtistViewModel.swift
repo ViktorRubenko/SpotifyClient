@@ -182,6 +182,6 @@ final class ArtistViewModel: PlayingTrackViewModel {
     
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
         let trackResponse = artistsTopTracksResposne!.tracks[index]
-        return TrackActionsViewModel(trackResponse: trackResponse, fromArtist: true)
+        return TrackActionsViewModel(trackResponse: trackResponse, from: .artist)
     }
 }

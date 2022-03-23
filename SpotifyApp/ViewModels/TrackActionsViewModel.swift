@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum TrackActionFromType {
+    case album, artist, unknown
+}
+
 struct TrackAction {
     let name: String
     let callback: (() -> Void)
@@ -27,14 +31,14 @@ class TrackActionsViewModel {
     let albumImageURL: URL?
     let topText: String
     let bottomText: String
-    private let fromArtist: Bool
+    private let from: TrackActionFromType
     
-    init(trackResponse: TrackResponse, fromArtist: Bool = false) {
+    init(trackResponse: TrackResponse, from: TrackActionFromType = .unknown) {
         self.trackResponse = trackResponse
         self.albumImageURL = findClosestSizeImage(images: trackResponse.album?.images, height: 200, width: 200)
         self.topText = trackResponse.name
         self.bottomText = trackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
-        self.fromArtist = fromArtist
+        self.from = from
     }
     
     func getActions() {
@@ -45,13 +49,13 @@ class TrackActionsViewModel {
                 self.delegate?.share(externalURL: self.trackResponse.externalUrls.spotify)
             })
         ])
-        if trackResponse.album != nil {
+        if from == .artist || from == .unknown {
             trackActions.append(TrackAction(name: "Album", callback: {
                 self.delegate?.openAlbum(
                     viewModel: AlbumViewModel(itemID: self.trackResponse.album!.id))
             }))
         }
-        if !fromArtist {
+        if from == .album || from == .unknown {
             trackActions.append(TrackAction(name: "Artist", callback: { self.delegate?.showArtist() }))
         }
         self.trackActions.value = trackActions

@@ -64,4 +64,9 @@ final class AlbumViewModel: PlayingTrackViewModel, TrackContainerViewModelProtoc
             }
         }
     }
+    
+    func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
+        let trackResponse = trackResponses[index]
+        return TrackActionsViewModel(trackResponse: trackResponse, from: .album)
+    }
 }

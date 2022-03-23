@@ -47,6 +47,9 @@ final class PlayerViewModel: NSObject {
 // MARK: - Player Methods
 extension PlayerViewModel {
     func update(trackIndex: Int, trackResponses: [TrackResponse]) {
+        if currentIndex == trackIndex {
+            return
+        }
         self.trackResponses = trackResponses
         self.currentIndex = trackIndex
         
