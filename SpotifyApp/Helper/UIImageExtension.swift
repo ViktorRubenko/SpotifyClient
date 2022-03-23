@@ -66,3 +66,10 @@ extension UIImage {
             alpha: 1.0)
     }
 }
+
+extension UIImage {
+    class func largeSymbolImage(systemName: String, weight: SymbolWeight = .regular) -> UIImage? {
+        let symbolConfig = UIImage.SymbolConfiguration(pointSize: 140, weight: .regular, scale: .large)
+        return UIImage(systemName: systemName, withConfiguration: symbolConfig)
+    }
+}
