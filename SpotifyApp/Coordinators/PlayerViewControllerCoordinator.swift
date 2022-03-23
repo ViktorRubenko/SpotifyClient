@@ -23,6 +23,17 @@ final class PlayerViewControllerCoordinator: CoordinatorProtocol {
     }
     
     func start() {
+        
+        if trackResponses[trackIndex].previewUrl == nil {
+            let alert = UIAlertController(
+                title: "Woops...",
+                message: "Preview is not available for this track",
+                preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            containerViewController.present(alert, animated: true, completion: nil)
+            return
+        }
+        
         containerViewController.popupBar.inheritsAppearanceFromDockingView = false
         containerViewController.popupBar.backgroundColor = averageColor
         containerViewController.popupBar.progressViewStyle = .bottom

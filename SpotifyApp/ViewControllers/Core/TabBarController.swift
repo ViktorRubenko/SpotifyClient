@@ -43,6 +43,7 @@ class TabBarController: UITabBarController {
         
         setViewControllers([nav1, nav2, nav3], animated: false)
         
+//        popupBar.customBarViewController = PlayerBarCustomViewController()
     }
     
 }

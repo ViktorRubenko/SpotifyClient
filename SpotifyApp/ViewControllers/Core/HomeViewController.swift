@@ -241,7 +241,6 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let section = HomeSectionType(fromRawValue: indexPath.section)
         let item = viewModel.sections.value[indexPath.section].items[indexPath.row]
         let averageColor = (collectionView.cellForItem(at: indexPath) as? AverageColorProtocol)?.averageColor
-        print(averageColor)
         switch section {
         case .userPlaylists:
             let vc = TrackContainerViewController(

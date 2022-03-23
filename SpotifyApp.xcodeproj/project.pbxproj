@@ -12,6 +12,7 @@
 		E30ED87E27EA1AF400542D2A /* PlayingTrackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED87D27EA1AF400542D2A /* PlayingTrackViewModel.swift */; };
 		E30ED88227EA209400542D2A /* PlayingViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED88127EA209400542D2A /* PlayingViewModelProtocol.swift */; };
 		E30ED88427EA277100542D2A /* ErrorMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED88327EA277100542D2A /* ErrorMessageModel.swift */; };
+		E30ED88627EA70A300542D2A /* PlayerBarCustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED88527EA70A300542D2A /* PlayerBarCustomViewController.swift */; };
 		E337F77227DD4B2200689A7A /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F77127DD4B2200689A7A /* AlbumViewModel.swift */; };
 		E337F78227DDF8BE00689A7A /* ImageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */; };
 		E337F78627DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E337F78527DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift */; };
@@ -97,6 +98,7 @@
 		E30ED87D27EA1AF400542D2A /* PlayingTrackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingTrackViewModel.swift; sourceTree = "<group>"; };
 		E30ED88127EA209400542D2A /* PlayingViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingViewModelProtocol.swift; sourceTree = "<group>"; };
 		E30ED88327EA277100542D2A /* ErrorMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessageModel.swift; sourceTree = "<group>"; };
+		E30ED88527EA70A300542D2A /* PlayerBarCustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerBarCustomViewController.swift; sourceTree = "<group>"; };
 		E337F77127DD4B2200689A7A /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
 		E337F78127DDF8BE00689A7A /* ImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeaderView.swift; sourceTree = "<group>"; };
 		E337F78527DE1E9500689A7A /* CurrentUserPlaylistsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserPlaylistsResponse.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				E3A7BC8A27D962D30046154C /* WelcomeViewController.swift */,
+				E30ED88527EA70A300542D2A /* PlayerBarCustomViewController.swift */,
 				E39AAA8627E50C190033877A /* ArtistViewController.swift */,
 				E39AAA5B27E0CD170033877A /* TrackContainerViewController.swift */,
 				E3F106F027E8DD08008F1E5D /* PlayerViewController.swift */,
@@ -636,6 +639,7 @@
 				E337F78827DE293900689A7A /* SearchResponse.swift in Sources */,
 				E39AAA5E27E0CE690033877A /* TrackContainerViewModelProtocol.swift in Sources */,
 				E337F79127DE772D00689A7A /* ItemListCell.swift in Sources */,
+				E30ED88627EA70A300542D2A /* PlayerBarCustomViewController.swift in Sources */,
 				E341042827DA65D4006BCAB6 /* UserProfileViewController.swift in Sources */,
 				E341042527DA55A6006BCAB6 /* UserProfileResponse.swift in Sources */,
 				E341042E27DA6702006BCAB6 /* Observable.swift in Sources */,

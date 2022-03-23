@@ -11,23 +11,47 @@ import LNPopupController_ObjC
 class PlayerViewController: UIViewController {
     
     var viewModel: PlayerViewModel!
-    private lazy var playPopItemButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(didTapPlayButton))
-    private lazy var pausePopItemButton = UIBarButtonItem(barButtonSystemItem: .pause, target: self, action: #selector(didTapPauseButton))
+    private lazy var playPopItemButton = UIBarButtonItem(
+        image: UIImage(systemName: "play.fill"),
+        style: .plain,
+        target: self,
+        action: #selector(didTapPlayButton))
+    private lazy var pausePopItemButton = UIBarButtonItem(
+        image: UIImage(systemName: "pause.fill"),
+        style: .plain,
+        target: self,
+        action: #selector(didTapPauseButton))
+    private var swipeGestureRecognizerRight: UISwipeGestureRecognizer!
+    private var swipeGestureRecognizerLeft: UISwipeGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupPopItem()
         setupBinders()
+        setupGestureRecognizers()
         
         viewModel.fetch()
     }
 }
 // MARK: - Methods
 extension PlayerViewController {
+    func setupGestureRecognizers() {
+        
+        swipeGestureRecognizerRight = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe))
+        swipeGestureRecognizerRight.direction = .right
+        popupPresentationContainer?.popupBar.addGestureRecognizer(swipeGestureRecognizerRight)
+        
+        swipeGestureRecognizerLeft = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe))
+        swipeGestureRecognizerLeft.direction = .left
+        popupPresentationContainer?.popupBar.addGestureRecognizer(swipeGestureRecognizerLeft)
+        
+        popupPresentationContainer?.popupInteractionStyle = .none
+    }
+    
     private func setupPopItem() {
-        popupItem.title = "Test"
-        popupItem.subtitle = "test2"
+        popupItem.title = ""
+        popupItem.subtitle = ""
         popupItem.image = UIImage(systemName: "music.note")
         popupItem.trailingBarButtonItems = [
             playPopItemButton
@@ -77,5 +101,18 @@ extension PlayerViewController {
     
     @objc private func didTapPauseButton() {
         viewModel.pausePlaying()
+    }
+    
+    @objc private func didSwipe(_ swipeGestureRecognizer: UISwipeGestureRecognizer) {
+        switch swipeGestureRecognizer.direction {
+        case .left:
+            print("left")
+            viewModel.playNext()
+        case .right:
+            print("right")
+            viewModel.playPrevious()
+        default:
+            break
+        }
     }
 }

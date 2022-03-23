@@ -43,7 +43,9 @@ final class PlayerViewModel: NSObject {
     deinit {
         PlayerManager.shared.didFinishCompletion = nil
     }
-
+}
+// MARK: - Player Methods
+extension PlayerViewModel {
     func update(trackIndex: Int, trackResponses: [TrackResponse]) {
         self.trackResponses = trackResponses
         self.currentIndex = trackIndex
@@ -51,7 +53,7 @@ final class PlayerViewModel: NSObject {
         setPlayerItem()
         fetch()
     }
-    
+
     private func setPlayerItem() {
         guard let previewUrl = currentTrackResponse.previewUrl, let url = URL(string: previewUrl) else {
             error.value = ErrorMessageModel(title: "Woops...", message: "Preview is not available for this track.")
@@ -65,9 +67,32 @@ final class PlayerViewModel: NSObject {
         trackTitle.value = currentTrackResponse.name
         trackArtist.value = currentTrackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
     }
-}
-// MARK: - Player Methods
-extension PlayerViewModel {
+
+    func findNextIndex() -> Int? {
+        if currentIndex >= trackResponses.count - 1 {
+            return nil
+        }
+        for (index, trackResponse) in trackResponses[currentIndex + 1..<trackResponses.count].enumerated() {
+            if trackResponse.previewUrl != nil {
+                return currentIndex + index + 1
+            }
+        }
+        return nil
+    }
+    
+    func findPreviousTrack() -> Int? {
+        if currentIndex <= 0 {
+            return nil
+        }
+        for (index, trackResponse) in trackResponses[..<currentIndex].enumerated().reversed() {
+            if trackResponse.previewUrl != nil {
+                return index
+            }
+        }
+        return nil
+
+    }
+    
     func startPlaying() {
         switch playerState.value {
         case .playing:
@@ -94,8 +119,8 @@ extension PlayerViewModel {
     }
     
     func playNext() {
-        if currentIndex < trackResponses.count - 1 {
-            currentIndex += 1
+        if let nextIndex = findNextIndex() {
+            currentIndex = nextIndex
             fetch()
             
             setPlayerItem()
@@ -108,5 +133,14 @@ extension PlayerViewModel {
     func playPrevious() {
         print("play previous")
         PlayerManager.shared.pause()
+        if let previousIndex = findPreviousTrack() {
+            currentIndex = previousIndex
+            fetch()
+            
+            setPlayerItem()
+            startPlaying()
+        } else {
+            stopPlaying()
+        }
     }
 }
