@@ -33,11 +33,7 @@ final class PlayerViewControllerCoordinator: CoordinatorProtocol {
             containerViewController.present(alert, animated: true, completion: nil)
             return
         }
-        
-        containerViewController.popupBar.inheritsAppearanceFromDockingView = false
-        containerViewController.popupBar.backgroundColor = averageColor
-        containerViewController.popupBar.progressViewStyle = .bottom
-        
+    
         if let playerVC = containerViewController.popupContent as? PlayerViewController {
             playerVC.viewModel.update(trackIndex: trackIndex, trackResponses: trackResponses)
             playerVC.viewModel.startPlaying()

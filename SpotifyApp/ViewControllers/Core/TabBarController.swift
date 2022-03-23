@@ -42,6 +42,10 @@ class TabBarController: UITabBarController {
         nav3.tabBarItem = UITabBarItem(title: "Library", image: UIImage(systemName: "music.note.list"), tag: 2)
         
         setViewControllers([nav1, nav2, nav3], animated: false)
+        
+        popupBar.inheritsAppearanceFromDockingView = false
+        popupBar.progressViewStyle = .bottom
+
     }
     
 }

@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import AVKit
+import SDWebImage
 
 enum PlayerState {
     case playing, paused, stopped
@@ -46,6 +47,12 @@ final class PlayerViewModel: NSObject {
 }
 // MARK: - Player Methods
 extension PlayerViewModel {
+    func fetch() {
+        fetchImage()
+        trackTitle.value = currentTrackResponse.name
+        trackArtist.value = currentTrackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
+    }
+    
     func update(trackIndex: Int, trackResponses: [TrackResponse]) {
         
         self.trackResponses = trackResponses
@@ -53,6 +60,15 @@ extension PlayerViewModel {
         
         setPlayerItem()
         fetch()
+    }
+    
+    private func fetchImage() {
+        SDWebImageManager.shared.loadImage(
+            with: findClosestSizeImage(images: currentTrackResponse.album?.images, height: 500, width: 500),
+            options: [.highPriority],
+            progress: nil) { [weak self] image, _, error, _, _, _ in
+                self?.trackImage.value = image
+        }
     }
 
     private func setPlayerItem() {
@@ -62,11 +78,6 @@ extension PlayerViewModel {
         }
         PlayerManager.shared.currentTrackID.value = currentTrackResponse.id
         PlayerManager.shared.playNewTrack(item: AVPlayerItem(url: url))
-    }
-    
-    func fetch() {
-        trackTitle.value = currentTrackResponse.name
-        trackArtist.value = currentTrackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
     }
 
     func findNextIndex() -> Int? {
@@ -117,6 +128,7 @@ extension PlayerViewModel {
     func stopPlaying() {
         print("stop")
         playerState.value = .stopped
+        PlayerManager.shared.stop()
     }
     
     func playNext() {

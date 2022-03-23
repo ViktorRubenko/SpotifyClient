@@ -85,6 +85,13 @@ class PlayerViewController: UIViewController {
     }()
     private let containerView = UIView()
     let imageViewContainer = UIView()
+    private let gradientBackgroundView: GradientBackgroundView = {
+        let view = GradientBackgroundView()
+        view.setStartColor(.clear)
+        view.setEndColor(.black.withAlphaComponent(0.7))
+        view.style = .hard
+        return view
+    }()
     private var swipeGestureRecognizerRight: UISwipeGestureRecognizer!
     private var swipeGestureRecognizerLeft: UISwipeGestureRecognizer!
     
@@ -105,6 +112,12 @@ class PlayerViewController: UIViewController {
 extension PlayerViewController {
     func setupViews() {
         let safeArea = view.safeAreaLayoutGuide
+        view.backgroundColor = .systemBackground
+        
+        view.addSubview(gradientBackgroundView)
+        gradientBackgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         view.addSubview(containerView)
         
@@ -255,6 +268,14 @@ extension PlayerViewController {
             let alert = UIAlertController(title: errorMessageModel.title, message: errorMessageModel.message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self?.present(alert, animated: true, completion: nil)
+        }
+        
+        viewModel.trackImage.bind { [weak self] image in
+            self?.imageView.image = image
+            self?.view.backgroundColor = image?.averageColor
+            
+            self?.popupItem.image = image
+            self?.popupPresentationContainer?.popupBar.backgroundColor = image?.averageColor
         }
     }
 }

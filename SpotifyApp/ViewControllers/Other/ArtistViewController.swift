@@ -58,9 +58,9 @@ class ArtistViewController: UIViewController {
     private let gradientBackgroundView = GradientBackgroundView()
     private let reverseGradientView: GradientBackgroundView = {
         let view = GradientBackgroundView()
-        view.reverse = true
+        view.setStartColor(.clear)
+        view.setEndColor(.black)
         view.style = .medium
-        view.setStartColor(.black)
         return view
     }()
     private var previousNavigationBarAppearance: UINavigationBarAppearance?

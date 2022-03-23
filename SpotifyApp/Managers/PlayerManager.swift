@@ -55,6 +55,10 @@ final class PlayerManager {
         player.pause()
     }
     
+    func stop() {
+        player.pause()
+    }
+    
     @objc func didFinishPlaying(_ notification: NSNotification) {
         didFinishCompletion?()
     }
