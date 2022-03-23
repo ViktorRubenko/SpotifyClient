@@ -171,6 +171,7 @@ extension TrackActionsViewController: TrackActionsViewModelDelegate {
     func openAlbum(viewModel: AlbumViewModel) {
         let vc = TrackContainerViewController(viewModel: viewModel, containerType: .album, imageAverageColor: averageColor)
         weak var pvc = self.presentingViewController as? UITabBarController
+        pvc?.closePopup(animated: true, completion: nil)
         dismiss(animated: true) {
             if let navigationController = pvc?.selectedViewController as? UINavigationController {
                 navigationController.pushViewController(vc, animated: true)
@@ -201,6 +202,7 @@ extension TrackActionsViewController: TrackActionsViewModelDelegate {
     
     func openArtist(id: String) {
         weak var pvc = self.presentingViewController as? TabBarController
+        pvc?.closePopup(animated: true, completion: nil)
         let vc = ArtistViewController(id: id)
         dismiss(animated: true) {
             if let navigationController = pvc?.selectedViewController as? UINavigationController {

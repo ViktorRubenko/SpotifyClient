@@ -109,13 +109,19 @@ class PlayerViewController: UIViewController {
         view.style = .hard
         return view
     }()
+    private lazy var trackActionsButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 15
+        button.backgroundColor = .black.withAlphaComponent(0.25)
+        button.setImage(UIImage.largeSymbolImage(systemName: "ellipsis.circle"), for: .normal)
+        button.addTarget(self, action: #selector(didTapTrackActionsButton), for: .touchUpInside)
+        return button
+    }()
     private var swipeGestureRecognizerRight: UISwipeGestureRecognizer!
     private var swipeGestureRecognizerLeft: UISwipeGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        popupPresentationContainer?.popupContentView.popupCloseButtonStyle = .round
         
         setupPopItem()
         setupViews()
@@ -146,6 +152,7 @@ extension PlayerViewController {
         containerView.addSubview(slider)
         containerView.addSubview(trackLengthLabel)
         containerView.addSubview(currentTimeLabel)
+        containerView.addSubview(trackActionsButton)
         
         imageViewContainer.addSubview(imageView)
         
@@ -231,11 +238,25 @@ extension PlayerViewController {
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
         }
+        
         imageView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalToSuperview()
             make.height.equalTo(imageView.snp.width)
         }
+        
+        trackActionsButton.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(30)
+            make.width.equalTo(30)
+        }
+        
+        let bottomItems = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tapShareButton))
+        ]
+        bottomToolbar.setItems(bottomItems, animated: false)
         
     }
     
@@ -314,12 +335,6 @@ extension PlayerViewController {
         viewModel.currentTime.bind { [weak self] value in
             self?.currentTimeLabel.text = value
         }
-        
-        let bottomItems = [
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tapShareButton))
-        ]
-        bottomToolbar.setItems(bottomItems, animated: false)
     }
     
     private func setupPopupItemColor(_ color: UIColor?) {
@@ -375,6 +390,11 @@ extension PlayerViewController {
         let vc = UIActivityViewController(
             activityItems: [viewModel.shareInfo],
             applicationActivities: [])
+        present(vc, animated: true)
+    }
+    
+    @objc private func didTapTrackActionsButton() {
+        let vc = TrackActionsViewController(viewModel: viewModel.createTrackActionsViewModel())
         present(vc, animated: true)
     }
 }

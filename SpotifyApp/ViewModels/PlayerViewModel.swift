@@ -187,4 +187,8 @@ extension PlayerViewModel {
             self?.playerProgress.value = Float(value)
         }
     }
+    
+    func createTrackActionsViewModel() -> TrackActionsViewModel {
+        TrackActionsViewModel(trackResponse: currentTrackResponse)
+    }
 }

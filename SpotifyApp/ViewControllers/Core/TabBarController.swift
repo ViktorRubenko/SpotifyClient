@@ -46,6 +46,7 @@ class TabBarController: UITabBarController {
         
         popupBar.inheritsAppearanceFromDockingView = false
         popupBar.progressViewStyle = .bottom
+        popupContentView.popupCloseButtonStyle = .default
     }
     
 }
