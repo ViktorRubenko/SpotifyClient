@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LNPopupController_ObjC
 
 class TabBarController: UITabBarController {
 
@@ -45,7 +46,6 @@ class TabBarController: UITabBarController {
         
         popupBar.inheritsAppearanceFromDockingView = false
         popupBar.progressViewStyle = .bottom
-
     }
     
 }

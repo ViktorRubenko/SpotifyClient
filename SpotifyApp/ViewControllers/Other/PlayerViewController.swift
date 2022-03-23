@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LNPopupController
 
 class PlayerViewController: UIViewController {
     
@@ -275,8 +276,16 @@ extension PlayerViewController {
             self?.view.backgroundColor = image?.averageColor
             
             self?.popupItem.image = image
-            self?.popupPresentationContainer?.popupBar.backgroundColor = image?.averageColor
+            self?.setupPopupItemColor(image?.averageColor?.withAlphaComponent(0.35))
+            
         }
+    }
+    
+    private func setupPopupItemColor(_ color: UIColor?) {
+        let popupAppearance = LNPopupBarAppearance()
+        popupAppearance.backgroundColor = color
+        popupPresentationContainer?.popupBar.standardAppearance = popupAppearance
+        popupBar.barStyle = .prominent
     }
 }
 // MARK: - Actions
