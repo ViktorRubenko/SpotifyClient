@@ -22,6 +22,9 @@ final class PlayerViewModel: NSObject {
         trackResponses[currentIndex]
     }
     private var progressionObserverUUID: UUID?
+    var shareInfo: String {
+        currentTrackResponse.externalUrls.spotify
+    }
     
     let playerState = Observable<PlayerState>(.stopped)
     let trackTitle = Observable<String>("")

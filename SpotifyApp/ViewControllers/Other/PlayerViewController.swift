@@ -311,9 +311,15 @@ extension PlayerViewController {
             self?.trackLengthLabel.text = value
         }
         
-        viewModel.currentTime.bind{ [weak self] value in
+        viewModel.currentTime.bind { [weak self] value in
             self?.currentTimeLabel.text = value
         }
+        
+        let bottomItems = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tapShareButton))
+        ]
+        bottomToolbar.setItems(bottomItems, animated: false)
     }
     
     private func setupPopupItemColor(_ color: UIColor?) {
@@ -363,5 +369,12 @@ extension PlayerViewController {
     
     @objc private func didTapSlider() {
         viewModel.tapSlider()
+    }
+    
+    @objc private func tapShareButton() {
+        let vc = UIActivityViewController(
+            activityItems: [viewModel.shareInfo],
+            applicationActivities: [])
+        present(vc, animated: true)
     }
 }
