@@ -14,6 +14,7 @@ protocol TrackContainerViewModelProtocol: PlayingViewModelProtocol {
     var headerModel: TrackContainerHeaderModel? { get }
     var fetched: Observable<Bool> { get }
     var trackResponses: [TrackResponse] { get }
+    var firstPlayeble: Int { get }
     
     func fetch()
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel
@@ -22,5 +23,13 @@ protocol TrackContainerViewModelProtocol: PlayingViewModelProtocol {
 extension TrackContainerViewModelProtocol {
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
         TrackActionsViewModel(trackResponse: trackResponses[index])
+    }
+    var firstPlayeble: Int {
+        for (index, trackResponse) in trackResponses.enumerated() {
+            if trackResponse.previewUrl != nil {
+                return index
+            }
+        }
+        return 0
     }
 }

@@ -203,6 +203,14 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
             if let headerModel = viewModel.headerModel {
                 headerView.configure(headerModel, type: containerType)
             }
+            headerView.setPlayButtonCallback {
+                let coordinator = PlayerViewControllerCoordinator(
+                    trackIndex: self.viewModel.firstPlayeble,
+                    trackResponses: self.viewModel.trackResponses,
+                    container: self.tabBarController!,
+                    averageColor: nil)
+                coordinator.start()
+            }
             return headerView
         }
     }

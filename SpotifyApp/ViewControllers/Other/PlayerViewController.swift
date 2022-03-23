@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import LNPopupController_ObjC
 
 class PlayerViewController: UIViewController {
     

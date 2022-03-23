@@ -89,7 +89,6 @@ class TrackContainerHeaderView: UICollectionReusableView {
     }
     
     @objc func didTapPlayButton() {
-        print("play")
         buttonCallback?()
     }
     
