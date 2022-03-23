@@ -14,32 +14,46 @@ final class PlayerManager {
     
     private let player = AVPlayer()
     let currentTrackID = Observable<String?>(nil)
-    let progression = Observable<Float>(0.0)
+    let progression = Observable<Double>(0.0)
     var didFinishCompletion: (() -> Void)?
-    private var observer: Any?
+    var timings = Observable<(duration: Int, currentTime: Int)>((1, 1))
+    private var playEndObserver: Any?
+    private var statusObserver: NSKeyValueObservation?
     
     private init() {
         player.addPeriodicTimeObserver(
             forInterval: CMTime(value: 1, timescale: 1),
             queue: .main) { time in
-                if let duration = self.player.currentItem?.duration {
-                    let duration = CMTimeGetSeconds(duration), time = CMTimeGetSeconds(time)
-                    self.progression.value = Float(time / duration)
+                if let duration = self.player.currentItem?.duration, !duration.isIndefinite {
+                    self.timings.value = (Int(CMTimeGetSeconds(duration)), Int(CMTimeGetSeconds(time)))
+                    self.progression.value = CMTimeGetSeconds(time) / CMTimeGetSeconds(duration)
                 }
             }
         
-        observer = NotificationCenter.default.addObserver(
+        playEndObserver = NotificationCenter.default.addObserver(
             self,
             selector: #selector(didFinishPlaying),
             name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
             object: player.currentItem)
+        
+//        statusObserver = player.observe(\.currentItem?.loadedTimeRanges, options: [.new, .old], changeHandler: { player, change in
+//            if self.player == player, let timeRanges = change.newValue, let timeRange = timeRanges?.first {
+//                let bufferDuration = CMTimeGetSeconds(CMTimeAdd(timeRange.timeRangeValue.start, timeRange.timeRangeValue.duration))
+//                guard let duration = player.currentItem?.asset.duration else { return }
+//                let seconds = CMTimeGetSeconds(duration)
+//
+//                if bufferDuration > 2 || bufferDuration == seconds {
+//                    self.audioLenght.value = duration
+//                }
+//            }
+//        })
     }
     
     deinit {
-        guard let observer = observer else {
-            return
+        statusObserver?.invalidate()
+        if let playEndObserver = playEndObserver {
+            NotificationCenter.default.removeObserver(playEndObserver)
         }
-        NotificationCenter.default.removeObserver(observer)
     }
     
     func playNewTrack(item: AVPlayerItem) {
@@ -57,6 +71,10 @@ final class PlayerManager {
     
     func stop() {
         player.pause()
+    }
+    
+    func seekTime(_ seekTime: CMTime) {
+        player.seek(to: seekTime)
     }
     
     @objc func didFinishPlaying(_ notification: NSNotification) {

@@ -40,12 +40,28 @@ class PlayerViewController: UIViewController {
         label.textColor = .lightGray
         return label
     }()
-    private let slider: UISlider = {
+    private lazy var slider: UISlider = {
         let slider = UISlider()
         slider.setThumbImage(UIImage(systemName: "circle.fill"), for: .normal)
         slider.maximumValue = 1.0
         slider.minimumValue = 0.0
+        slider.isContinuous = true
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
+        slider.addTarget(self, action: #selector(didTapSlider), for: .touchUpInside)
         return slider
+    }()
+    private let trackLengthLabel: UILabel = {
+        let label = UILabel()
+        label.text = "00:00"
+        label.textAlignment = .right
+        label.font = .systemFont(ofSize: 13)
+        return label
+    }()
+    private let currentTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "00:00"
+        label.font = .systemFont(ofSize: 13)
+        return label
     }()
     private lazy var playButton: UIButton = {
         let button = UIButton()
@@ -128,6 +144,8 @@ extension PlayerViewController {
         containerView.addSubview(bottomToolbar)
         containerView.addSubview(buttonStack)
         containerView.addSubview(slider)
+        containerView.addSubview(trackLengthLabel)
+        containerView.addSubview(currentTimeLabel)
         
         imageViewContainer.addSubview(imageView)
         
@@ -179,10 +197,20 @@ extension PlayerViewController {
             make.center.equalToSuperview()
         }
         
+        trackLengthLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(buttonStack.snp.top)
+        }
+        
+        currentTimeLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.bottom.equalTo(buttonStack.snp.top)
+        }
+        
         slider.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(buttonStack.snp.top)
+            make.bottom.equalTo(trackLengthLabel.snp.top)
         }
         
         infoLabel.snp.makeConstraints { make in
@@ -277,7 +305,14 @@ extension PlayerViewController {
             
             self?.popupItem.image = image
             self?.setupPopupItemColor(image?.averageColor?.withAlphaComponent(0.35))
-            
+        }
+        
+        viewModel.trackLenght.bind { [weak self] value in
+            self?.trackLengthLabel.text = value
+        }
+        
+        viewModel.currentTime.bind{ [weak self] value in
+            self?.currentTimeLabel.text = value
         }
     }
     
@@ -300,10 +335,12 @@ extension PlayerViewController {
     }
     
     @objc private func didTapBackwardButton() {
+        imageView.image = UIImage(systemName: "music.note")
         viewModel.playPrevious()
     }
     
     @objc private func didTapForwardButton() {
+        imageView.image = UIImage(systemName: "music.note")
         viewModel.playNext()
     }
     
@@ -318,5 +355,13 @@ extension PlayerViewController {
         default:
             break
         }
+    }
+    
+    @objc private func sliderValueChanged(_ slider: UISlider) {
+        viewModel.sliderChanged(slider.value)
+    }
+    
+    @objc private func didTapSlider() {
+        viewModel.tapSlider()
     }
 }

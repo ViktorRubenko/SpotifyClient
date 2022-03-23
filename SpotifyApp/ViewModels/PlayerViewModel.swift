@@ -21,6 +21,7 @@ final class PlayerViewModel: NSObject {
     private var currentTrackResponse: TrackResponse {
         trackResponses[currentIndex]
     }
+    private var progressionObserverUUID: UUID?
     
     let playerState = Observable<PlayerState>(.stopped)
     let trackTitle = Observable<String>("")
@@ -28,6 +29,8 @@ final class PlayerViewModel: NSObject {
     let trackImage = Observable<UIImage?>(nil)
     let playerProgress = Observable<Float>(0.0)
     let error = Observable<ErrorMessageModel?>(nil)
+    let trackLenght = Observable<String>("")
+    let currentTime = Observable<String>("")
     
     init(trackIndex: Int, trackResponses: [TrackResponse]) {
         super.init()
@@ -36,8 +39,18 @@ final class PlayerViewModel: NSObject {
         PlayerManager.shared.didFinishCompletion = { [weak self] in
             self?.playNext()
         }
-        PlayerManager.shared.progression.bind { [weak self] value in
-            self?.playerProgress.value = value
+        progressionObserverUUID = PlayerManager.shared.progression.bind { [weak self] value in
+            self?.playerProgress.value = Float(value)
+        }
+        PlayerManager.shared.timings.bind { [weak self] duration, currentTime in
+            let timeLeft = duration - currentTime
+            let tfMinutes = timeLeft % 3600 / 60
+            let tfSeconds = timeLeft % 3600 % 60
+            self?.trackLenght.value = String(format: "-%02d:%02d", tfMinutes, tfSeconds)
+            
+            let cMinutes = currentTime % 3600 / 60
+            let cSeconds = currentTime % 3600 % 60
+            self?.currentTime.value = String(format: "%02d:%02d", cMinutes, cSeconds)
         }
     }
     
@@ -154,6 +167,21 @@ extension PlayerViewModel {
             startPlaying()
         } else {
             stopPlaying()
+        }
+    }
+    
+    func sliderChanged(_ value: Float) {
+        if let progressionObserverUUID = progressionObserverUUID {
+            PlayerManager.shared.progression.removeBind(uuid: progressionObserverUUID)
+        }
+        let duration = PlayerManager.shared.timings.value.duration
+        let seekTime = CMTime(value: Int64(Float(duration) * value), timescale: 1)
+        PlayerManager.shared.seekTime(seekTime)
+    }
+    
+    func tapSlider() {
+        progressionObserverUUID = PlayerManager.shared.progression.bind { [weak self] value in
+            self?.playerProgress.value = Float(value)
         }
     }
 }
