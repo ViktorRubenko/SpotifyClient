@@ -35,18 +35,6 @@ final class PlayerManager {
             selector: #selector(didFinishPlaying),
             name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
             object: player.currentItem)
-        
-//        statusObserver = player.observe(\.currentItem?.loadedTimeRanges, options: [.new, .old], changeHandler: { player, change in
-//            if self.player == player, let timeRanges = change.newValue, let timeRange = timeRanges?.first {
-//                let bufferDuration = CMTimeGetSeconds(CMTimeAdd(timeRange.timeRangeValue.start, timeRange.timeRangeValue.duration))
-//                guard let duration = player.currentItem?.asset.duration else { return }
-//                let seconds = CMTimeGetSeconds(duration)
-//
-//                if bufferDuration > 2 || bufferDuration == seconds {
-//                    self.audioLenght.value = duration
-//                }
-//            }
-//        })
     }
     
     deinit {

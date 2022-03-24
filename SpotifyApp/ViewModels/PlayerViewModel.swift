@@ -23,9 +23,13 @@ final class PlayerViewModel: NSObject {
         trackResponses[currentIndex]
     }
     private var progressionObserverUUID: UUID?
-    private let updateCenter = Observable<Bool>(false)
     var shareInfo: String {
         currentTrackResponse.externalUrls.spotify
+    }
+    private var timings: (duration: Int, currentTime: Int) = (0, 0) {
+        didSet {
+            updateInfoCenter()
+        }
     }
     
     let playerState = Observable<PlayerState>(.stopped)
@@ -49,6 +53,8 @@ final class PlayerViewModel: NSObject {
             self?.playerProgress.value = Float(value)
         }
         PlayerManager.shared.timings.bind { [weak self] duration, currentTime in
+            self?.timings = (duration, currentTime)
+            
             let timeLeft = duration - currentTime
             let tfMinutes = timeLeft % 3600 / 60
             let tfSeconds = timeLeft % 3600 % 60
@@ -80,7 +86,6 @@ extension PlayerViewModel {
         self.trackResponses = trackResponses
         self.currentIndex = trackIndex
         
-        updateCenter.value = true
         setPlayerItem()
         fetch()
     }
@@ -92,7 +97,6 @@ extension PlayerViewModel {
             progress: nil) { [weak self] image, _, error, _, _, _ in
                 self?.trackImage.value = image
                 self?.averageColor.value = image?.averageColor
-                self?.updateCenter.value = true
         }
     }
 
@@ -201,32 +205,34 @@ extension PlayerViewModel {
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
             try AVAudioSession.sharedInstance().setActive(true)
-            UIApplication.shared.beginReceivingRemoteControlEvents()
             setupCommandCenter()
         } catch {
             print("Erorr: \(error)")
         }
     }
     
+    private func updateInfoCenter() {
+        let artwork = MPMediaItemArtwork(boundsSize: CGSize(width: 200, height: 200)) { [weak self] _ in
+            self?.trackImage.value ?? UIImage(systemName: "music.note")!
+        }
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+            MPMediaItemPropertyArtist: trackArtist.value,
+            MPMediaItemPropertyTitle: trackTitle.value,
+            MPMediaItemPropertyArtwork: artwork,
+            MPMediaItemPropertyPlaybackDuration: timings.duration,
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: timings.currentTime
+        ]
+    }
+    
     private func setupCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared()
-        
-        updateCenter.bind { [weak self] _ in
-            let artwork = MPMediaItemArtwork(boundsSize: CGSize(width: 200, height: 200)) { _ in
-                self?.trackImage.value ?? UIImage(systemName: "music.note")!
-            }
-            
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-                MPMediaItemPropertyArtist: self?.trackArtist.value ?? "",
-                MPMediaItemPropertyTitle: self?.trackTitle.value ?? "",
-                MPMediaItemPropertyArtwork: artwork
-            ]
-        }
         
         commandCenter.playCommand.isEnabled = true
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.nextTrackCommand.isEnabled = true
         commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.changePlaybackPositionCommand.isEnabled = true
         commandCenter.playCommand.addTarget { [weak self] _ in
             self?.startPlaying()
             return .success
@@ -242,6 +248,15 @@ extension PlayerViewModel {
         commandCenter.previousTrackCommand.addTarget { [weak self] _ in
             self?.playPrevious()
             return .success
+        }
+        commandCenter.changePlaybackPositionCommand.addTarget { [weak self] removeEvent in
+            guard let self = self else { return .commandFailed}
+            if let event = removeEvent as? MPChangePlaybackPositionCommandEvent {
+                let time = CMTime(seconds: event.positionTime, preferredTimescale: 1)
+                PlayerManager.shared.seekTime(time)
+                return .success
+            }
+            return .commandFailed
         }
     }
 }
