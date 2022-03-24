@@ -94,7 +94,7 @@ class PlayerViewController: UIViewController {
         return stackView
     }()
     private let bottomToolbar: UIToolbar = {
-        let toolbar = UIToolbar()
+        let toolbar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: 44)))
         let appearance = UIToolbarAppearance()
         appearance.configureWithTransparentBackground()
         toolbar.standardAppearance = appearance
@@ -322,10 +322,12 @@ extension PlayerViewController {
         
         viewModel.trackImage.bind { [weak self] image in
             self?.imageView.image = image
-            self?.view.backgroundColor = image?.averageColor
-            
             self?.popupItem.image = image
-            self?.setupPopupItemColor(image?.averageColor?.withAlphaComponent(0.35))
+        }
+        
+        viewModel.averageColor.bind { [weak self] averageColor in
+            self?.view.backgroundColor = averageColor
+            self?.setupPopupItemColor(averageColor?.withAlphaComponent(0.35))
         }
         
         viewModel.trackLenght.bind { [weak self] value in
@@ -356,12 +358,10 @@ extension PlayerViewController {
     }
     
     @objc private func didTapBackwardButton() {
-        imageView.image = UIImage(systemName: "music.note")
         viewModel.playPrevious()
     }
     
     @objc private func didTapForwardButton() {
-        imageView.image = UIImage(systemName: "music.note")
         viewModel.playNext()
     }
     

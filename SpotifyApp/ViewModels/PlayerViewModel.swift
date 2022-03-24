@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import AVKit
 import SDWebImage
+import MediaPlayer
 
 enum PlayerState {
     case playing, paused, stopped
@@ -30,6 +31,7 @@ final class PlayerViewModel: NSObject {
     let trackTitle = Observable<String>("")
     let trackArtist = Observable<String>("")
     let trackImage = Observable<UIImage?>(nil)
+    let averageColor = Observable<UIColor?>(nil)
     let playerProgress = Observable<Float>(0.0)
     let error = Observable<ErrorMessageModel?>(nil)
     let trackLenght = Observable<String>("")
@@ -55,6 +57,8 @@ final class PlayerViewModel: NSObject {
             let cSeconds = currentTime % 3600 % 60
             self?.currentTime.value = String(format: "%02d:%02d", cMinutes, cSeconds)
         }
+        
+        setupAVAudioSession()
     }
     
     deinit {
@@ -67,6 +71,9 @@ extension PlayerViewModel {
         fetchImage()
         trackTitle.value = currentTrackResponse.name
         trackArtist.value = currentTrackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: trackTitle.value]
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyArtist: trackArtist.value]
     }
     
     func update(trackIndex: Int, trackResponses: [TrackResponse]) {
@@ -84,6 +91,7 @@ extension PlayerViewModel {
             options: [.highPriority],
             progress: nil) { [weak self] image, _, error, _, _, _ in
                 self?.trackImage.value = image
+                self?.averageColor.value = image?.averageColor
         }
     }
 
@@ -151,12 +159,9 @@ extension PlayerViewModel {
         if let nextIndex = findNextIndex() {
             currentIndex = nextIndex
             fetch()
-            
-            setPlayerItem()
-            startPlaying()
-        } else {
-            stopPlaying()
         }
+        setPlayerItem()
+        startPlaying()
     }
     
     func playPrevious() {
@@ -165,12 +170,9 @@ extension PlayerViewModel {
         if let previousIndex = findPreviousTrack() {
             currentIndex = previousIndex
             fetch()
-            
-            setPlayerItem()
-            startPlaying()
-        } else {
-            stopPlaying()
         }
+        setPlayerItem()
+        startPlaying()
     }
     
     func sliderChanged(_ value: Float) {
@@ -190,5 +192,42 @@ extension PlayerViewModel {
     
     func createTrackActionsViewModel() -> TrackActionsViewModel {
         TrackActionsViewModel(trackResponse: currentTrackResponse)
+    }
+}
+// MARK: - AVAudioSession
+extension PlayerViewModel {
+    private func setupAVAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            UIApplication.shared.beginReceivingRemoteControlEvents()
+            setupCommandCenter()
+        } catch {
+            print("Erorr: \(error)")
+        }
+    }
+    
+    private func setupCommandCenter() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.playCommand.addTarget { [weak self] _ in
+            self?.startPlaying()
+            return .success
+        }
+        commandCenter.pauseCommand.addTarget { [weak self] _ in
+            self?.pausePlaying()
+            return .success
+        }
+        commandCenter.nextTrackCommand.addTarget { [weak self] _ in
+            self?.playNext()
+            return .success
+        }
+        commandCenter.previousTrackCommand.addTarget { [weak self] _ in
+            self?.playPrevious()
+            return .success
+        }
     }
 }
