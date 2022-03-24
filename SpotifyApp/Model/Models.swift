@@ -18,7 +18,6 @@ protocol TrackContainerModelProtocol {
     var id: String { get }
     var name: String { get }
     var imageURL: URL? { get }
-    var tracks: [ItemModel] { get }
 }
 
 struct AlbumDetailModel: TrackContainerModelProtocol {
@@ -27,7 +26,6 @@ struct AlbumDetailModel: TrackContainerModelProtocol {
     let year: String
     let albumType: String
     let artistName: String
-    let tracks: [ItemModel]
     let date: String
     let artists: [ItemModel]
     let copyright: String
@@ -37,7 +35,6 @@ struct AlbumDetailModel: TrackContainerModelProtocol {
 struct PlaylistDetailModel: TrackContainerModelProtocol {
     let name: String
     let imageURL: URL?
-    let tracks: [ItemModel]
     let id: String
 }
 

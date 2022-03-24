@@ -11,11 +11,15 @@ import SDWebImage
 
 final class AlbumViewModel: PlayingTrackViewModel, TrackContainerViewModelProtocol {
     
-    var itemID: String
-    var model: TrackContainerModelProtocol?
-    var headerModel: TrackContainerHeaderModel?
-    var fetched = Observable<Bool>(false)
-    var trackResponses = [TrackResponse]()
+    private(set) var itemID: String
+    private(set) var model: TrackContainerModelProtocol?
+    private(set) var headerModel: TrackContainerHeaderModel?
+    private(set) var fetched = Observable<Bool>(false)
+    private(set) var fetchedNext = Observable<Bool>(false)
+    private(set) var trackResponses = [TrackResponse]()
+    private(set) var tracks = [ItemModel]()
+    let nextTracksLimit = 20
+    private(set) var nextURL: String?
     
     init(itemID: String) {
         self.itemID = itemID
@@ -36,13 +40,6 @@ final class AlbumViewModel: PlayingTrackViewModel, TrackContainerViewModelProtoc
                     year: String(albumDetails.releaseDate.split(separator: "-")[0]),
                     albumType: albumDetails.type!,
                     artistName: albumDetails.artists.compactMap({$0.name}).joined(separator: ", "),
-                    tracks: albumDetails.tracks!.items.compactMap {
-                        ItemModel(
-                            id: $0.id,
-                            name: $0.name,
-                            info: $0.artists.compactMap({$0.name}).joined(separator: ", "),
-                            imageURL: nil,
-                            itemType: .track)},
                     date: albumDetails.releaseDate,
                     artists: albumDetails.artists.compactMap({
                         ItemModel(
@@ -53,12 +50,44 @@ final class AlbumViewModel: PlayingTrackViewModel, TrackContainerViewModelProtoc
                             itemType: .artist)}),
                     copyright: albumDetails.copyrights!.compactMap({$0.text}).joined(separator: ",\n"),
                     id: albumDetails.id)
+                self?.tracks = albumDetails.tracks!.items.compactMap {
+                    ItemModel(
+                        id: $0.id,
+                        name: $0.name,
+                        info: $0.artists.compactMap({$0.name}).joined(separator: ", "),
+                        imageURL: nil,
+                        itemType: .track)}
                 for index in 0..<albumDetails.tracks!.items.count {
                     var trackResponse = albumDetails.tracks!.items[index]
                     trackResponse.album = albumDetails
                     self?.trackResponses.append(trackResponse)
                 }
+                self?.nextURL = albumDetails.tracks?.next
                 self?.fetched.value = true
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func fetchNext() {
+        guard let nextURL = nextURL else {
+            return
+        }
+
+        APICaller.shared.getNextTracksAlbum(url: nextURL) { [weak self] result in
+            switch result {
+            case .success(let tracks):
+                guard let self = self else { return }
+                self.tracks += tracks.items.compactMap {
+                    ItemModel(
+                        id: $0.id,
+                        name: $0.name,
+                        info: $0.artists.compactMap({$0.name}).joined(separator: ", "),
+                        imageURL: nil,
+                        itemType: .track)}
+                self.trackResponses += tracks.items
+                self.fetchedNext.value = true
             case .failure(let error):
                 print(error.localizedDescription)
             }

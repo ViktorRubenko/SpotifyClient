@@ -38,6 +38,7 @@
 		E369E1C227DF726D00B6DCE8 /* TrackActionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369E1C127DF726D00B6DCE8 /* TrackActionsViewController.swift */; };
 		E369E1C427DF732E00B6DCE8 /* TrackActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369E1C327DF732E00B6DCE8 /* TrackActionsViewModel.swift */; };
 		E38EC3C427DD27F700482502 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38EC3C327DD27F700482502 /* Functions.swift */; };
+		E393CC9127ED066E00EC8EFA /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E393CC9027ED066E00EC8EFA /* LibraryViewModel.swift */; };
 		E39AAA5827DFC30E0033877A /* TrackContainerHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA5727DFC30E0033877A /* TrackContainerHeaderView.swift */; };
 		E39AAA5A27DFCD0A0033877A /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA5927DFCD0A0033877A /* UIImageExtension.swift */; };
 		E39AAA5C27E0CD170033877A /* TrackContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39AAA5B27E0CD170033877A /* TrackContainerViewController.swift */; };
@@ -124,6 +125,7 @@
 		E369E1C127DF726D00B6DCE8 /* TrackActionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackActionsViewController.swift; sourceTree = "<group>"; };
 		E369E1C327DF732E00B6DCE8 /* TrackActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackActionsViewModel.swift; sourceTree = "<group>"; };
 		E38EC3C327DD27F700482502 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		E393CC9027ED066E00EC8EFA /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
 		E39AAA5727DFC30E0033877A /* TrackContainerHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackContainerHeaderView.swift; sourceTree = "<group>"; };
 		E39AAA5927DFCD0A0033877A /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		E39AAA5B27E0CD170033877A /* TrackContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackContainerViewController.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				E39AAA8827E50CE40033877A /* ArtistViewModel.swift */,
 				E39AAA5F27E0D7F20033877A /* PlaylistViewModel.swift */,
 				E369E1C327DF732E00B6DCE8 /* TrackActionsViewModel.swift */,
+				E393CC9027ED066E00EC8EFA /* LibraryViewModel.swift */,
 				E39AAA6D27E1F6030033877A /* CategoryPlaylistsViewModel.swift */,
 				E39AAA6627E10F190033877A /* SearchViewModel.swift */,
 			);
@@ -664,6 +667,7 @@
 				E39AAA5A27DFCD0A0033877A /* UIImageExtension.swift in Sources */,
 				E3AA50A427DC0B6A00575C7F /* TrackResponse.swift in Sources */,
 				E341043B27DA8ACB006BCAB6 /* SettingsViewModelDelegate.swift in Sources */,
+				E393CC9127ED066E00EC8EFA /* LibraryViewModel.swift in Sources */,
 				E337F78227DDF8BE00689A7A /* ImageHeaderView.swift in Sources */,
 				E3A7BC6A27D95D600046154C /* SceneDelegate.swift in Sources */,
 				E39AAA6C27E1F02D0033877A /* CategoriesResponse.swift in Sources */,

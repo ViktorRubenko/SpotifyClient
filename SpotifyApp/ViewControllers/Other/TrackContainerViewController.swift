@@ -140,6 +140,10 @@ extension TrackContainerViewController {
         viewModel.playingTrackID.bind { [weak self] _ in
             self?.collectionView.reloadData()
         }
+        
+        viewModel.fetchedNext.bind { [weak self] _ in
+            self?.addNextCells()
+        }
     }
     
     func createLayout() -> UICollectionViewCompositionalLayout {
@@ -162,6 +166,17 @@ extension TrackContainerViewController {
         
         return UICollectionViewCompositionalLayout(section: section)
     }
+    
+    private func addNextCells() {
+        print("batches")
+        collectionView.performBatchUpdates {
+            let totalItems = collectionView.numberOfItems(inSection: 0)
+            for trackIndex in totalItems..<viewModel.tracks.count {
+                collectionView.insertItems(at: [IndexPath(item: trackIndex, section: 0)])
+            }
+        }
+
+    }
 }
 // MARK: - Actions
 extension TrackContainerViewController {
@@ -172,12 +187,11 @@ extension TrackContainerViewController {
 // MARK: - CollectionView Delegate/DataSource
 extension TrackContainerViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let model = viewModel.model else { return 0}
-        return model.tracks.count
+        return viewModel.tracks.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let model = viewModel.model!.tracks[indexPath.row]
+        let model = viewModel.tracks[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
         cell.configure(model)
         cell.accessoryHandler = { [weak self] in
@@ -236,6 +250,12 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
             }
             headerView.alpha = (180 - yOffset) / 180
             headerView.isHidden = yOffset >= 180
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == viewModel.tracks.count - 10 {
+            viewModel.fetchNext()
         }
     }
 }

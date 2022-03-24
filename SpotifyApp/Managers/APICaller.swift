@@ -177,9 +177,25 @@ class APICaller {
         }
     }
     
-    func getPlaylist(id: String, completion: @escaping (Result<PlaylistDetailResponse, AFError>) -> Void) {
+    func getPlaylist(id: String, limit: Int = 20, completion: @escaping (Result<PlaylistDetailResponse, AFError>) -> Void) {
         createRequest(url: baseURL + "/playlists/\(id)", method: .get) { dataRequest in
             dataRequest.responseDecodable(of: PlaylistDetailResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
+    
+    func getNextTracksPlaylist(url: String, completion: @escaping (Result<PlaylistDetailTracks, AFError>) -> Void) {
+        createRequest(url: url, method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: PlaylistDetailTracks.self) { response in
+                completion(response.result)
+            }
+        }
+    }
+    
+    func getNextTracksAlbum(url: String, completion: @escaping (Result<AlbumTracks, AFError>) -> Void) {
+        createRequest(url: url, method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: AlbumTracks.self) { response in
                 completion(response.result)
             }
         }

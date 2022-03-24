@@ -13,10 +13,14 @@ protocol TrackContainerViewModelProtocol: PlayingViewModelProtocol {
     var model: TrackContainerModelProtocol? { get }
     var headerModel: TrackContainerHeaderModel? { get }
     var fetched: Observable<Bool> { get }
+    var fetchedNext: Observable<Bool> { get }
     var trackResponses: [TrackResponse] { get }
     var firstPlayeble: Int { get }
+    var tracks: [ItemModel] { get }
+    var nextTracksLimit: Int { get }
     
     func fetch()
+    func fetchNext()
     func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel
 }
 
