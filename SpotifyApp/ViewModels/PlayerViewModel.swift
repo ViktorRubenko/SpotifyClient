@@ -31,6 +31,7 @@ final class PlayerViewModel: NSObject {
             updateInfoCenter()
         }
     }
+    private var nextURL: String?
     
     let playerState = Observable<PlayerState>(.stopped)
     let trackTitle = Observable<String>("")
@@ -42,9 +43,9 @@ final class PlayerViewModel: NSObject {
     let trackLenght = Observable<String>("")
     let currentTime = Observable<String>("")
     
-    init(trackIndex: Int, trackResponses: [TrackResponse]) {
+    init(trackIndex: Int, trackResponses: [TrackResponse], nextURL: String? = nil) {
         super.init()
-        update(trackIndex: trackIndex, trackResponses: trackResponses)
+        update(trackIndex: trackIndex, trackResponses: trackResponses, nextURL: nextURL)
         
         PlayerManager.shared.didFinishCompletion = { [weak self] in
             self?.playNext()
@@ -72,7 +73,7 @@ final class PlayerViewModel: NSObject {
         PlayerManager.shared.didFinishCompletion = nil
     }
 }
-// MARK: - Player Methods
+// MARK: - Methods
 extension PlayerViewModel {
     func fetch() {
         fetchImage()
@@ -81,10 +82,11 @@ extension PlayerViewModel {
         
     }
     
-    func update(trackIndex: Int, trackResponses: [TrackResponse]) {
+    func update(trackIndex: Int, trackResponses: [TrackResponse], nextURL: String? = nil) {
         
         self.trackResponses = trackResponses
         self.currentIndex = trackIndex
+        self.nextURL = nextURL
         
         setPlayerItem()
         fetch()
@@ -99,7 +101,36 @@ extension PlayerViewModel {
                 self?.averageColor.value = image?.averageColor
         }
     }
-
+    
+    func fetchNext() {
+        guard let nextURL = nextURL else { return }
+        APICaller.shared.getNextTracks(url: nextURL) { [weak self] result in
+            switch result {
+            case .success(let data):
+                do {
+                    let response = try JSONDecoder().decode(AlbumTracks.self, from: data)
+                    self?.trackResponses += response.items
+                    self?.nextURL = response.next
+                } catch {}
+                
+                do {
+                    let response = try JSONDecoder().decode(PlaylistDetailTracks.self, from: data)
+                    self?.trackResponses += response.items.compactMap { $0.track }
+                    self?.nextURL = response.next
+                } catch {}
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func createTrackActionsViewModel() -> TrackActionsViewModel {
+        TrackActionsViewModel(trackResponse: currentTrackResponse)
+    }
+}
+// MARK: - PlayerItem Logic
+extension PlayerViewModel {
     private func setPlayerItem() {
         guard let previewUrl = currentTrackResponse.previewUrl, let url = URL(string: previewUrl) else {
             error.value = ErrorMessageModel(title: "Woops...", message: "Preview is not available for this track.")
@@ -107,6 +138,10 @@ extension PlayerViewModel {
         }
         PlayerManager.shared.currentTrackID.value = currentTrackResponse.id
         PlayerManager.shared.playNewTrack(item: AVPlayerItem(url: url))
+        print(currentIndex, trackResponses.count / 2)
+        if currentIndex > trackResponses.count / 2 {
+            fetchNext()
+        }
     }
 
     func findNextIndex() -> Int? {
@@ -133,6 +168,9 @@ extension PlayerViewModel {
         return nil
 
     }
+}
+// MARK: - Player Controls
+extension PlayerViewModel {
     
     func startPlaying() {
         switch playerState.value {
@@ -194,12 +232,8 @@ extension PlayerViewModel {
             self?.playerProgress.value = Float(value)
         }
     }
-    
-    func createTrackActionsViewModel() -> TrackActionsViewModel {
-        TrackActionsViewModel(trackResponse: currentTrackResponse)
-    }
 }
-// MARK: - AVAudioSession
+// MARK: - MPCommandCenter
 extension PlayerViewModel {
     private func setupAVAudioSession() {
         do {
@@ -249,8 +283,7 @@ extension PlayerViewModel {
             self?.playPrevious()
             return .success
         }
-        commandCenter.changePlaybackPositionCommand.addTarget { [weak self] removeEvent in
-            guard let self = self else { return .commandFailed}
+        commandCenter.changePlaybackPositionCommand.addTarget { removeEvent in
             if let event = removeEvent as? MPChangePlaybackPositionCommandEvent {
                 let time = CMTime(seconds: event.positionTime, preferredTimescale: 1)
                 PlayerManager.shared.seekTime(time)

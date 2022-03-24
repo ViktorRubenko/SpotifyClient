@@ -16,8 +16,7 @@ final class PlaylistViewModel: PlayingTrackViewModel, TrackContainerViewModelPro
     var fetched = Observable<Bool>(false)
     var fetchedNext = Observable<Bool>(false)
     private(set) var trackResponses = [TrackResponse]()
-    private var nextURL: String?
-    let nextTracksLimit = 20
+    private(set) var nextURL: String?
     
     init(id: String) {
         self.itemID = id
@@ -25,7 +24,7 @@ final class PlaylistViewModel: PlayingTrackViewModel, TrackContainerViewModelPro
     }
     
     func fetch() {
-        APICaller.shared.getPlaylist(id: itemID, limit: nextTracksLimit) { [weak self] result in
+        APICaller.shared.getPlaylist(id: itemID) { [weak self] result in
             switch result {
             case .success(let response):
                 guard let self = self else { return }

@@ -17,7 +17,7 @@ protocol TrackContainerViewModelProtocol: PlayingViewModelProtocol {
     var trackResponses: [TrackResponse] { get }
     var firstPlayeble: Int { get }
     var tracks: [ItemModel] { get }
-    var nextTracksLimit: Int { get }
+    var nextURL: String? { get }
     
     func fetch()
     func fetchNext()

@@ -222,6 +222,7 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
                     trackIndex: self.viewModel.firstPlayeble,
                     trackResponses: self.viewModel.trackResponses,
                     container: self.tabBarController!,
+                    nextURL: self.viewModel.nextURL,
                     averageColor: nil)
                 coordinator.start()
             }
@@ -235,6 +236,7 @@ extension TrackContainerViewController: UICollectionViewDelegate, UICollectionVi
             trackIndex: indexPath.row,
             trackResponses: viewModel.trackResponses,
             container: tabBarController!,
+            nextURL: viewModel.nextURL,
             averageColor: imageAverageColor)
         coordinator.start()
     }

@@ -18,7 +18,6 @@ final class AlbumViewModel: PlayingTrackViewModel, TrackContainerViewModelProtoc
     private(set) var fetchedNext = Observable<Bool>(false)
     private(set) var trackResponses = [TrackResponse]()
     private(set) var tracks = [ItemModel]()
-    let nextTracksLimit = 20
     private(set) var nextURL: String?
     
     init(itemID: String) {
