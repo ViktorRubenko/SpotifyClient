@@ -23,6 +23,7 @@ final class PlayerViewModel: NSObject {
         trackResponses[currentIndex]
     }
     private var progressionObserverUUID: UUID?
+    private let updateCenter = Observable<Bool>(false)
     var shareInfo: String {
         currentTrackResponse.externalUrls.spotify
     }
@@ -72,8 +73,6 @@ extension PlayerViewModel {
         trackTitle.value = currentTrackResponse.name
         trackArtist.value = currentTrackResponse.artists.compactMap({$0.name}).joined(separator: ", ")
         
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: trackTitle.value]
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyArtist: trackArtist.value]
     }
     
     func update(trackIndex: Int, trackResponses: [TrackResponse]) {
@@ -81,6 +80,7 @@ extension PlayerViewModel {
         self.trackResponses = trackResponses
         self.currentIndex = trackIndex
         
+        updateCenter.value = true
         setPlayerItem()
         fetch()
     }
@@ -92,6 +92,7 @@ extension PlayerViewModel {
             progress: nil) { [weak self] image, _, error, _, _, _ in
                 self?.trackImage.value = image
                 self?.averageColor.value = image?.averageColor
+                self?.updateCenter.value = true
         }
     }
 
@@ -209,6 +210,19 @@ extension PlayerViewModel {
     
     private func setupCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared()
+        
+        updateCenter.bind { [weak self] _ in
+            let artwork = MPMediaItemArtwork(boundsSize: CGSize(width: 200, height: 200)) { _ in
+                self?.trackImage.value ?? UIImage(systemName: "music.note")!
+            }
+            
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+                MPMediaItemPropertyArtist: self?.trackArtist.value ?? "",
+                MPMediaItemPropertyTitle: self?.trackTitle.value ?? "",
+                MPMediaItemPropertyArtwork: artwork
+            ]
+        }
+        
         commandCenter.playCommand.isEnabled = true
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.nextTrackCommand.isEnabled = true
