@@ -96,7 +96,7 @@ extension PlayerViewModel {
         SDWebImageManager.shared.loadImage(
             with: findClosestSizeImage(images: currentTrackResponse.album?.images, height: 500, width: 500),
             options: [.highPriority],
-            progress: nil) { [weak self] image, _, error, _, _, _ in
+            progress: nil) { [weak self] image, _, _, _, _, _ in
                 self?.trackImage.value = image
                 self?.averageColor.value = image?.averageColor
         }
@@ -109,7 +109,11 @@ extension PlayerViewModel {
             case .success(let data):
                 do {
                     let response = try JSONDecoder().decode(AlbumTracks.self, from: data)
-                    self?.trackResponses += response.items
+                    for trackResponse in response.items {
+                        var item = trackResponse
+                        item.album = self?.trackResponses.first?.album
+                        self?.trackResponses.append(item)
+                    }
                     self?.nextURL = response.next
                 } catch {}
                 

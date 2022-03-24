@@ -186,7 +186,8 @@ class APICaller {
     }
     
     func getNextTracksPlaylist(url: String, completion: @escaping (Result<PlaylistDetailTracks, AFError>) -> Void) {
-        createRequest(url: url, method: .get) { dataRequest in
+        let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        createRequest(url: encodedURL, method: .get) { dataRequest in
             dataRequest.responseDecodable(of: PlaylistDetailTracks.self) { response in
                 completion(response.result)
             }
@@ -194,7 +195,8 @@ class APICaller {
     }
     
     func getNextTracksAlbum(url: String, completion: @escaping (Result<AlbumTracks, AFError>) -> Void) {
-        createRequest(url: url, method: .get) { dataRequest in
+        let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        createRequest(url: encodedURL, method: .get) { dataRequest in
             dataRequest.responseDecodable(of: AlbumTracks.self) { response in
                 completion(response.result)
             }
@@ -202,7 +204,8 @@ class APICaller {
     }
     
     func getNextTracks(url: String, completion: @escaping (Result<Data, AFError>) -> Void ) {
-        createRequest(url: url, method: .get) { dataRequest in
+        let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        createRequest(url: encodedURL, method: .get) { dataRequest in
             dataRequest.responseData { response in
                 completion(response.result)
             }
