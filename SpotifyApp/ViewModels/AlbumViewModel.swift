@@ -87,6 +87,7 @@ final class AlbumViewModel: PlayingTrackViewModel, TrackContainerViewModelProtoc
                         itemType: .track)}
                 self.trackResponses += tracks.items
                 self.fetchedNext.value = true
+                self.nextURL = tracks.next
             case .failure(let error):
                 print(error.localizedDescription)
             }

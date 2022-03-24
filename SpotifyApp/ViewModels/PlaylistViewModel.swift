@@ -57,6 +57,7 @@ final class PlaylistViewModel: PlayingTrackViewModel, TrackContainerViewModelPro
                 guard let self = self else { return }
                 self.tracks += self.extractTracks(tracks)
                 self.trackResponses += tracks.items.compactMap { $0.track }
+                self.nextURL = tracks.next
                 self.fetchedNext.value = true
             case .failure(let error):
                 print(error.localizedDescription)
