@@ -59,4 +59,8 @@ final class LibraryViewModel: PlayingTrackViewModel {
             }
         }
     }
+    
+    func createTrackActionsViewModel(index: Int) -> TrackActionsViewModel {
+        TrackActionsViewModel(trackResponse: trackResponses[index])
+    }
 }

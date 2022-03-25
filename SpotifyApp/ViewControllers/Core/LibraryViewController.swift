@@ -101,7 +101,11 @@ extension LibraryViewController: UICollectionViewDataSource, UICollectionViewDel
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemListCell.id, for: indexPath) as! ItemListCell
         let model = viewModel.tracks.value[indexPath.row]
         cell.configure(model)
-//        cell.isPlaying = false
+        cell.accessoryHandler = { [weak self] in
+            guard let strongSelf = self else { return }
+            let vc = TrackActionsViewController(viewModel: strongSelf.viewModel.createTrackActionsViewModel(index: indexPath.row))
+            strongSelf.present(vc, animated: true)
+        }
         if model.id == viewModel.playingTrackID.value {
             cell.isPlaying = true
         }
