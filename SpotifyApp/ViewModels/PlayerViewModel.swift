@@ -123,6 +123,12 @@ extension PlayerViewModel {
                     self?.nextURL = response.next
                 } catch {}
                 
+                do {
+                    let response = try JSONDecoder().decode(UsersSavedTracksResponse.self, from: data)
+                    self?.trackResponses += response.items.compactMap { $0.track }
+                    self?.nextURL = response.next
+                } catch {}
+                
             case .failure(let error):
                 print(error.localizedDescription)
             }

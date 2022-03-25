@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1321A0FEBDD04CB688B678C9 /* Pods_SpotifyApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F0F78C231B5BB8A364798F /* Pods_SpotifyApp.framework */; };
+		E30ED6E327EE627B002873EA /* LibraryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED6E227EE627B002873EA /* LibraryViewModel.swift */; };
+		E30ED6E727EE784F002873EA /* UsersSavedTracksResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED6E627EE784F002873EA /* UsersSavedTracksResponse.swift */; };
 		E30ED87C27E9F56200542D2A /* PlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED87B27E9F56200542D2A /* PlayerManager.swift */; };
 		E30ED87E27EA1AF400542D2A /* PlayingTrackViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED87D27EA1AF400542D2A /* PlayingTrackViewModel.swift */; };
 		E30ED88227EA209400542D2A /* PlayingViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ED88127EA209400542D2A /* PlayingViewModelProtocol.swift */; };
@@ -94,6 +96,8 @@
 		62F0F78C231B5BB8A364798F /* Pods_SpotifyApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpotifyApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78121FC950771641BB941454 /* Pods-SpotifyApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.release.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.release.xcconfig"; sourceTree = "<group>"; };
 		A333DFBC3153C4604FF74822 /* Pods-SpotifyApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpotifyApp.debug.xcconfig"; path = "Target Support Files/Pods-SpotifyApp/Pods-SpotifyApp.debug.xcconfig"; sourceTree = "<group>"; };
+		E30ED6E227EE627B002873EA /* LibraryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewModel.swift; sourceTree = "<group>"; };
+		E30ED6E627EE784F002873EA /* UsersSavedTracksResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersSavedTracksResponse.swift; sourceTree = "<group>"; };
 		E30ED87B27E9F56200542D2A /* PlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerManager.swift; sourceTree = "<group>"; };
 		E30ED87D27EA1AF400542D2A /* PlayingTrackViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingTrackViewModel.swift; sourceTree = "<group>"; };
 		E30ED88127EA209400542D2A /* PlayingViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingViewModelProtocol.swift; sourceTree = "<group>"; };
@@ -262,6 +266,7 @@
 				E369E1C327DF732E00B6DCE8 /* TrackActionsViewModel.swift */,
 				E39AAA6D27E1F6030033877A /* CategoryPlaylistsViewModel.swift */,
 				E39AAA6627E10F190033877A /* SearchViewModel.swift */,
+				E30ED6E227EE627B002873EA /* LibraryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -441,6 +446,7 @@
 				E3AA509F27DC0A9100575C7F /* ArtistResponse.swift */,
 				E3AA50A127DC0B0E00575C7F /* AlbumResponse.swift */,
 				E3AA50A327DC0B6A00575C7F /* TrackResponse.swift */,
+				E30ED6E627EE784F002873EA /* UsersSavedTracksResponse.swift */,
 				E3AA50A527DC154400575C7F /* RecommendationsResponse.swift */,
 				E39AAA6327E10C540033877A /* DetailResponse */,
 			);
@@ -644,6 +650,7 @@
 				E341042527DA55A6006BCAB6 /* UserProfileResponse.swift in Sources */,
 				E341042E27DA6702006BCAB6 /* Observable.swift in Sources */,
 				E39AAA7827E261830033877A /* ImageTextHeader.swift in Sources */,
+				E30ED6E727EE784F002873EA /* UsersSavedTracksResponse.swift in Sources */,
 				E39AAA8927E50CE40033877A /* ArtistViewModel.swift in Sources */,
 				E3AA50A227DC0B0E00575C7F /* AlbumResponse.swift in Sources */,
 				E341042327DA556E006BCAB6 /* APICaller.swift in Sources */,
@@ -664,6 +671,7 @@
 				E39AAA5A27DFCD0A0033877A /* UIImageExtension.swift in Sources */,
 				E3AA50A427DC0B6A00575C7F /* TrackResponse.swift in Sources */,
 				E341043B27DA8ACB006BCAB6 /* SettingsViewModelDelegate.swift in Sources */,
+				E30ED6E327EE627B002873EA /* LibraryViewModel.swift in Sources */,
 				E337F78227DDF8BE00689A7A /* ImageHeaderView.swift in Sources */,
 				E3A7BC6A27D95D600046154C /* SceneDelegate.swift in Sources */,
 				E39AAA6C27E1F02D0033877A /* CategoriesResponse.swift in Sources */,

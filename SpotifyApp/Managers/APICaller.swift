@@ -258,4 +258,12 @@ class APICaller {
             }
         }
     }
+    
+    func getUsersSavedTracks(limit: Int = 20, completion: @escaping (Result<UsersSavedTracksResponse, AFError>) -> Void) {
+        createRequest(url: baseURL + "/me/tracks?limit=\(limit)", method: .get) { dataRequest in
+            dataRequest.responseDecodable(of: UsersSavedTracksResponse.self) { response in
+                completion(response.result)
+            }
+        }
+    }
 }

@@ -29,11 +29,9 @@ extension TrackContainerViewModelProtocol {
         TrackActionsViewModel(trackResponse: trackResponses[index])
     }
     var firstPlayeble: Int {
-        for (index, trackResponse) in trackResponses.enumerated() {
-            if trackResponse.previewUrl != nil {
-                return index
-            }
+        guard let index = trackResponses.firstIndex(where: { $0.previewUrl != nil }) else {
+            return 0
         }
-        return 0
+        return index
     }
 }

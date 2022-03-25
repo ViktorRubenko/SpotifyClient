@@ -34,7 +34,6 @@ class PlayerBarCustomViewController: LNPopupCustomBarViewController {
     }()
     let button = UIButton()
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
